@@ -28,5 +28,5 @@ integrations:
   - "Peppol BIS Billing 3.0"
   - "iFirma, Wfirma, Comarch ERP, Saldeo"
   - "Stripe, Przelewy24, BLIK"
-pricingNote: "Dostępne od planu Stable (od 162 zł/mies. przy umowie 3-letniej). Brak limitów na liczbę faktur."
+pricingNote: "Dostępne od planu Stable (od 174 zł/mies. przy umowie 3-letniej). Brak limitów na liczbę faktur."
 ---

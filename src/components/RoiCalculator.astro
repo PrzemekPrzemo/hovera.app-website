@@ -16,15 +16,15 @@ const setupFee = isPL ? 1590 : 390;
 const plans = isPL
   ? [
       { key: 'free',   name: 'Free',   price: 0,   horses: 5,   yearly: 0 },
-      { key: 'solo',   name: 'Solo',   price: 89,  horses: 10,  yearly: 89  * 12 * 0.85 },
-      { key: 'stable', name: 'Stable', price: 249, horses: 30,  yearly: 249 * 12 * 0.85 },
-      { key: 'pro',    name: 'Pro',    price: 499, horses: 999, yearly: 499 * 12 * 0.85 },
+      { key: 'solo',   name: 'Solo',   price: 89,  horses: 10,  yearly: 89  * 12 * 0.90 + 1590 },
+      { key: 'stable', name: 'Stable', price: 249, horses: 30,  yearly: 249 * 12 * 0.90 + 1590 },
+      { key: 'pro',    name: 'Pro',    price: 499, horses: 999, yearly: 499 * 12 * 0.90 + 1590 },
     ]
   : [
       { key: 'free',   name: 'Free',   price: 0,   horses: 5,   yearly: 0 },
-      { key: 'solo',   name: 'Solo',   price: 19,  horses: 10,  yearly: 19  * 12 * 0.85 },
-      { key: 'stable', name: 'Stable', price: 59,  horses: 30,  yearly: 59  * 12 * 0.85 },
-      { key: 'pro',    name: 'Pro',    price: 119, horses: 999, yearly: 119 * 12 * 0.85 },
+      { key: 'solo',   name: 'Solo',   price: 19,  horses: 10,  yearly: 19  * 12 * 0.90 + 390 },
+      { key: 'stable', name: 'Stable', price: 59,  horses: 30,  yearly: 59  * 12 * 0.90 + 390 },
+      { key: 'pro',    name: 'Pro',    price: 119, horses: 999, yearly: 119 * 12 * 0.90 + 390 },
     ];
 
 const sliders = isPL
@@ -111,7 +111,7 @@ const sliders = isPL
           </span>
         </div>
         <div class="result-plan-yearly">
-          <span data-result-plan-yearly>2 540</span> {cur} {t('rocznie z 15% rabatem (wdrożenie w cenie)', 'yearly with 15% discount (onboarding included)')}
+          <span data-result-plan-yearly>4 280</span> {cur} {t('w pierwszym roku (10% rabat + opłata wdrożeniowa)', 'in year one (10% off + onboarding fee)')}
         </div>
       </div>
 

@@ -37,14 +37,14 @@ const currencyPos: 'after' | 'before' = locale === 'pl' ? 'after' : 'before';
 // Period options — discount applied to base monthly price
 const periods = locale === 'pl' ? [
   { key: 'monthly', label: 'Miesięcznie', discount: 0,    months: 1,   note: '' },
-  { key: 'yearly',  label: 'Rocznie',     discount: 0.15, months: 12,  note: '-15%' },
-  { key: 'two',     label: '2 lata',      discount: 0.25, months: 24,  note: '-25%' },
-  { key: 'three',   label: '3 lata',      discount: 0.35, months: 36,  note: '-35% ⭐' },
+  { key: 'yearly',  label: 'Rocznie',     discount: 0.10, months: 12,  note: '-10%' },
+  { key: 'two',     label: '2 lata',      discount: 0.20, months: 24,  note: '-20%' },
+  { key: 'three',   label: '3 lata',      discount: 0.30, months: 36,  note: '-30% ⭐' },
 ] : [
   { key: 'monthly', label: 'Monthly',     discount: 0,    months: 1,   note: '' },
-  { key: 'yearly',  label: 'Yearly',      discount: 0.15, months: 12,  note: '-15%' },
-  { key: 'two',     label: '2 years',     discount: 0.25, months: 24,  note: '-25%' },
-  { key: 'three',   label: '3 years',     discount: 0.35, months: 36,  note: '-35% ⭐' },
+  { key: 'yearly',  label: 'Yearly',      discount: 0.10, months: 12,  note: '-10%' },
+  { key: 'two',     label: '2 years',     discount: 0.20, months: 24,  note: '-20%' },
+  { key: 'three',   label: '3 years',     discount: 0.30, months: 36,  note: '-30% ⭐' },
 ];
 
 const setupFee = locale === 'pl' ? 1590 : 390;
@@ -71,8 +71,8 @@ const setupFee = locale === 'pl' ? 1590 : 390;
 
   <p class="period-hint">
     {t(
-      'Płatności roczne, 2- i 3-letnie wliczają opłatę wdrożeniową (1 590 zł) i blokują cenę na cały okres.',
-      'Yearly, 2-year and 3-year plans include the onboarding fee (€390) and lock the price for the full term.'
+      'Do każdego płatnego planu doliczamy jednorazową opłatę wdrożeniową 1 590 zł. Płatności roczne, 2- i 3-letnie blokują cenę na cały okres.',
+      'A one-time onboarding fee of €390 is added to every paid plan. Yearly, 2-year and 3-year plans lock the price for the full term.'
     )}
   </p>
 
@@ -253,7 +253,7 @@ const setupFee = locale === 'pl' ? 1590 : 390;
   .price-period { font-size: 0.85rem; }
   .tier-totals {
     margin-top: 0.5rem;
-    min-height: 2.6rem;
+    min-height: 3.4rem;
   }
   .total-line {
     display: block;
@@ -339,20 +339,22 @@ const setupFee = locale === 'pl' ? 1590 : 390;
           const totalPeriod = tier.querySelector<HTMLElement>('[data-total-period]');
           const setupLine = tier.querySelector<HTMLElement>('[data-setup-line]');
 
+          // Setup fee is always shown for all paid plans
+          const setupHtml = `<span class="setup-extra">+ ${fmtPrice(setupFee)} ${tr('opłata wdrożeniowa (jednorazowa)', 'onboarding fee (one-time)')}</span>`;
+
           if (period.key === 'monthly') {
             if (totalAmount) totalAmount.textContent = '';
             if (totalPeriod) totalPeriod.textContent = '';
-            if (setupLine) {
-              setupLine.innerHTML = `<span class="setup-extra">+ ${fmtPrice(setupFee)} ${tr('opłata wdrożeniowa', 'onboarding fee')}</span>`;
-            }
+            if (setupLine) setupLine.innerHTML = setupHtml;
           } else {
             const periodLabel = period.key === 'yearly' ? tr('za rok z góry', 'billed yearly')
               : period.key === 'two' ? tr('za 2 lata z góry', 'billed for 2 years')
               : tr('za 3 lata z góry', 'billed for 3 years');
+            const lockMonths = period.key === 'yearly' ? '12' : period.key === 'two' ? '24' : '36';
             if (totalAmount) totalAmount.textContent = `${fmtPrice(total)}`;
             if (totalPeriod) totalPeriod.textContent = ` ${periodLabel}`;
             if (setupLine) {
-              setupLine.innerHTML = `<span class="setup-included">✓ ${tr('Wdrożenie w cenie', 'Onboarding included')}${period.key !== 'yearly' ? ` · ${tr('blokada ceny', 'price locked')}` : ''}</span>`;
+              setupLine.innerHTML = `${setupHtml}<br/><span class="setup-included">✓ ${tr(`Blokada ceny na ${lockMonths} mc`, `Price locked for ${lockMonths} mo`)}</span>`;
             }
           }
         });
