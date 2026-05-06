@@ -13,7 +13,7 @@ const t = (pl: string, en: string) => (locale === 'pl' ? pl : en);
 // Base monthly prices (PLN for PL, EUR for EN)
 const tiers = locale === 'pl' ? [
   { key: 'free',   name: 'Free',   priceMonthly: 0,   horses: 5,   clients: 10,  desc: 'Hobby / start',
-    features: ['Kalendarz', 'Aplikacja mobilna', 'Dziennik konia', 'Wsparcie community'] },
+    features: ['Kalendarz', 'Dziennik konia', 'Booking online (limit)', 'Wsparcie community'] },
   { key: 'solo',   name: 'Solo',   priceMonthly: 89,  horses: 10,  clients: 30,  desc: 'Mała szkółka, instruktor solo',
     features: ['Wszystko z Free', 'Booking online', 'Powtarzające się jazdy', 'Email support'] },
   { key: 'stable', name: 'Stable', priceMonthly: 249, horses: 30,  clients: 100, desc: 'Standardowa stajnia',
@@ -22,7 +22,7 @@ const tiers = locale === 'pl' ? [
     features: ['Wszystko ze Stable', 'Pensjonat / livery', 'Multi-instructor + role', 'Public API + webhooks', 'Priority support'] },
 ] : [
   { key: 'free',   name: 'Free',   priceMonthly: 0,   horses: 5,   clients: 10,  desc: 'Hobby / starter',
-    features: ['Calendar', 'Mobile app', 'Horse journal', 'Community support'] },
+    features: ['Calendar', 'Horse journal', 'Online booking (limited)', 'Community support'] },
   { key: 'solo',   name: 'Solo',   priceMonthly: 19,  horses: 10,  clients: 30,  desc: 'Small school, solo instructor',
     features: ['Everything in Free', 'Online booking', 'Recurring rides', 'Email support'] },
   { key: 'stable', name: 'Stable', priceMonthly: 59,  horses: 30,  clients: 100, desc: 'Standard stable',
