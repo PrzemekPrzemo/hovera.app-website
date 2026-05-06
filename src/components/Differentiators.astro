@@ -5,11 +5,11 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 const items = locale === 'pl' ? [
-  { icon: 'shield', title: 'Polski KSeF i Peppol UE od pierwszego dnia', body: 'Nie po latach, nie jako addon. Pełna integracja od MVP, certyfikat Type 2.' },
+  { icon: 'layers', title: 'Wszystko w jednym narzędziu', body: 'Grafik, karnety, klienci, konie, finanse — bez żonglowania pięcioma aplikacjami. Jeden login, jedne dane, jeden ekran.' },
   { icon: 'wifi-off', title: 'Aplikacja mobilna, która działa offline', body: 'W stajni bez wifi, sync gdy wrócisz w zasięg. Konflikty rozwiązywane automatycznie.' },
   { icon: 'globe', title: 'Publiczna strona Twojej stajni', body: 'Klienci znajdują Cię w Google, rezerwują online — bez Facebooka, bez excela.' },
 ] : [
-  { icon: 'shield', title: 'Polish e-invoicing & EU Peppol from day one', body: 'Not in years, not as an add-on. Full integration from MVP, Type 2 certified.' },
+  { icon: 'layers', title: 'Everything in one tool', body: 'Schedule, passes, clients, horses, finance — no juggling five apps. One login, one dataset, one screen.' },
   { icon: 'wifi-off', title: 'A mobile app that works offline', body: 'In the barn without wifi — sync when you reconnect. Conflicts resolved automatically.' },
   { icon: 'globe', title: 'A public page for your stable', body: 'Clients find you on Google and book online — no Facebook chaos, no spreadsheets.' },
 ];
@@ -25,6 +25,13 @@ const items = locale === 'pl' ? [
     {items.map((it) => (
       <div class="diff-card">
         <div class="diff-icon">
+          {it.icon === 'layers' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+              <path d="M12 3l9 5-9 5-9-5 9-5z"/>
+              <path d="M3 13l9 5 9-5" stroke-linecap="round"/>
+              <path d="M3 17l9 5 9-5" stroke-linecap="round"/>
+            </svg>
+          )}
           {it.icon === 'shield' && (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
               <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" stroke-linejoin="round"/>

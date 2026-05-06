@@ -31,7 +31,7 @@ table:
     hovera: "✓ public + webhooks"
     them: "△ ograniczone"
   - feature: "Cennik"
-    hovera: "Free + 49–349 zł"
+    hovera: "Free + 89–499 zł"
     them: "od ~150 zł"
   - feature: "Wsparcie"
     hovera: "Email / chat / priority"

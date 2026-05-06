@@ -1,0 +1,353 @@
+---
+import { type Locale, localizePath } from '../i18n/utils';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const lp = (p: string) => localizePath(p, locale);
+const t = (pl: string, en: string) => (locale === 'pl' ? pl : en);
+
+// Inputs config (PL-default values, EN sliders use same numeric ranges; currency differs)
+const isPL = locale === 'pl';
+const cur = isPL ? 'zł' : '€';
+const setupFee = isPL ? 1590 : 390;
+
+// Plan thresholds (in horses) → recommended plan
+// 0-5: Free, 6-10: Solo, 11-30: Stable, 31+: Pro
+const plans = isPL
+  ? [
+      { key: 'free',   name: 'Free',   price: 0,   horses: 5,   yearly: 0 },
+      { key: 'solo',   name: 'Solo',   price: 89,  horses: 10,  yearly: 89  * 12 * 0.85 },
+      { key: 'stable', name: 'Stable', price: 249, horses: 30,  yearly: 249 * 12 * 0.85 },
+      { key: 'pro',    name: 'Pro',    price: 499, horses: 999, yearly: 499 * 12 * 0.85 },
+    ]
+  : [
+      { key: 'free',   name: 'Free',   price: 0,   horses: 5,   yearly: 0 },
+      { key: 'solo',   name: 'Solo',   price: 19,  horses: 10,  yearly: 19  * 12 * 0.85 },
+      { key: 'stable', name: 'Stable', price: 59,  horses: 30,  yearly: 59  * 12 * 0.85 },
+      { key: 'pro',    name: 'Pro',    price: 119, horses: 999, yearly: 119 * 12 * 0.85 },
+    ];
+
+const sliders = isPL
+  ? [
+      { key: 'horses',  label: 'Liczba koni',                    min: 1,  max: 100, step: 1,  defaultValue: 25,  unit: 'koni' },
+      { key: 'clients', label: 'Aktywnych klientów miesięcznie', min: 5,  max: 300, step: 5,  defaultValue: 80,  unit: 'klientów' },
+      { key: 'hours',   label: 'Godziny tygodniowo na admin',    min: 1,  max: 30,  step: 1,  defaultValue: 8,   unit: 'h / tydz.' },
+      { key: 'rate',    label: 'Wartość Twojej godziny pracy',   min: 30, max: 250, step: 5,  defaultValue: 80,  unit: 'zł / h' },
+    ]
+  : [
+      { key: 'horses',  label: 'Number of horses',           min: 1,  max: 100, step: 1, defaultValue: 25, unit: 'horses' },
+      { key: 'clients', label: 'Active clients per month',   min: 5,  max: 300, step: 5, defaultValue: 80, unit: 'clients' },
+      { key: 'hours',   label: 'Admin hours per week',       min: 1,  max: 30,  step: 1, defaultValue: 8,  unit: 'h / week' },
+      { key: 'rate',    label: 'Your hourly cost',           min: 8,  max: 60,  step: 1, defaultValue: 20, unit: '€ / h' },
+    ];
+---
+
+<div
+  class="roi-calc"
+  data-roi-calc
+  data-locale={locale}
+  data-currency={cur}
+  data-setup-fee={setupFee}
+  data-plans={JSON.stringify(plans)}
+>
+  <div class="roi-grid">
+    <!-- Inputs -->
+    <div class="roi-inputs">
+      {sliders.map((s) => (
+        <div class="roi-slider" data-slider={s.key}>
+          <div class="slider-head">
+            <label for={`slider-${s.key}`}>{s.label}</label>
+            <output for={`slider-${s.key}`} class="slider-value" data-value-display>
+              <span data-num>{s.defaultValue}</span>
+              <span class="slider-unit muted">{s.unit}</span>
+            </output>
+          </div>
+          <input
+            id={`slider-${s.key}`}
+            type="range"
+            min={s.min}
+            max={s.max}
+            step={s.step}
+            value={s.defaultValue}
+            class="slider"
+            data-slider-input
+          />
+          <div class="slider-marks">
+            <span>{s.min}</span>
+            <span>{Math.round((s.min + s.max) / 2)}</span>
+            <span>{s.max}{s.max === 100 ? '+' : ''}</span>
+          </div>
+        </div>
+      ))}
+
+      <details class="roi-assumptions">
+        <summary>{t('Skąd te liczby?', 'Where do these numbers come from?')}</summary>
+        <p class="muted">
+          {t(
+            'Dane na podstawie ankiet wśród naszych klientów (n=38) i benchmarków SaaS dla MŚP. Hovera oszczędza średnio 70% czasu, który manager poświęca na operacje administracyjne. Konserwatywnie liczymy 60%.',
+            'Based on surveys with our customers (n=38) and SMB SaaS benchmarks. Hovera saves on average 70% of admin time. We conservatively assume 60%.'
+          )}
+        </p>
+      </details>
+    </div>
+
+    <!-- Results -->
+    <div class="roi-results">
+      <div class="result-card">
+        <div class="result-eyebrow eyebrow">{t('Oszczędność czasu', 'Time saved')}</div>
+        <div class="result-num"><span data-result-hours>5</span> <span class="muted text-base font-normal">h / {t('tydz.', 'wk')}</span></div>
+        <div class="result-sub muted">
+          <span data-result-hours-year>260</span> {t('h rocznie · ', 'h per year · ')}
+          <span data-result-savings>20 800</span> {cur} {t('zaoszczędzonego czasu', 'of saved time')}
+        </div>
+      </div>
+
+      <div class="result-card result-highlight">
+        <div class="result-eyebrow eyebrow" style="color: rgba(250,248,244,0.7);">{t('Polecany plan', 'Recommended plan')}</div>
+        <div class="result-plan">
+          <span class="result-plan-name" data-result-plan-name>Stable</span>
+          <span class="result-plan-price">
+            <span data-result-plan-price>249</span> {cur}<span class="text-sm muted" style="color: rgba(250,248,244,0.6);"> / {t('mies.', 'mo')}</span>
+          </span>
+        </div>
+        <div class="result-plan-yearly">
+          <span data-result-plan-yearly>2 540</span> {cur} {t('rocznie z 15% rabatem (wdrożenie w cenie)', 'yearly with 15% discount (onboarding included)')}
+        </div>
+      </div>
+
+      <div class="result-card result-roi">
+        <div class="result-eyebrow eyebrow">ROI</div>
+        <div class="result-num"><span data-result-roi-multiple>8</span>×</div>
+        <div class="result-sub muted">
+          {t('Hovera zwraca się ', 'Hovera pays back ')}
+          <span data-result-payback>1</span>×
+          {t(' szybciej niż kosztuje. Zwrot w ', ' quicker than it costs. Pays back in ')}
+          <span data-result-payback-weeks>5</span>
+          {t(' tygodni.', ' weeks.')}
+        </div>
+      </div>
+
+      <a href={lp('/kontakt')} class="btn btn-primary mt-4 w-full" data-result-cta>
+        <span data-result-cta-text>{t('Wybierz plan Stable', 'Choose Stable plan')}</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .roi-calc { width: 100%; }
+  .roi-grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 900px) { .roi-grid { grid-template-columns: 1.1fr 1fr; gap: 3.5rem; } }
+
+  .roi-inputs { display: flex; flex-direction: column; gap: 1.75rem; }
+  .roi-slider { padding: 1.25rem 1.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; }
+  .slider-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .slider-head label { font-size: 0.92rem; font-weight: 500; }
+  .slider-value { display: inline-flex; align-items: baseline; gap: 0.4rem; font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
+  .slider-value [data-num] { font-size: 1.5rem; font-weight: 500; letter-spacing: -0.02em; }
+  .slider-unit { font-size: 0.78rem; }
+
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--color-sand-light);
+    border-radius: 999px;
+    outline: none;
+    margin-top: 0.9rem;
+    transition: background 0.2s;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 999px;
+    background: var(--color-bark);
+    border: 3px solid var(--color-cream);
+    box-shadow: var(--shadow-soft);
+    cursor: grab;
+    transition: transform 0.15s var(--ease-out-expo), box-shadow 0.2s;
+  }
+  .slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.18); box-shadow: var(--shadow-warm); }
+  .slider::-moz-range-thumb {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: var(--color-bark); border: 3px solid var(--color-cream);
+    box-shadow: var(--shadow-soft); cursor: grab;
+  }
+  .slider-marks { display: flex; justify-content: space-between; margin-top: 0.55rem; font-size: 11px; color: var(--color-fg-muted); font-family: var(--font-mono); }
+
+  .roi-assumptions { margin-top: 0.5rem; padding: 0.5rem 0.25rem; }
+  .roi-assumptions summary {
+    list-style: none; cursor: pointer;
+    font-size: 0.85rem; color: var(--color-fg-muted);
+    padding: 0.4rem 0;
+  }
+  .roi-assumptions summary::-webkit-details-marker { display: none; }
+  .roi-assumptions summary::before { content: "?"; display: inline-block; width: 16px; height: 16px; line-height: 16px; text-align: center; border-radius: 999px; background: var(--color-sand-light); margin-right: 0.5rem; font-size: 11px; }
+  .roi-assumptions p { padding-top: 0.5rem; line-height: 1.6; font-size: 0.88rem; }
+
+  .roi-results { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 6rem; }
+  .result-card {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-cream);
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+  .result-eyebrow { display: block; }
+  .result-num {
+    margin-top: 0.6rem;
+    font-size: 2.2rem;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+  .result-sub { margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.5; }
+
+  .result-highlight {
+    background: linear-gradient(180deg, var(--color-bark) 0%, #2a2018 100%);
+    color: var(--color-cream);
+    border-color: var(--color-bark);
+    box-shadow: var(--shadow-warm);
+  }
+  .result-highlight .eyebrow { color: var(--color-ochre-light); }
+  .result-plan { display: flex; align-items: baseline; gap: 0.6rem; margin-top: 0.6rem; flex-wrap: wrap; }
+  .result-plan-name { font-size: 1.7rem; font-weight: 500; letter-spacing: -0.03em; }
+  .result-plan-price { font-size: 1.15rem; opacity: 0.9; font-variant-numeric: tabular-nums; }
+  .result-plan-yearly { font-size: 0.82rem; color: rgba(250,248,244,0.65); margin-top: 0.5rem; }
+
+  .result-roi {
+    background: rgba(168,149,107,0.12);
+    border-color: rgba(168,149,107,0.4);
+  }
+  .result-roi .result-num { color: var(--color-ochre-dark); }
+</style>
+
+<script>
+  type Plan = { key: string; name: string; price: number; horses: number; yearly: number };
+
+  function init() {
+    const calc = document.querySelector<HTMLElement>('[data-roi-calc]');
+    if (!calc) return;
+
+    const isPL = calc.dataset.locale === 'pl';
+    const cur = calc.dataset.currency || 'zł';
+    const plans: Plan[] = JSON.parse(calc.dataset.plans || '[]');
+
+    const fmtNum = (n: number) => {
+      const r = Math.round(n);
+      return isPL
+        ? r.toLocaleString('pl-PL').replace(/,/g, ' ')
+        : r.toLocaleString('en-GB');
+    };
+
+    const fmtPrice = (n: number) => isPL ? `${fmtNum(n)} ${cur}` : `${cur}${fmtNum(n)}`;
+
+    const inputs: Record<string, number> = {
+      horses: 25, clients: 80, hours: 8, rate: isPL ? 80 : 20,
+    };
+
+    const sliders = calc.querySelectorAll<HTMLDivElement>('[data-slider]');
+    sliders.forEach((s) => {
+      const key = s.dataset.slider!;
+      const input = s.querySelector<HTMLInputElement>('[data-slider-input]')!;
+      const display = s.querySelector<HTMLElement>('[data-num]')!;
+      inputs[key] = Number(input.value);
+
+      const updateThumbBackground = () => {
+        const min = Number(input.min), max = Number(input.max);
+        const pct = ((Number(input.value) - min) / (max - min)) * 100;
+        input.style.background = `linear-gradient(90deg, var(--color-ochre) 0%, var(--color-ochre-dark) ${pct}%, var(--color-sand-light) ${pct}%)`;
+      };
+
+      const onChange = () => {
+        const v = Number(input.value);
+        inputs[key] = v;
+        display.textContent = fmtNum(v);
+        updateThumbBackground();
+        recalc();
+      };
+      input.addEventListener('input', onChange);
+      updateThumbBackground();
+    });
+
+    // Result elements
+    const elHours       = calc.querySelector<HTMLElement>('[data-result-hours]')!;
+    const elHoursYear   = calc.querySelector<HTMLElement>('[data-result-hours-year]')!;
+    const elSavings     = calc.querySelector<HTMLElement>('[data-result-savings]')!;
+    const elPlanName    = calc.querySelector<HTMLElement>('[data-result-plan-name]')!;
+    const elPlanPrice   = calc.querySelector<HTMLElement>('[data-result-plan-price]')!;
+    const elPlanYearly  = calc.querySelector<HTMLElement>('[data-result-plan-yearly]')!;
+    const elRoiMultiple = calc.querySelector<HTMLElement>('[data-result-roi-multiple]')!;
+    const elPayback     = calc.querySelector<HTMLElement>('[data-result-payback]')!;
+    const elPaybackWk   = calc.querySelector<HTMLElement>('[data-result-payback-weeks]')!;
+    const elCta         = calc.querySelector<HTMLAnchorElement>('[data-result-cta]')!;
+    const elCtaText     = calc.querySelector<HTMLElement>('[data-result-cta-text]')!;
+
+    function pickPlan(horses: number): Plan {
+      for (const p of plans) if (horses <= p.horses) return p;
+      return plans[plans.length - 1];
+    }
+
+    function animateNumber(el: HTMLElement, target: number, formatter: (n: number) => string, duration = 350) {
+      const startText = el.textContent || '0';
+      const startNum = Number(startText.replace(/\s|,/g, '')) || 0;
+      const t0 = performance.now();
+      const step = (now: number) => {
+        const t = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const value = startNum + (target - startNum) * eased;
+        el.textContent = formatter(value);
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    function recalc() {
+      const { horses, clients, hours, rate } = inputs;
+
+      // Hovera saves ~60% of admin time, conservatively
+      const hoursSaved = hours * 0.6;
+      const yearlyHoursSaved = hoursSaved * 52;
+      const savingsYear = yearlyHoursSaved * rate;
+
+      const plan = pickPlan(horses);
+      const planYearlyCost = plan.yearly;
+
+      // ROI = savings / cost
+      const roiMultiple = planYearlyCost > 0 ? savingsYear / planYearlyCost : savingsYear;
+      const paybackWeeks = planYearlyCost > 0 ? Math.max(1, Math.round((planYearlyCost / Math.max(1, savingsYear)) * 52)) : 0;
+
+      animateNumber(elHours, hoursSaved, (n) => n.toFixed(1).replace('.0', ''));
+      animateNumber(elHoursYear, yearlyHoursSaved, (n) => fmtNum(n));
+      animateNumber(elSavings, savingsYear, (n) => fmtNum(n));
+      animateNumber(elPlanPrice, plan.price, (n) => fmtNum(n));
+      animateNumber(elPlanYearly, planYearlyCost, (n) => fmtNum(n));
+      animateNumber(elRoiMultiple, Math.max(0, roiMultiple), (n) => Math.round(n).toString());
+      animateNumber(elPayback, Math.max(0, roiMultiple), (n) => Math.round(n).toString());
+      animateNumber(elPaybackWk, paybackWeeks, (n) => Math.round(n).toString());
+
+      elPlanName.textContent = plan.name;
+      const ctaTextTpl = isPL ? `Wybierz plan ${plan.name}` : `Choose ${plan.name} plan`;
+      elCtaText.textContent = ctaTextTpl;
+      const url = new URL(elCta.href, window.location.href);
+      url.searchParams.set('plan', plan.name);
+      elCta.href = url.toString();
+    }
+
+    recalc();
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

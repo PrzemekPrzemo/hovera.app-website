@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import RoiCalculator from '../../components/RoiCalculator.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { localizePath } from '../../i18n/utils';
+const locale = 'en' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title="ROI calculator — Hovera" description="See how much time and money Hovera saves you. Interactive calculator with auto plan recommendation. 30 seconds.">
+  <PageHero
+    eyebrow="ROI calculator"
+    title="See what Hovera saves you"
+    subtitle="Four sliders, three answers: time saved, plan cost, return on investment. We also tell you which plan fits your scale."
+  />
+
+  <section class="container-x pb-12">
+    <div class="calc-shell" data-reveal>
+      <RoiCalculator locale={locale} />
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="explain-grid">
+      <div>
+        <span class="eyebrow">Where the numbers come from</span>
+        <h2 class="display-3 mt-3 text-balance">Conservative, validated</h2>
+        <p class="muted mt-4 leading-relaxed">
+          Numbers based on surveys with our customers (n=38) across school, boarding, sport and breeding. The average admin time saving is 70%; we use 60% so we don't over-promise. Your numbers can be higher.
+        </p>
+        <p class="muted mt-3">
+          Enter your stable's data and see a result tailored to your scale. Fewer horses? Solo plan likely fits. 60+ horses boarding? Pro or Enterprise.
+        </p>
+      </div>
+
+      <div class="explain-tips">
+        <h3 class="text-sm font-medium uppercase tracking-widest" style="color: var(--color-fg-muted);">Most often</h3>
+        <ul class="tips-list mt-4">
+          <li><strong>School, 25 horses, 80 clients, 8h admin/wk</strong><span class="muted">→ Stable plan, ROI ~9× year one</span></li>
+          <li><strong>Boarding, 50 horses, 6h admin/wk</strong><span class="muted">→ Pro plan, ROI ~5× (recurring invoices)</span></li>
+          <li><strong>Breeding, 30 mares, 4h admin/wk</strong><span class="muted">→ Stable plan, ROI ~6× (mating + passports)</span></li>
+          <li><strong>Coach, 12 pairs, 5h admin/wk</strong><span class="muted">→ Stable plan, ROI ~8× (programs + FEI)</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-12" data-reveal>
+    <div class="links-row">
+      <a href={lp('/cennik')} class="link-card">
+        <div><div class="text-xs muted uppercase tracking-widest">Pricing</div><div class="text-lg font-medium mt-1">See full pricing</div></div>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href={lp('/demo')} class="link-card">
+        <div><div class="text-xs muted uppercase tracking-widest">Demo</div><div class="text-lg font-medium mt-1">See Hovera in action</div></div>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href={lp('/kontakt')} class="link-card">
+        <div><div class="text-xs muted uppercase tracking-widest">Contact</div><div class="text-lg font-medium mt-1">Let's talk</div></div>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .calc-shell { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: 2.5rem; box-shadow: var(--shadow-soft); }
+  @media (max-width: 800px) { .calc-shell { padding: 1.5rem; } }
+  .explain-grid { display: grid; gap: 3rem; max-width: 64rem; margin: 0 auto; }
+  @media (min-width: 900px) { .explain-grid { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+  .tips-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .tips-list li { padding: 1rem 1.25rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 12px; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.92rem; }
+  .links-row { display: grid; gap: 1rem; max-width: 56rem; margin: 0 auto; grid-template-columns: 1fr; }
+  @media (min-width: 700px) { .links-row { grid-template-columns: repeat(3, 1fr); } }
+  .link-card { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; transition: all 0.3s var(--ease-out-expo); }
+  .link-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); border-color: var(--color-bark-300); }
+  .link-card svg { color: var(--color-ochre-dark); }
+</style>

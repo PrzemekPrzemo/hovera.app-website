@@ -4,10 +4,10 @@ slug: excel
 competitor: Excel
 title: "Hovera vs Excel — kiedy zostawić arkusz"
 description: "Uczciwie: Excel działa, dopóki nie zaczyna boleć. Sprawdź, kiedy warto przejść na dedykowane SaaS dla stajni."
-tldr: "Excel jest darmowy, ale nie skaluje się na 20+ koni. Tracisz godzinę dziennie na ręczne wpisywanie, klienci nie widzą swoich karnetów, faktury wystawiasz osobno, KSeF tobie się nie ucieknie. Hovera kosztuje 49–349 zł, ale zwraca się w pierwszym tygodniu."
+tldr: "Excel jest darmowy, ale nie skaluje się na 20+ koni. Tracisz godzinę dziennie na ręczne wpisywanie, klienci nie widzą swoich karnetów, faktury wystawiasz osobno. Hovera kosztuje 89–499 zł/mies., ale zwraca się w pierwszym tygodniu."
 table:
   - feature: "Koszt"
-    hovera: "Free / 49–349 zł / mies."
+    hovera: "Free / 89–499 zł / mies."
     them: "0 zł (pozornie)"
   - feature: "Konflikty rezerwacji"
     hovera: "Wykrywanie automatyczne"

@@ -28,10 +28,10 @@ export const ui = {
     'hero.title.line1': 'Stajnia działa.',
     'hero.title.line2': 'Ty oddychasz.',
     'hero.subtitle':
-      'Grafik, karnety, faktury z KSeF i opieka nad końmi w jednym narzędziu. Działa na komputerze, telefonie, w stajni bez wifi.',
+      'Grafik, karnety, finanse i opieka nad końmi w jednym narzędziu. Działa na komputerze, telefonie, w stajni bez wifi.',
     'hero.cta.primary': 'Wypróbuj za 0 zł',
     'hero.cta.secondary': 'Zobacz demo (3 min)',
-    'hero.note': '14 dni za darmo • Bez karty • KSeF w cenie',
+    'hero.note': '14 dni za darmo • Bez karty • Bez instalacji',
 
     'social.title': 'Już używają nas stajnie w Polsce',
     'social.stat1': 'jazd zaplanowanych',
@@ -98,10 +98,10 @@ export const ui = {
     'hero.title.line1': 'Your stable runs.',
     'hero.title.line2': 'You breathe.',
     'hero.subtitle':
-      'Schedule, packages, invoicing and horse care in one tool. Works on desktop, phone, and in the barn without wifi.',
+      'Schedule, packages, finance and horse care in one tool. Works on desktop, phone, and in the barn without wifi.',
     'hero.cta.primary': 'Try for free',
     'hero.cta.secondary': 'Watch demo (3 min)',
-    'hero.note': '14 days free • No card • E-invoicing included',
+    'hero.note': '14 days free • No card • No install',
 
     'social.title': 'Trusted by stables across Europe',
     'social.stat1': 'rides scheduled',
