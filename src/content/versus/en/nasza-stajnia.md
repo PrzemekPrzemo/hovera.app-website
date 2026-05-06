@@ -31,7 +31,7 @@ table:
     hovera: "Public + webhooks"
     them: "Limited"
   - feature: "Pricing"
-    hovera: "Free + €11–€78"
+    hovera: "Free + €19–€119"
     them: "From ~€35"
   - feature: "Support"
     hovera: "Email / chat / priority"

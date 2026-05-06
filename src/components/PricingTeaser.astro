@@ -1,115 +1,33 @@
 ---
 import { useTranslations, localizePath, type Locale } from '../i18n/utils';
+import PricingCalculator from './PricingCalculator.astro';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const lp = (p: string) => localizePath(p, locale);
-
-const tiers = locale === 'pl' ? [
-  { name: 'Solo', price: '49 zł', period: '/ mies.', desc: '10 koni · 30 klientów', features: ['Kalendarz', 'Booking online', 'Aplikacja mobilna', 'Email support'] },
-  { name: 'Stable', price: '149 zł', period: '/ mies.', desc: '30 koni · 100 klientów', features: ['Wszystko z Solo', 'Karnety', 'Faktury i rozliczenia', 'Email + chat'], popular: true },
-  { name: 'Pro', price: '349 zł', period: '/ mies.', desc: '100 koni · bez limitu', features: ['Wszystko ze Stable', 'Pensjonat / livery', 'Multi-instructor', 'Priority support'] },
-] : [
-  { name: 'Solo', price: '€11', period: '/ mo', desc: '10 horses · 30 clients', features: ['Calendar', 'Online booking', 'Mobile app', 'Email support'] },
-  { name: 'Stable', price: '€33', period: '/ mo', desc: '30 horses · 100 clients', features: ['Everything in Solo', 'Passes', 'Invoicing & billing', 'Email + chat'], popular: true },
-  { name: 'Pro', price: '€78', period: '/ mo', desc: '100 horses · unlimited clients', features: ['Everything in Stable', 'Boarding / livery', 'Multi-instructor', 'Priority support'] },
-];
+const tt = (pl: string, en: string) => (locale === 'pl' ? pl : en);
 ---
 
-<section class="container-x py-24" data-reveal>
+<section class="container-x py-24 md:py-32" data-reveal>
   <header class="mx-auto max-w-3xl text-center">
     <span class="eyebrow">{t('pricing.eyebrow')}</span>
     <h2 class="display-2 mt-4 text-balance">{t('pricing.title')}</h2>
     <p class="lead mt-5">{t('pricing.subtitle')}</p>
   </header>
 
-  <div class="mt-14 grid gap-6 md:grid-cols-3">
-    {tiers.map((tier) => (
-      <div class={`tier ${tier.popular ? 'tier-popular' : ''}`}>
-        {tier.popular && <span class="tier-badge">{t('pricing.popular')}</span>}
-        <div class="tier-name">{tier.name}</div>
-        <div class="tier-price">
-          <span class="price-num">{tier.price}</span>
-          <span class="price-period muted">{tier.period}</span>
-        </div>
-        <p class="tier-desc muted">{tier.desc}</p>
-        <ul class="tier-features">
-          {tier.features.map((f) => (
-            <li>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              {f}
-            </li>
-          ))}
-        </ul>
-        <a href={lp('/kontakt')} class={`btn ${tier.popular ? 'btn-primary' : 'btn-secondary'} w-full mt-8`}>
-          {t('pricing.choose')}
-        </a>
-      </div>
-    ))}
+  <div class="mt-12">
+    <PricingCalculator locale={locale} variant="teaser" />
   </div>
 
-  <div class="mt-10 text-center">
-    <a href={lp('/cennik')} class="btn btn-ghost text-sm">
+  <div class="mt-12 flex flex-col items-center gap-3">
+    <a href={lp('/cennik')} class="btn btn-primary">
       {t('pricing.cta')}
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
+    <a href={lp('/kalkulator-roi')} class="text-sm muted hover:text-[var(--color-ochre-dark)]">
+      {tt('Nie wiesz co wybrać? Otwórz kalkulator ROI →', 'Not sure which plan? Open the ROI calculator →')}
+    </a>
   </div>
 </section>
-
-<style>
-  .tier {
-    position: relative;
-    padding: 2rem;
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--color-border);
-    background: var(--color-cream);
-    box-shadow: var(--shadow-soft);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
-  }
-  .tier:hover { transform: translateY(-4px); box-shadow: var(--shadow-warm); }
-  .tier-popular {
-    background: linear-gradient(180deg, var(--color-bark) 0%, #2a2018 100%);
-    color: var(--color-cream);
-    border-color: var(--color-bark);
-    box-shadow: var(--shadow-deep);
-  }
-  .tier-popular .muted, .tier-popular .price-period { color: rgba(250,248,244,0.65); }
-  .tier-badge {
-    position: absolute;
-    top: -10px; left: 50%; transform: translateX(-50%);
-    background: var(--color-ochre);
-    color: var(--color-bark);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 999px;
-    letter-spacing: 0.04em;
-  }
-  .tier-name {
-    font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em;
-  }
-  .tier-price {
-    margin-top: 0.5rem;
-    display: flex; align-items: baseline; gap: 0.4rem;
-  }
-  .price-num { font-size: 3rem; line-height: 1; font-weight: 500; letter-spacing: -0.04em; }
-  .price-period { font-size: 0.9rem; }
-  .tier-desc { margin-top: 0.5rem; font-size: 0.9rem; }
-  .tier-features {
-    list-style: none; padding: 0;
-    margin-top: 1.5rem;
-    display: flex; flex-direction: column; gap: 0.6rem;
-  }
-  .tier-features li {
-    display: flex; gap: 0.6rem; align-items: center;
-    font-size: 0.92rem;
-  }
-  .tier-features svg { color: var(--color-ochre); flex-shrink: 0; }
-  .tier-popular .tier-features svg { color: var(--color-ochre-light); }
-</style>

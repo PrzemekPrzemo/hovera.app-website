@@ -1,0 +1,388 @@
+---
+import { type Locale, localizePath } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+  variant?: 'full' | 'teaser';
+}
+const { locale, variant = 'full' } = Astro.props;
+const lp = (p: string) => localizePath(p, locale);
+
+const t = (pl: string, en: string) => (locale === 'pl' ? pl : en);
+
+// Base monthly prices (PLN for PL, EUR for EN)
+const tiers = locale === 'pl' ? [
+  { key: 'free',   name: 'Free',   priceMonthly: 0,   horses: 5,   clients: 10,  desc: 'Hobby / start',
+    features: ['Kalendarz', 'Aplikacja mobilna', 'Dziennik konia', 'Wsparcie community'] },
+  { key: 'solo',   name: 'Solo',   priceMonthly: 89,  horses: 10,  clients: 30,  desc: 'Mała szkółka, instruktor solo',
+    features: ['Wszystko z Free', 'Booking online', 'Powtarzające się jazdy', 'Email support'] },
+  { key: 'stable', name: 'Stable', priceMonthly: 249, horses: 30,  clients: 100, desc: 'Standardowa stajnia',
+    features: ['Wszystko z Solo', 'Karnety + auto-rozliczenie', 'Faktury i rozliczenia', 'Eksport do biura', 'Email + chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    priceMonthly: 499, horses: 100, clients: 9999, desc: 'Pensjonat / sieci stajni',
+    features: ['Wszystko ze Stable', 'Pensjonat / livery', 'Multi-instructor + role', 'Public API + webhooks', 'Priority support'] },
+] : [
+  { key: 'free',   name: 'Free',   priceMonthly: 0,   horses: 5,   clients: 10,  desc: 'Hobby / starter',
+    features: ['Calendar', 'Mobile app', 'Horse journal', 'Community support'] },
+  { key: 'solo',   name: 'Solo',   priceMonthly: 19,  horses: 10,  clients: 30,  desc: 'Small school, solo instructor',
+    features: ['Everything in Free', 'Online booking', 'Recurring rides', 'Email support'] },
+  { key: 'stable', name: 'Stable', priceMonthly: 59,  horses: 30,  clients: 100, desc: 'Standard stable',
+    features: ['Everything in Solo', 'Passes + auto-settlement', 'Invoicing & billing', 'Bookkeeping export', 'Email + chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    priceMonthly: 119, horses: 100, clients: 9999, desc: 'Boarding / stable networks',
+    features: ['Everything in Stable', 'Boarding / livery', 'Multi-instructor + roles', 'Public API + webhooks', 'Priority support'] },
+];
+
+const currency = locale === 'pl' ? 'zł' : '€';
+const currencyPos: 'after' | 'before' = locale === 'pl' ? 'after' : 'before';
+
+// Period options — discount applied to base monthly price
+const periods = locale === 'pl' ? [
+  { key: 'monthly', label: 'Miesięcznie', discount: 0,    months: 1,   note: '' },
+  { key: 'yearly',  label: 'Rocznie',     discount: 0.15, months: 12,  note: '-15%' },
+  { key: 'two',     label: '2 lata',      discount: 0.25, months: 24,  note: '-25%' },
+  { key: 'three',   label: '3 lata',      discount: 0.35, months: 36,  note: '-35% ⭐' },
+] : [
+  { key: 'monthly', label: 'Monthly',     discount: 0,    months: 1,   note: '' },
+  { key: 'yearly',  label: 'Yearly',      discount: 0.15, months: 12,  note: '-15%' },
+  { key: 'two',     label: '2 years',     discount: 0.25, months: 24,  note: '-25%' },
+  { key: 'three',   label: '3 years',     discount: 0.35, months: 36,  note: '-35% ⭐' },
+];
+
+const setupFee = locale === 'pl' ? 1590 : 390;
+---
+
+<div class="pricing-calc" data-pricing-calc data-currency={currency} data-currency-pos={currencyPos} data-setup-fee={setupFee}>
+  <!-- Period toggle -->
+  <div class="period-toggle" role="tablist" aria-label={t('Wybierz okres rozliczeniowy', 'Choose billing period')}>
+    {periods.map((p, i) => (
+      <button
+        type="button"
+        class={`period-btn ${i === 1 ? 'is-active' : ''}`}
+        data-period={p.key}
+        data-discount={p.discount}
+        data-months={p.months}
+        role="tab"
+        aria-selected={i === 1 ? 'true' : 'false'}
+      >
+        <span class="period-label">{p.label}</span>
+        {p.note && <span class="period-note">{p.note}</span>}
+      </button>
+    ))}
+  </div>
+
+  <p class="period-hint">
+    {t(
+      'Płatności roczne, 2- i 3-letnie wliczają opłatę wdrożeniową (1 590 zł) i blokują cenę na cały okres.',
+      'Yearly, 2-year and 3-year plans include the onboarding fee (€390) and lock the price for the full term.'
+    )}
+  </p>
+
+  <!-- Tier cards -->
+  <div class={`tiers-grid ${variant === 'teaser' ? 'tiers-3' : ''}`}>
+    {tiers.filter((t) => variant === 'full' || t.key !== 'free').map((tier) => (
+      <div
+        class={`tier ${tier.popular ? 'tier-popular' : ''}`}
+        data-tier={tier.key}
+        data-base-monthly={tier.priceMonthly}
+      >
+        {tier.popular && <span class="tier-badge">{t('Najczęściej wybierany', 'Most popular')}</span>}
+        <div class="tier-name">{tier.name}</div>
+        <div class="tier-desc muted">{tier.desc}</div>
+
+        <div class="tier-price">
+          {tier.priceMonthly === 0 ? (
+            <span class="price-num">0 {currency}</span>
+          ) : (
+            <>
+              <span class="price-num" data-price-effective>{tier.priceMonthly} {currency}</span>
+              <span class="price-period muted">{t('/ mies.', '/ mo')}</span>
+            </>
+          )}
+        </div>
+
+        {tier.priceMonthly > 0 && (
+          <div class="tier-totals">
+            <span class="total-line" data-total-line>
+              <span data-total-amount></span>
+              <span class="muted" data-total-period></span>
+            </span>
+            <span class="setup-line" data-setup-line></span>
+          </div>
+        )}
+
+        <div class="tier-limits">
+          <span>{tier.horses}{tier.horses === 9999 ? '+' : ''} {t('koni', 'horses')}</span>
+          <span>·</span>
+          <span>{tier.clients === 9999 ? t('bez limitu klientów', 'unlimited clients') : `${tier.clients} ${t('klientów', 'clients')}`}</span>
+        </div>
+
+        <ul class="tier-features">
+          {tier.features.map((f) => (
+            <li>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {f}
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={`${lp('/kontakt')}?plan=${tier.name}`}
+          class={`btn ${tier.popular ? 'btn-primary' : 'btn-secondary'} w-full mt-8`}
+          data-cta
+        >
+          {tier.priceMonthly === 0 ? t('Załóż konto', 'Create account') : t(`Wybierz ${tier.name}`, `Choose ${tier.name}`)}
+        </a>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .pricing-calc { width: 100%; }
+
+  .period-toggle {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.4rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    box-shadow: var(--shadow-soft);
+    margin: 0 auto 1rem;
+    width: max-content;
+    max-width: 100%;
+  }
+  @media (max-width: 600px) {
+    .period-toggle {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  .period-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.55rem 1rem;
+    border: none;
+    background: transparent;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-fg);
+    cursor: pointer;
+    transition: background 0.25s var(--ease-out-expo), color 0.25s var(--ease-out-expo);
+    white-space: nowrap;
+  }
+  .period-btn:hover { background: var(--color-sand-light); }
+  .period-btn.is-active {
+    background: var(--color-bark);
+    color: var(--color-cream);
+    box-shadow: var(--shadow-soft);
+  }
+  .period-note {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(168,149,107,0.22);
+    color: var(--color-ochre-dark);
+  }
+  .period-btn.is-active .period-note {
+    background: var(--color-ochre);
+    color: var(--color-bark);
+  }
+  .period-hint {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--color-fg-muted);
+    margin-top: 0.4rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .tiers-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px)  { .tiers-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .tiers-grid { grid-template-columns: repeat(4, 1fr); } }
+  .tiers-grid.tiers-3 { grid-template-columns: 1fr; }
+  @media (min-width: 720px)  { .tiers-grid.tiers-3 { grid-template-columns: repeat(3, 1fr); } }
+
+  .tier {
+    position: relative;
+    padding: 2rem 1.75rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    background: var(--color-cream);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+  }
+  .tier:hover { transform: translateY(-3px); box-shadow: var(--shadow-warm); }
+  .tier-popular {
+    background: linear-gradient(180deg, var(--color-bark) 0%, #2a2018 100%);
+    color: var(--color-cream);
+    border-color: var(--color-bark);
+    box-shadow: var(--shadow-deep);
+  }
+  .tier-popular .muted, .tier-popular .price-period { color: rgba(250,248,244,0.65); }
+  .tier-badge {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--color-ochre);
+    color: var(--color-bark);
+    font-size: 11px; font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .tier-name { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; }
+  .tier-desc { font-size: 0.82rem; margin-top: 0.25rem; }
+  .tier-price {
+    margin-top: 1.25rem;
+    display: flex; align-items: baseline; gap: 0.4rem;
+  }
+  .price-num {
+    font-size: 2.6rem; line-height: 1; font-weight: 500; letter-spacing: -0.04em;
+    transition: opacity 0.25s var(--ease-out-expo);
+  }
+  .price-period { font-size: 0.85rem; }
+  .tier-totals {
+    margin-top: 0.5rem;
+    min-height: 2.6rem;
+  }
+  .total-line {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-fg-muted);
+    line-height: 1.4;
+  }
+  .tier-popular .total-line { color: rgba(250,248,244,0.7); }
+  .setup-line {
+    display: block;
+    font-size: 0.72rem;
+    margin-top: 0.2rem;
+    line-height: 1.4;
+  }
+  .setup-included {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #2c5530;
+    font-weight: 500;
+  }
+  .tier-popular .setup-included { color: #b8e0bc; }
+  .setup-extra { color: var(--color-fg-muted); }
+  .tier-popular .setup-extra { color: rgba(250,248,244,0.55); }
+
+  .tier-limits {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 0.25rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--color-fg-muted);
+  }
+  .tier-popular .tier-limits {
+    border-top-color: rgba(250,248,244,0.18);
+    color: rgba(250,248,244,0.7);
+  }
+  .tier-features { list-style: none; padding: 0; margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+  .tier-features li { display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem; }
+  .tier-features svg { color: var(--color-ochre); flex-shrink: 0; }
+  .tier-popular .tier-features svg { color: var(--color-ochre-light); }
+</style>
+
+<script>
+  type Period = { key: string; discount: number; months: number };
+
+  function init() {
+    const calcs = document.querySelectorAll<HTMLElement>('[data-pricing-calc]');
+    calcs.forEach((calc) => {
+      const currency = calc.dataset.currency || 'zł';
+      const currencyPos = calc.dataset.currencyPos || 'after';
+      const setupFee = Number(calc.dataset.setupFee || 0);
+      const buttons = calc.querySelectorAll<HTMLButtonElement>('.period-btn');
+      const tiers = calc.querySelectorAll<HTMLElement>('.tier[data-base-monthly]');
+
+      const isPL = currency === 'zł';
+      const tr = (pl: string, en: string) => (isPL ? pl : en);
+
+      const fmtPrice = (n: number) => {
+        const rounded = Math.round(n);
+        const formatted = isPL
+          ? rounded.toLocaleString('pl-PL').replace(/,/g, ' ')
+          : rounded.toLocaleString('en-GB');
+        return currencyPos === 'after' ? `${formatted} ${currency}` : `${currency}${formatted}`;
+      };
+
+      const update = (period: Period) => {
+        const factor = 1 - period.discount;
+        tiers.forEach((tier) => {
+          const base = Number(tier.dataset.baseMonthly || 0);
+          if (base === 0) return;
+
+          const effectiveMonthly = base * factor;
+          const total = effectiveMonthly * period.months;
+
+          const priceEl = tier.querySelector<HTMLElement>('[data-price-effective]');
+          if (priceEl) priceEl.textContent = fmtPrice(effectiveMonthly);
+
+          const totalAmount = tier.querySelector<HTMLElement>('[data-total-amount]');
+          const totalPeriod = tier.querySelector<HTMLElement>('[data-total-period]');
+          const setupLine = tier.querySelector<HTMLElement>('[data-setup-line]');
+
+          if (period.key === 'monthly') {
+            if (totalAmount) totalAmount.textContent = '';
+            if (totalPeriod) totalPeriod.textContent = '';
+            if (setupLine) {
+              setupLine.innerHTML = `<span class="setup-extra">+ ${fmtPrice(setupFee)} ${tr('opłata wdrożeniowa', 'onboarding fee')}</span>`;
+            }
+          } else {
+            const periodLabel = period.key === 'yearly' ? tr('za rok z góry', 'billed yearly')
+              : period.key === 'two' ? tr('za 2 lata z góry', 'billed for 2 years')
+              : tr('za 3 lata z góry', 'billed for 3 years');
+            if (totalAmount) totalAmount.textContent = `${fmtPrice(total)}`;
+            if (totalPeriod) totalPeriod.textContent = ` ${periodLabel}`;
+            if (setupLine) {
+              setupLine.innerHTML = `<span class="setup-included">✓ ${tr('Wdrożenie w cenie', 'Onboarding included')}${period.key !== 'yearly' ? ` · ${tr('blokada ceny', 'price locked')}` : ''}</span>`;
+            }
+          }
+        });
+      };
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          buttons.forEach((b) => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-selected', 'true');
+          update({
+            key: btn.dataset.period || 'yearly',
+            discount: Number(btn.dataset.discount || 0),
+            months: Number(btn.dataset.months || 12),
+          });
+        });
+      });
+
+      // Init with default-active button
+      const active = calc.querySelector<HTMLButtonElement>('.period-btn.is-active');
+      if (active) {
+        update({
+          key: active.dataset.period || 'yearly',
+          discount: Number(active.dataset.discount || 0),
+          months: Number(active.dataset.months || 12),
+        });
+      }
+    });
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

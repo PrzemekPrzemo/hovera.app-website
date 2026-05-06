@@ -4,10 +4,10 @@ slug: excel
 competitor: Excel
 title: "Hovera vs Excel — when to leave the spreadsheet"
 description: "Honest take: Excel works until it hurts. Find out when it pays to switch to dedicated stable SaaS."
-tldr: "Excel is free, but it doesn't scale past 20 horses. You lose an hour a day to manual entry, clients can't see their passes, invoices are issued separately, e-invoicing won't wait for you. Hovera costs €11–€78 — pays for itself in the first week."
+tldr: "Excel is free, but it doesn't scale past 20 horses. You lose an hour a day to manual entry, clients can't see their passes, invoices are issued separately. Hovera costs €19–€119/mo — pays for itself in the first week."
 table:
   - feature: "Cost"
-    hovera: "Free / €11–€78 / mo"
+    hovera: "Free / €19–€119 / mo"
     them: "€0 (apparent)"
   - feature: "Booking conflicts"
     hovera: "Auto-detection"

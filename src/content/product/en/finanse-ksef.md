@@ -28,5 +28,5 @@ integrations:
   - "Peppol BIS Billing 3.0"
   - "iFirma, Wfirma, Comarch ERP, Saldeo"
   - "Stripe, SEPA, bank transfer"
-pricingNote: "Available from the Stable plan (€33/mo). No invoice volume limits."
+pricingNote: "Available from the Stable plan (from €38/mo on a 3-year contract). No invoice volume limits."
 ---

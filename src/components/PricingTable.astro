@@ -1,82 +1,27 @@
 ---
 import { type Locale, localizePath } from '../i18n/utils';
+import PricingCalculator from './PricingCalculator.astro';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const lp = (p: string) => localizePath(p, locale);
-
 const t = (pl: string, en: string) => (locale === 'pl' ? pl : en);
 
-type Tier = {
-  key: string;
-  name: string;
-  price: string;
-  period: string;
-  desc: string;
-  features: string[];
-  cta: string;
-  popular?: boolean;
-};
-
-const tiers: Tier[] = [
-  {
-    key: 'free',
-    name: 'Free',
-    price: t('0 zł', '€0'),
-    period: t('na zawsze', 'forever'),
-    desc: t('5 koni · 10 klientów', '5 horses · 10 clients'),
-    features: [
-      t('Kalendarz', 'Calendar'),
-      t('Aplikacja mobilna', 'Mobile app'),
-      t('Dziennik konia', 'Horse journal'),
-      t('Wsparcie community', 'Community support'),
-    ],
-    cta: t('Załóż konto', 'Create account'),
-  },
-  {
-    key: 'solo',
-    name: 'Solo',
-    price: t('49 zł', '€11'),
-    period: t('/ mies.', '/ mo'),
-    desc: t('10 koni · 30 klientów', '10 horses · 30 clients'),
-    features: [
-      t('Wszystko z Free', 'Everything in Free'),
-      t('Booking online', 'Online booking'),
-      t('Powtarzające się rezerwacje', 'Recurring bookings'),
-      t('Email support', 'Email support'),
-    ],
-    cta: t('Zapytaj o plan Solo', 'Ask about Solo'),
-  },
-  {
-    key: 'stable',
-    name: 'Stable',
-    price: t('149 zł', '€33'),
-    period: t('/ mies.', '/ mo'),
-    desc: t('30 koni · 100 klientów', '30 horses · 100 clients'),
-    features: [
-      t('Wszystko z Solo', 'Everything in Solo'),
-      t('Karnety + auto-rozliczanie', 'Passes + auto-settlement'),
-      t('Faktury + KSeF', 'Invoicing + e-invoicing'),
-      t('Eksport do iFirma / Wfirma', 'Export to ERP'),
-      t('Email + chat support', 'Email + chat support'),
-    ],
-    cta: t('Zapytaj o plan Stable', 'Ask about Stable'),
-    popular: true,
-  },
-  {
-    key: 'pro',
-    name: 'Pro',
-    price: t('349 zł', '€78'),
-    period: t('/ mies.', '/ mo'),
-    desc: t('100 koni · bez limitu klientów', '100 horses · unlimited clients'),
-    features: [
-      t('Wszystko ze Stable', 'Everything in Stable'),
-      t('Pensjonat / livery', 'Boarding / livery'),
-      t('Multi-instructor + role', 'Multi-instructor + roles'),
-      t('Public API + webhooks', 'Public API + webhooks'),
-      t('Priority support', 'Priority support'),
-    ],
-    cta: t('Zapytaj o plan Pro', 'Ask about Pro'),
-  },
+const onboardingItems = locale === 'pl' ? [
+  'Spotkanie 90 min: zrozumiemy Twoją stajnię, ułożymy plan migracji',
+  'Import danych z Excela / arkusza Google / innego systemu',
+  'Konfiguracja kalendarza, instruktorów, koni i klientów',
+  'Setup karnetów, cenników i polityki anulowania',
+  'Ustawienie publicznej strony stajni i bookingu online',
+  'Konfiguracja powiadomień email + SMS',
+  'Szkolenie zespołu (do 5 osób w ramach planów Stable / Pro)',
+] : [
+  '90 min onboarding call: we map your stable and the migration',
+  'Data import from Excel / Google Sheets / another system',
+  'Calendar, instructors, horses and clients configured',
+  'Pass packages, pricing and cancellation policy setup',
+  'Public stable page and online booking configured',
+  'Email + SMS notifications setup',
+  'Team training (up to 5 people on Stable / Pro plans)',
 ];
 
 const allFeatures = locale === 'pl' ? [
@@ -88,13 +33,12 @@ const allFeatures = locale === 'pl' ? [
   { name: 'Tryb offline', values: ['✓', '✓', '✓', '✓'] },
   { name: 'Booking online', values: ['—', '✓', '✓', '✓'] },
   { name: 'Karnety + auto-rozliczanie', values: ['—', '—', '✓', '✓'] },
-  { name: 'Faktury + KSeF', values: ['—', '—', '✓', '✓'] },
-  { name: 'Peppol BIS Billing 3.0 (UE)', values: ['—', '—', '✓', '✓'] },
+  { name: 'Faktury i rozliczenia', values: ['—', '—', '✓', '✓'] },
+  { name: 'Eksport do biura rachunkowego', values: ['—', '—', '✓', '✓'] },
   { name: 'Pensjonat / livery + portal właściciela', values: ['—', '—', '—', '✓'] },
-  { name: 'Hodowla i paszporty PASB', values: ['—', '—', '✓', '✓'] },
+  { name: 'Hodowla i dziennik źrebaków', values: ['—', '—', '✓', '✓'] },
   { name: 'Public API + webhooks', values: ['—', '—', '—', '✓'] },
-  { name: 'Custom domena', values: ['—', '—', t('+29 zł', '+€7'), t('+29 zł', '+€7')] },
-  { name: 'Roczny rabat', values: ['—', '-20%', '-20%', '-20%'] },
+  { name: 'Custom domena', values: ['—', '—', '+29 zł', '+29 zł'] },
   { name: 'Wsparcie', values: ['Community', 'Email', 'Email + chat', 'Priority'] },
 ] : [
   { name: 'Horses', values: ['5', '10', '30', '100'] },
@@ -105,62 +49,40 @@ const allFeatures = locale === 'pl' ? [
   { name: 'Offline mode', values: ['✓', '✓', '✓', '✓'] },
   { name: 'Online booking', values: ['—', '✓', '✓', '✓'] },
   { name: 'Passes + auto-settlement', values: ['—', '—', '✓', '✓'] },
-  { name: 'Invoicing + e-invoicing', values: ['—', '—', '✓', '✓'] },
-  { name: 'Peppol BIS Billing 3.0 (EU)', values: ['—', '—', '✓', '✓'] },
+  { name: 'Invoicing & billing', values: ['—', '—', '✓', '✓'] },
+  { name: 'Bookkeeping export', values: ['—', '—', '✓', '✓'] },
   { name: 'Boarding + owner portal', values: ['—', '—', '—', '✓'] },
-  { name: 'Breeding & PASB passports', values: ['—', '—', '✓', '✓'] },
+  { name: 'Breeding & foal journal', values: ['—', '—', '✓', '✓'] },
   { name: 'Public API + webhooks', values: ['—', '—', '—', '✓'] },
   { name: 'Custom domain', values: ['—', '—', '+€7', '+€7'] },
-  { name: 'Annual discount', values: ['—', '-20%', '-20%', '-20%'] },
   { name: 'Support', values: ['Community', 'Email', 'Email + chat', 'Priority'] },
 ];
 
 const faqs = locale === 'pl' ? [
   { q: 'Czy mogę zmienić plan w każdej chwili?', a: 'Tak. Upgrade jest natychmiastowy z proporcjonalnym rozliczeniem. Downgrade działa od kolejnego okresu rozliczeniowego.' },
+  { q: 'Co dokładnie obejmuje opłata wdrożeniowa 1 590 zł?', a: 'Spotkanie 90 min, import danych, konfiguracja kalendarza i karnetów, setup publicznej strony stajni, powiadomień i szkolenie do 5 osób. Pełna lista wyżej.' },
+  { q: 'Czy płacąc rocznie naprawdę nie płacę za wdrożenie?', a: 'Tak — przy płatności rocznej, 2-letniej i 3-letniej opłata wdrożeniowa (1 590 zł) jest wliczona. Płacisz tylko abonament.' },
+  { q: 'Co znaczy „blokada ceny"?', a: 'Jeśli za rok podniesiemy cennik, Twoja stawka zostaje. Lock pricing działa przy umowach 2- i 3-letnich na cały okres.' },
   { q: 'Co się dzieje, gdy przekroczę limit koni lub klientów?', a: 'Zaproponujemy upgrade, ale Twoje dane nie znikną — system po prostu poprosi o zwiększenie limitu. Bez ukrytego ucięcia funkcjonalności.' },
-  { q: 'Czy KSeF jest w cenie?', a: 'Tak — pełna integracja od planu Stable, bez dodatkowych opłat za wystawione e-faktury.' },
   { q: 'Czy potrzebuję podpisać umowę?', a: 'Nie. Akceptujesz Regulamin online i działasz. Dla planu Enterprise mamy odrębną umowę ramową.' },
-  { q: 'Jak wygląda 30-dniowa gwarancja zwrotu?', a: 'Jeśli w ciągu pierwszych 30 dni zdecydujesz, że to nie dla Ciebie, zwracamy 100% opłaty bez pytań.' },
-  { q: 'Co z VAT MOSS / OSS dla zagranicznych klientów?', a: 'Hovera obsługuje rozliczenia VAT OSS dla klientów z UE i Peppol BIS Billing 3.0. Eksport do biur rachunkowych jest standardem.' },
+  { q: 'Jak wygląda 30-dniowa gwarancja zwrotu?', a: 'Jeśli w ciągu pierwszych 30 dni zdecydujesz, że to nie dla Ciebie, zwracamy 100% opłaty (włącznie z opłatą wdrożeniową) bez pytań.' },
 ] : [
   { q: 'Can I change my plan at any time?', a: 'Yes. Upgrades are instant with prorated billing. Downgrades take effect at the next billing period.' },
-  { q: 'What happens if I exceed my horse or client limits?', a: "We'll suggest an upgrade, but your data won't be cut off — the system simply prompts a higher limit." },
-  { q: 'Is e-invoicing included?', a: 'Yes — full integration from the Stable plan, no extra fees per invoice.' },
+  { q: 'What does the €390 onboarding fee include?', a: 'A 90-minute call, data import, calendar and passes setup, public stable page configuration, notifications, and team training for up to 5 people. Full list above.' },
+  { q: 'Do I really get free onboarding when I pay yearly?', a: 'Yes — yearly, 2-year and 3-year plans include the onboarding fee. You only pay the subscription.' },
+  { q: 'What does "price lock" mean?', a: "If we raise list prices next year, your rate stays the same. Price lock applies on 2- and 3-year contracts for the full term." },
+  { q: 'What happens if I exceed horse or client limits?', a: "We'll suggest an upgrade — your data stays. The system simply prompts a higher limit." },
   { q: 'Do I need to sign a contract?', a: 'No. You accept Terms online and you are good to go. Enterprise customers get a framework agreement.' },
-  { q: 'How does the 30-day money-back guarantee work?', a: "If within the first 30 days you decide it's not for you, we refund 100% — no questions asked." },
-  { q: 'What about VAT MOSS / OSS?', a: 'Hovera handles EU VAT OSS for cross-border clients and Peppol BIS Billing 3.0. ERP exports are standard.' },
+  { q: 'How does the 30-day money-back guarantee work?', a: "Within the first 30 days you get 100% refund — including the onboarding fee — no questions asked." },
 ];
+
+const setupFeeDisplay = locale === 'pl' ? '1 590 zł' : '€390';
 ---
 
 <section class="container-x">
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-    {tiers.map((tier) => (
-      <div class={`tier ${tier.popular ? 'tier-popular' : ''}`} data-reveal>
-        {tier.popular && <span class="tier-badge">{t('Polecany', 'Most popular')}</span>}
-        <div class="tier-name">{tier.name}</div>
-        <div class="tier-price">
-          <span class="price-num">{tier.price}</span>
-          <span class="price-period">{tier.period}</span>
-        </div>
-        <p class="tier-desc">{tier.desc}</p>
-        <ul class="tier-features">
-          {tier.features.map((f) => (
-            <li>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              {f}
-            </li>
-          ))}
-        </ul>
-        <a href={`${lp('/kontakt')}?plan=${tier.name}`} class={`btn ${tier.popular ? 'btn-primary' : 'btn-secondary'} w-full mt-8`}>
-          {tier.cta}
-        </a>
-      </div>
-    ))}
-  </div>
+  <PricingCalculator locale={locale} variant="full" />
 
-  <div class="enterprise-card mt-8" data-reveal>
+  <div class="enterprise-card mt-10" data-reveal>
     <div class="ec-content">
       <span class="eyebrow">Enterprise</span>
       <h3 class="display-3 mt-3">{t('Sieci stajni, kluby sportowe, hodowle 100+ koni.', 'Stable networks, sport clubs, 100+ horse breeders.')}</h3>
@@ -172,7 +94,57 @@ const faqs = locale === 'pl' ? [
     </div>
   </div>
 
-  <div class="mt-16" data-reveal>
+  <div class="roi-banner mt-10" data-reveal>
+    <div>
+      <span class="eyebrow">{t('Nie wiesz co wybrać?', 'Not sure which plan?')}</span>
+      <h3 class="text-2xl font-medium mt-2">{t('Policz, ile Hovera Ci zaoszczędzi.', 'See how much Hovera saves you.')}</h3>
+      <p class="muted mt-2">{t('Interaktywny kalkulator oszczędności i zwrotu z inwestycji. 30 sekund.', 'Interactive savings & ROI calculator. 30 seconds.')}</p>
+    </div>
+    <a href={lp('/kalkulator-roi')} class="btn btn-primary">
+      {t('Otwórz kalkulator', 'Open calculator')}
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="onboarding-section mt-16" data-reveal>
+    <div class="onboarding-grid">
+      <div>
+        <span class="eyebrow">{t('Wdrożenie', 'Onboarding')}</span>
+        <h3 class="display-3 mt-3 text-balance">{t('Setup, który robimy za Ciebie', 'Setup we do for you')}</h3>
+        <p class="muted mt-4">
+          {t(
+            'Płatność wdrożeniowa to jednorazowe 1 590 zł. Wliczona w każdy plan roczny, 2- i 3-letni. Przy planie miesięcznym płacisz osobno. Plan Enterprise ma indywidualny scope.',
+            'A one-time €390 onboarding fee. Included with every yearly, 2-year and 3-year plan. Charged separately on monthly. Enterprise scoped individually.'
+          )}
+        </p>
+        <div class="setup-price-box">
+          <div class="text-xs muted">{t('Opłata wdrożeniowa', 'Onboarding fee')}</div>
+          <div class="text-3xl font-medium mt-1" style="letter-spacing: -0.03em;">{setupFeeDisplay}</div>
+          <div class="text-xs mt-2" style="color: #2c5530;">
+            ✓ {t('Gratis przy planie rocznym i wieloletnim', 'Free with yearly and multi-year plans')}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-medium uppercase tracking-widest" style="color: var(--color-fg-muted);">{t('Co dostajesz', 'What you get')}</h4>
+        <ul class="onboarding-list mt-4">
+          {onboardingItems.map((item) => (
+            <li>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-20" data-reveal>
     <h3 class="display-3 text-center">{t('Pełne porównanie funkcji', 'Full feature comparison')}</h3>
     <div class="comp-table mt-8">
       <div class="ct-row ct-head">
@@ -186,7 +158,7 @@ const faqs = locale === 'pl' ? [
         <div class="ct-row">
           <div class="ct-name">{row.name}</div>
           {row.values.map((v, i) => (
-            <div class={`ct-val ${i === 2 ? 'ct-popular' : ''}`}>{v}</div>
+            <div class={i === 2 ? 'ct-popular' : ''}>{v}</div>
           ))}
         </div>
       ))}
@@ -219,134 +191,41 @@ const faqs = locale === 'pl' ? [
     </div>
     <div>
       <h4 class="text-xl font-medium">{t('30-dniowa gwarancja zwrotu', '30-day money-back guarantee')}</h4>
-      <p class="muted mt-1">{t('Pełny zwrot za pierwszy miesiąc bez pytań. Jeśli to nie dla Ciebie, oddajemy pieniądze.', "Full refund for the first month, no questions asked. If it's not for you, we refund.")}</p>
+      <p class="muted mt-1">{t('Pełen zwrot — z opłatą wdrożeniową — bez pytań.', 'Full refund, including onboarding fee, no questions asked.')}</p>
     </div>
   </div>
 </section>
 
 <style>
-  .tier {
-    position: relative;
-    padding: 2rem;
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--color-border);
-    background: var(--color-cream);
-    box-shadow: var(--shadow-soft);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
-  }
-  .tier:hover { transform: translateY(-4px); box-shadow: var(--shadow-warm); }
-  .tier-popular {
-    background: linear-gradient(180deg, var(--color-bark) 0%, #2a2018 100%);
-    color: var(--color-cream);
-    border-color: var(--color-bark);
-    box-shadow: var(--shadow-deep);
-  }
-  .tier-popular .tier-desc, .tier-popular .price-period { color: rgba(250,248,244,0.65); }
-  .tier-badge {
-    position: absolute;
-    top: -10px; left: 50%; transform: translateX(-50%);
-    background: var(--color-ochre);
-    color: var(--color-bark);
-    font-size: 11px; font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 999px;
-  }
-  .tier-name { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; opacity: 0.85; }
-  .tier-price { margin-top: 0.5rem; display: flex; align-items: baseline; gap: 0.4rem; }
-  .price-num { font-size: 2.5rem; line-height: 1; font-weight: 500; letter-spacing: -0.04em; }
-  .price-period { font-size: 0.85rem; color: var(--color-fg-muted); }
-  .tier-desc { font-size: 0.85rem; margin-top: 0.4rem; color: var(--color-fg-muted); }
-  .tier-features { list-style: none; padding: 0; margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.55rem; }
-  .tier-features li { display: flex; gap: 0.5rem; align-items: center; font-size: 0.9rem; }
-  .tier-features svg { color: var(--color-ochre); flex-shrink: 0; }
-  .tier-popular .tier-features svg { color: var(--color-ochre-light); }
-
-  .enterprise-card {
-    display: flex; flex-direction: column; gap: 1.5rem;
-    padding: 2.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-2xl);
-    background: linear-gradient(135deg, var(--color-sand-light) 0%, var(--color-cream) 100%);
-  }
-  @media (min-width: 800px) {
-    .enterprise-card { flex-direction: row; align-items: center; justify-content: space-between; }
-  }
+  .enterprise-card { display: flex; flex-direction: column; gap: 1.5rem; padding: 2.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-2xl); background: linear-gradient(135deg, var(--color-sand-light) 0%, var(--color-cream) 100%); }
+  @media (min-width: 800px) { .enterprise-card { flex-direction: row; align-items: center; justify-content: space-between; } }
   .ec-cta { text-align: center; }
-
-  .comp-table {
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-    background: var(--color-cream);
-  }
-  .ct-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    border-bottom: 1px solid var(--color-border);
-    font-size: 0.9rem;
-  }
+  .roi-banner { display: flex; flex-direction: column; gap: 1.5rem; padding: 2rem 2.5rem; border-radius: var(--radius-2xl); background: radial-gradient(800px 200px at 0% 50%, rgba(168, 149, 107, 0.18), transparent 70%), var(--color-cream); border: 1px solid var(--color-border); box-shadow: var(--shadow-soft); }
+  @media (min-width: 800px) { .roi-banner { flex-direction: row; align-items: center; justify-content: space-between; } }
+  .onboarding-grid { display: grid; gap: 3rem; grid-template-columns: 1fr; padding: 2.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); }
+  @media (min-width: 900px) { .onboarding-grid { grid-template-columns: 1fr 1.2fr; gap: 4rem; } }
+  .setup-price-box { margin-top: 1.5rem; padding: 1.25rem 1.5rem; background: var(--color-sand-light); border-radius: 14px; display: inline-block; }
+  .onboarding-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+  .onboarding-list li { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.95rem; line-height: 1.5; }
+  .onboarding-list svg { color: var(--color-ochre); flex-shrink: 0; margin-top: 0.4rem; }
+  .comp-table { border-radius: var(--radius-xl); border: 1px solid var(--color-border); overflow: hidden; background: var(--color-cream); }
+  .ct-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
   .ct-row:last-child { border-bottom: none; }
-  .ct-head {
-    background: var(--color-sand-light);
-    font-weight: 500;
-    text-transform: uppercase;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-  }
-  .ct-row > div {
-    padding: 0.85rem 1rem;
-    border-right: 1px solid var(--color-border);
-    text-align: center;
-  }
+  .ct-head { background: var(--color-sand-light); font-weight: 500; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.18em; }
+  .ct-row > div { padding: 0.85rem 1rem; border-right: 1px solid var(--color-border); text-align: center; }
   .ct-row > div:first-child { text-align: left; }
   .ct-row > div:last-child { border-right: none; }
   .ct-popular { background: rgba(168,149,107,0.08); font-weight: 500; }
   .ct-name { color: var(--color-fg); }
-  @media (max-width: 700px) {
-    .comp-table { font-size: 0.78rem; }
-    .ct-row { grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; }
-    .ct-row > div { padding: 0.6rem 0.4rem; }
-  }
-
+  @media (max-width: 700px) { .comp-table { font-size: 0.78rem; } .ct-row { grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; } .ct-row > div { padding: 0.6rem 0.4rem; } }
   .faq-list { display: flex; flex-direction: column; gap: 0.5rem; }
-  .faq-item {
-    background: var(--color-cream);
-    border: 1px solid var(--color-border);
-    border-radius: 14px;
-    padding: 0;
-    transition: background 0.2s;
-  }
-  .faq-item summary {
-    list-style: none;
-    cursor: pointer;
-    padding: 1rem 1.25rem;
-    display: flex; justify-content: space-between; align-items: center;
-    font-weight: 500;
-  }
+  .faq-item { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; }
+  .faq-item summary { list-style: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
   .faq-item summary::-webkit-details-marker { display: none; }
   .faq-item summary svg { transition: transform 0.3s; }
   .faq-item[open] summary svg { transform: rotate(180deg); }
   .faq-item p { padding: 0 1.25rem 1.1rem; line-height: 1.6; }
-  .faq-item:hover { background: var(--color-sand-light); }
-
-  .guarantee {
-    display: flex; gap: 1.25rem; align-items: center;
-    padding: 1.5rem 2rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    background: rgba(111,182,122,0.08);
-    max-width: 36rem;
-    margin: 0 auto;
-  }
-  .g-icon {
-    width: 56px; height: 56px;
-    border-radius: 14px;
-    background: rgba(111,182,122,0.18);
-    color: #2c5530;
-    display: inline-flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
+  .guarantee { display: flex; gap: 1.25rem; align-items: center; padding: 1.5rem 2rem; border: 1px solid var(--color-border); border-radius: var(--radius-xl); background: rgba(111,182,122,0.08); max-width: 36rem; margin: 0 auto; }
+  .g-icon { width: 56px; height: 56px; border-radius: 14px; background: rgba(111,182,122,0.18); color: #2c5530; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .g-icon svg { width: 28px; height: 28px; }
 </style>

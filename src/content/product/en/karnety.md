@@ -27,5 +27,5 @@ integrations:
   - "Stripe, SEPA, bank transfer"
   - "E-invoicing (KSeF + Peppol)"
   - "Email + SMS notifications"
-pricingNote: "Available from the Stable plan (€33/mo)."
+pricingNote: "Available from the Stable plan (from €38/mo on a 3-year contract)."
 ---

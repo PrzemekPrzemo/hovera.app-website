@@ -34,7 +34,7 @@ table:
     hovera: "Self-serve + Enterprise"
     them: "Paid rollout"
   - feature: "Starting price"
-    hovera: "Free + €11"
+    hovera: "Free + €19"
     them: "€70"
 chooseHovera:
   - "You need e-invoicing from day one"

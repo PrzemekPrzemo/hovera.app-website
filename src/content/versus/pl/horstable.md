@@ -34,7 +34,7 @@ table:
     hovera: "Self-serve + Enterprise"
     them: "Płatne wdrożenie"
   - feature: "Cennik startowy"
-    hovera: "Free + 49 zł"
+    hovera: "Free + 89 zł"
     them: "299 zł"
 chooseHovera:
   - "Potrzebujesz KSeF od pierwszego dnia"

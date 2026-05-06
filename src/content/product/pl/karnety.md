@@ -27,5 +27,5 @@ integrations:
   - "Przelewy24, BLIK, karta (Stripe)"
   - "Faktury KSeF + Peppol"
   - "Email + SMS powiadomienia"
-pricingNote: "Dostępne od planu Stable (149 zł/mies.)."
+pricingNote: "Dostępne od planu Stable (od 162 zł/mies. przy umowie 3-letniej)."
 ---
