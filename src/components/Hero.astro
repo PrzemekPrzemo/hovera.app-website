@@ -121,52 +121,7 @@ const stats = [
           </div>
         </div>
 
-        <!-- Phone mockup -->
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-status">
-              <span>9:41</span>
-              <span class="phone-status-icons"></span>
-            </div>
-            <div class="phone-card-stack">
-              <div class="phone-push">
-                <div class="phone-push-icon"><HorseshoeMark class="h-5 w-5 text-[var(--color-cream)]" /></div>
-                <div>
-                  <div class="phone-push-title">Hovera</div>
-                  <div class="phone-push-text">{locale === 'pl' ? 'Faktura FV/2026/041 zapłacona · 1 240 zł' : 'Invoice FV/2026/041 paid · €280'}</div>
-                </div>
-              </div>
-              <div class="phone-stat">
-                <div class="phone-stat-row">
-                  <span class="muted text-[11px]">{locale === 'pl' ? 'DZISIAJ' : 'TODAY'}</span>
-                  <span class="text-[11px]">{locale === 'pl' ? '6 jazd' : '6 rides'}</span>
-                </div>
-                <div class="phone-bars">
-                  <div class="phone-bar" style="--h: 32%"></div>
-                  <div class="phone-bar" style="--h: 56%"></div>
-                  <div class="phone-bar" style="--h: 78%"></div>
-                  <div class="phone-bar" style="--h: 64%"></div>
-                  <div class="phone-bar" style="--h: 88%"></div>
-                  <div class="phone-bar" style="--h: 48%"></div>
-                  <div class="phone-bar" style="--h: 70%"></div>
-                </div>
-              </div>
-              <div class="phone-action">
-                <span>{locale === 'pl' ? 'Wystaw fakturę' : 'New invoice'}</span>
-                <span class="phone-pill">KSeF</span>
-              </div>
-              <div class="phone-action">
-                <span>{locale === 'pl' ? 'Dodaj jazdę' : 'New ride'}</span>
-                <span class="phone-pill">+</span>
-              </div>
-              <div class="phone-offline">
-                <span class="phone-offline-dot"></span>
-                {locale === 'pl' ? 'Tryb offline · synchronizacja gotowa' : 'Offline mode · sync ready'}
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Phone mockup hidden until mobile app is announced -->
 
         <!-- Floating callouts -->
         <div class="callout callout-1">
@@ -486,7 +441,7 @@ const stats = [
   }
   .callout-1 .callout-dot { background: #B14848; }
   .callout-2 {
-    bottom: 8%; left: 18%;
+    bottom: -4%; right: 4%;
     animation-delay: 1.2s;
   }
   .callout-2 .callout-dot { background: #6FB67A; }

@@ -1,12 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import SocialProof from '../components/SocialProof.astro';
 import ProductTour from '../components/ProductTour.astro';
 import UseCases from '../components/UseCases.astro';
 import Differentiators from '../components/Differentiators.astro';
 import PricingTeaser from '../components/PricingTeaser.astro';
-import Testimonial from '../components/Testimonial.astro';
 import TechBar from '../components/TechBar.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 
@@ -15,15 +13,13 @@ const locale = 'pl' as const;
 
 <Base
   title="Hovera — Stajnia działa. Ty oddychasz."
-  description="Operacyjne SaaS dla stajni. Grafik, karnety, faktury z KSeF i opieka nad końmi w jednym narzędziu. Mobile, offline, polski first."
+  description="Operacyjne SaaS dla stajni. Grafik, karnety, finanse i opieka nad końmi w jednym narzędziu."
 >
   <Hero locale={locale} />
-  <SocialProof locale={locale} />
   <ProductTour locale={locale} />
   <UseCases locale={locale} />
   <Differentiators locale={locale} />
   <PricingTeaser locale={locale} />
-  <Testimonial locale={locale} />
   <TechBar locale={locale} />
   <FinalCTA locale={locale} />
 </Base>

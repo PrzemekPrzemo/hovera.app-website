@@ -6,17 +6,17 @@ const { locale } = Astro.props;
 const items = locale === 'pl' ? [
   { ico: '🔒', label: 'Pełne szyfrowanie + RODO' },
   { ico: '☁️', label: 'Hosting w UE (Frankfurt, Warszawa)' },
-  { ico: '📱', label: 'iOS + Android natywnie' },
   { ico: '🔌', label: 'Public API + webhooks' },
   { ico: '⚙️', label: 'Eksport do biura rachunkowego' },
   { ico: '🔄', label: 'Backupy codzienne, retencja 30 dni' },
+  { ico: '🇵🇱', label: 'Polski first, dostępne w UE' },
 ] : [
   { ico: '🔒', label: 'Full encryption + GDPR' },
   { ico: '☁️', label: 'EU hosting (Frankfurt, Warsaw)' },
-  { ico: '📱', label: 'Native iOS + Android' },
   { ico: '🔌', label: 'Public API + webhooks' },
   { ico: '⚙️', label: 'Bookkeeping export' },
   { ico: '🔄', label: 'Daily backups, 30-day retention' },
+  { ico: '🇪🇺', label: 'Polish first, EU-ready' },
 ];
 ---
 
