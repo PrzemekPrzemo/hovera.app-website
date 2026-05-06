@@ -32,9 +32,15 @@ echo "  ║   Hovera — instalator dla Plesk VPS    ║"
 echo "  ╚════════════════════════════════════════╝"
 echo
 
-# ─── 1. nie pozwól odpalić jako root ───
+# ─── 1. wykryj tryb (user vs root) ───
+RUN_AS_ROOT=0
 if [[ $(id -u) -eq 0 ]]; then
-  die "Nie uruchamiaj tego jako root. Zaloguj się przez SSH na konto użytkownika domeny ${DOMAIN} (Plesk → Hosting Settings → SSH access)."
+  RUN_AS_ROOT=1
+  warn "Uruchamiasz jako root."
+  echo "  Plesk zwykle daje SSH dostęp przez konto użytkownika domeny."
+  echo "  Jako root też zadziała — ustawię właściciela plików na użytkownika"
+  echo "  domeny ${DOMAIN}, żeby Plesk file manager i webserver miały dostęp."
+  echo
 fi
 
 # ─── 2. wykryj katalog httpdocs ───
@@ -154,6 +160,28 @@ SetEnv HOVERA_MAIL_FROM $MAIL_FROM
 EOF
 
 ok "Strona wgrana do $DOCROOT"
+
+# ─── 7b. chown (gdy jako root) ───
+if [[ $RUN_AS_ROOT -eq 1 ]]; then
+  # właściciel httpdocs to zwykle użytkownik domeny w Plesku
+  PLESK_OWNER=$(stat -c '%U:%G' "$DOCROOT" 2>/dev/null || echo "")
+  if [[ -z "$PLESK_OWNER" || "$PLESK_OWNER" == "root:root" ]]; then
+    # spróbuj wykryć po katalogu nadrzędnym
+    PARENT_OWNER=$(stat -c '%U:%G' "$(dirname "$DOCROOT")" 2>/dev/null || echo "")
+    if [[ -n "$PARENT_OWNER" && "$PARENT_OWNER" != "root:root" ]]; then
+      PLESK_OWNER="$PARENT_OWNER"
+    fi
+  fi
+
+  if [[ -n "$PLESK_OWNER" && "$PLESK_OWNER" != "root:root" ]]; then
+    say "Ustawiam właściciela $DOCROOT na $PLESK_OWNER..."
+    chown -R "$PLESK_OWNER" "$DOCROOT"
+    ok "Właściciel ustawiony"
+  else
+    warn "Nie wykryłem użytkownika domeny — pliki pozostają jako root."
+    warn "Jeśli strona nie ładuje się, w Plesk → File Manager popraw uprawnienia."
+  fi
+fi
 
 # ─── 8. podsumowanie ───
 echo
