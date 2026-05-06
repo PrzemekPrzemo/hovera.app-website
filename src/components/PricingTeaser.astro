@@ -7,11 +7,11 @@ const lp = (p: string) => localizePath(p, locale);
 
 const tiers = locale === 'pl' ? [
   { name: 'Solo', price: '49 zł', period: '/ mies.', desc: '10 koni · 30 klientów', features: ['Kalendarz', 'Booking online', 'Aplikacja mobilna', 'Email support'] },
-  { name: 'Stable', price: '149 zł', period: '/ mies.', desc: '30 koni · 100 klientów', features: ['Wszystko z Solo', 'Karnety', 'Faktury + KSeF', 'Email + chat'], popular: true },
+  { name: 'Stable', price: '149 zł', period: '/ mies.', desc: '30 koni · 100 klientów', features: ['Wszystko z Solo', 'Karnety', 'Faktury i rozliczenia', 'Email + chat'], popular: true },
   { name: 'Pro', price: '349 zł', period: '/ mies.', desc: '100 koni · bez limitu', features: ['Wszystko ze Stable', 'Pensjonat / livery', 'Multi-instructor', 'Priority support'] },
 ] : [
   { name: 'Solo', price: '€11', period: '/ mo', desc: '10 horses · 30 clients', features: ['Calendar', 'Online booking', 'Mobile app', 'Email support'] },
-  { name: 'Stable', price: '€33', period: '/ mo', desc: '30 horses · 100 clients', features: ['Everything in Solo', 'Passes', 'Invoicing + KSeF', 'Email + chat'], popular: true },
+  { name: 'Stable', price: '€33', period: '/ mo', desc: '30 horses · 100 clients', features: ['Everything in Solo', 'Passes', 'Invoicing & billing', 'Email + chat'], popular: true },
   { name: 'Pro', price: '€78', period: '/ mo', desc: '100 horses · unlimited clients', features: ['Everything in Stable', 'Boarding / livery', 'Multi-instructor', 'Priority support'] },
 ];
 ---
