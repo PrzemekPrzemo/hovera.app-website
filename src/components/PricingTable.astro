@@ -61,16 +61,18 @@ const allFeatures = locale === 'pl' ? [
 const faqs = locale === 'pl' ? [
   { q: 'Czy mogę zmienić plan w każdej chwili?', a: 'Tak. Upgrade jest natychmiastowy z proporcjonalnym rozliczeniem. Downgrade działa od kolejnego okresu rozliczeniowego.' },
   { q: 'Co dokładnie obejmuje opłata wdrożeniowa 1 590 zł?', a: 'Spotkanie 90 min, import danych, konfiguracja kalendarza i karnetów, setup publicznej strony stajni, powiadomień i szkolenie do 5 osób. Pełna lista wyżej.' },
-  { q: 'Czy płacąc rocznie naprawdę nie płacę za wdrożenie?', a: 'Tak — przy płatności rocznej, 2-letniej i 3-letniej opłata wdrożeniowa (1 590 zł) jest wliczona. Płacisz tylko abonament.' },
-  { q: 'Co znaczy „blokada ceny"?', a: 'Jeśli za rok podniesiemy cennik, Twoja stawka zostaje. Lock pricing działa przy umowach 2- i 3-letnich na cały okres.' },
+  { q: 'Czy opłata wdrożeniowa jest jednorazowa?', a: 'Tak — to jednorazowe 1 590 zł, niezależnie od wybranego planu i okresu. Doliczana do pierwszej faktury.' },
+  { q: 'Co znaczy „blokada ceny"?', a: 'Jeśli za rok podniesiemy cennik, Twoja stawka zostaje. Lock pricing działa przy każdej umowie rocznej, 2- i 3-letniej na cały okres jej trwania.' },
+  { q: 'Ile zaoszczędzę na umowie wieloletniej?', a: 'Rocznie -10%, 2 lata -20%, 3 lata -30% względem ceny miesięcznej. Plan Stable płacony 3 lata z góry to 174 zł/mc effective vs 249 zł/mc miesięcznie — oszczędność 30%.' },
   { q: 'Co się dzieje, gdy przekroczę limit koni lub klientów?', a: 'Zaproponujemy upgrade, ale Twoje dane nie znikną — system po prostu poprosi o zwiększenie limitu. Bez ukrytego ucięcia funkcjonalności.' },
   { q: 'Czy potrzebuję podpisać umowę?', a: 'Nie. Akceptujesz Regulamin online i działasz. Dla planu Enterprise mamy odrębną umowę ramową.' },
   { q: 'Jak wygląda 30-dniowa gwarancja zwrotu?', a: 'Jeśli w ciągu pierwszych 30 dni zdecydujesz, że to nie dla Ciebie, zwracamy 100% opłaty (włącznie z opłatą wdrożeniową) bez pytań.' },
 ] : [
   { q: 'Can I change my plan at any time?', a: 'Yes. Upgrades are instant with prorated billing. Downgrades take effect at the next billing period.' },
   { q: 'What does the €390 onboarding fee include?', a: 'A 90-minute call, data import, calendar and passes setup, public stable page configuration, notifications, and team training for up to 5 people. Full list above.' },
-  { q: 'Do I really get free onboarding when I pay yearly?', a: 'Yes — yearly, 2-year and 3-year plans include the onboarding fee. You only pay the subscription.' },
-  { q: 'What does "price lock" mean?', a: "If we raise list prices next year, your rate stays the same. Price lock applies on 2- and 3-year contracts for the full term." },
+  { q: 'Is the onboarding fee one-time?', a: 'Yes — €390 once, regardless of plan or billing period. Added to your first invoice.' },
+  { q: 'What does "price lock" mean?', a: "If we raise list prices next year, your rate stays the same. Price lock applies on every yearly, 2- and 3-year contract for the full term." },
+  { q: 'How much do I save on a multi-year contract?', a: 'Yearly -10%, 2 years -20%, 3 years -30% off the monthly rate. Stable on a 3-year contract is €41/mo effective vs €59/mo on monthly — 30% saving.' },
   { q: 'What happens if I exceed horse or client limits?', a: "We'll suggest an upgrade — your data stays. The system simply prompts a higher limit." },
   { q: 'Do I need to sign a contract?', a: 'No. You accept Terms online and you are good to go. Enterprise customers get a framework agreement.' },
   { q: 'How does the 30-day money-back guarantee work?', a: "Within the first 30 days you get 100% refund — including the onboarding fee — no questions asked." },
@@ -115,15 +117,15 @@ const setupFeeDisplay = locale === 'pl' ? '1 590 zł' : '€390';
         <h3 class="display-3 mt-3 text-balance">{t('Setup, który robimy za Ciebie', 'Setup we do for you')}</h3>
         <p class="muted mt-4">
           {t(
-            'Płatność wdrożeniowa to jednorazowe 1 590 zł. Wliczona w każdy plan roczny, 2- i 3-letni. Przy planie miesięcznym płacisz osobno. Plan Enterprise ma indywidualny scope.',
-            'A one-time €390 onboarding fee. Included with every yearly, 2-year and 3-year plan. Charged separately on monthly. Enterprise scoped individually.'
+            'Jednorazowa opłata wdrożeniowa 1 590 zł doliczana do każdego płatnego planu — niezależnie od okresu rozliczeniowego. Pokrywa pełen onboarding: import danych, konfigurację, szkolenie zespołu. Plan Enterprise ma indywidualny scope.',
+            'A one-time €390 onboarding fee added to every paid plan, regardless of billing period. Covers full onboarding: data import, setup, team training. Enterprise scoped individually.'
           )}
         </p>
         <div class="setup-price-box">
-          <div class="text-xs muted">{t('Opłata wdrożeniowa', 'Onboarding fee')}</div>
+          <div class="text-xs muted">{t('Opłata wdrożeniowa (jednorazowa)', 'Onboarding fee (one-time)')}</div>
           <div class="text-3xl font-medium mt-1" style="letter-spacing: -0.03em;">{setupFeeDisplay}</div>
-          <div class="text-xs mt-2" style="color: #2c5530;">
-            ✓ {t('Gratis przy planie rocznym i wieloletnim', 'Free with yearly and multi-year plans')}
+          <div class="text-xs mt-2 muted">
+            {t('Doliczana do pierwszej faktury, niezależnie od planu', 'Added to your first invoice on every paid plan')}
           </div>
         </div>
       </div>
@@ -191,7 +193,7 @@ const setupFeeDisplay = locale === 'pl' ? '1 590 zł' : '€390';
     </div>
     <div>
       <h4 class="text-xl font-medium">{t('30-dniowa gwarancja zwrotu', '30-day money-back guarantee')}</h4>
-      <p class="muted mt-1">{t('Pełen zwrot — z opłatą wdrożeniową — bez pytań.', 'Full refund, including onboarding fee, no questions asked.')}</p>
+      <p class="muted mt-1">{t('Pełen zwrot — łącznie z opłatą wdrożeniową — bez pytań.', 'Full refund, including the onboarding fee, no questions asked.')}</p>
     </div>
   </div>
 </section>
