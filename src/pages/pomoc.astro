@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import { localizePath } from '../i18n/utils';
+const locale = 'pl' as const;
+const lp = (p: string) => localizePath(p, locale);
+
+const groups = [
+  {
+    title: 'Pierwsze kroki',
+    items: [
+      { q: 'Jak założyć konto Hovera?', a: 'Wypełnij formularz kontaktowy — odpowiadamy w 24h, doradzimy plan i utworzymy konto. Pierwsze logowanie dostaniesz mailem.' },
+      { q: 'Czy jest okres próbny?', a: 'Tak — 14 dni za darmo dla każdego płatnego planu. Bez podawania karty.' },
+      { q: 'Jak długo trwa setup?', a: 'Self-serve setup zajmuje 30-60 minut. Dla większych stajni oferujemy 1:1 onboarding (włączając import danych) — 2-4 godziny rozłożone na 1-2 spotkania.' },
+      { q: 'Czy mogę zaimportować dane z innego systemu?', a: 'Tak. Wspieramy import z Excela / Google Sheets, Horstable, Nasza Stajnia, EquineM. Inne systemy — przez CSV.' },
+    ],
+  },
+  {
+    title: 'Płatności i fakturowanie',
+    items: [
+      { q: 'Jak są naliczane opłaty?', a: 'Z góry — miesięcznie albo rocznie. Roczna płatność = 20% taniej.' },
+      { q: 'Co z VAT?', a: 'Każda faktura jest VAT-em. Faktura wystawiana na firmę (z NIPem) ma VAT odliczalny.' },
+      { q: 'Czy mogę zmienić plan w trakcie miesiąca?', a: 'Tak. Upgrade — natychmiast, proporcjonalna dopłata. Downgrade — od kolejnego okresu.' },
+      { q: 'Co się dzieje, gdy nie zapłacę?', a: 'Po 7 dniach przypomnienie email. Po 14 dniach blokada nowych funkcji (czytanie nadal działa). Po 30 dniach — pełna blokada konta. Dane zachowane 90 dni.' },
+    ],
+  },
+  {
+    title: 'Bezpieczeństwo i RODO',
+    items: [
+      { q: 'Gdzie są przechowywane moje dane?', a: 'Centrum danych w UE (Frankfurt, Warszawa). Zgodne z RODO. Backupy szyfrowane, codzienne, retencja 30 dni.' },
+      { q: 'Czy klienci widzą moje dane?', a: 'Tylko swoje — własne karnety, jazdy, faktury. Nie widzą innych klientów ani pełnego kalendarza stajni.' },
+      { q: 'Jak usunąć konto i dane?', a: 'Profil → Ustawienia → Usuń konto. Dane usuwamy w ciągu 30 dni. Eksport pełnych danych w formacie JSON dostępny przed usunięciem.' },
+      { q: 'Czy macie certyfikat ISO 27001?', a: 'W trakcie procesu certyfikacji (planowane Q4 2026). Już dziś stosujemy procedury wynikające z normy.' },
+    ],
+  },
+  {
+    title: 'Aplikacja mobilna',
+    items: [
+      { q: 'Jakie wersje iOS i Android?', a: 'iOS 16+, Android 10+. Aplikacja waży ~80 MB.' },
+      { q: 'Czy działa offline?', a: 'Tak — pełen offline read+write. Synchronizacja gdy wrócisz w zasięg.' },
+      { q: 'Czy mogę używać Hovery bez aplikacji?', a: 'Tak — webowa wersja jest pełnoprawna. Aplikacja to add-on dla wygody w stajni.' },
+    ],
+  },
+];
+---
+
+<Base title="Pomoc — Hovera" description="Najczęstsze pytania o Hoverę. Setup, płatności, bezpieczeństwo, aplikacja mobilna.">
+  <PageHero eyebrow="Pomoc" title="Centrum pomocy" subtitle="Najczęstsze pytania. Jeśli czegoś tu brakuje — napisz, dodamy." />
+
+  <section class="container-x py-16">
+    <div class="space-y-16 max-w-3xl mx-auto">
+      {groups.map((g) => (
+        <div data-reveal>
+          <h2 class="display-3">{g.title}</h2>
+          <div class="mt-6 space-y-3">
+            {g.items.map((it) => (
+              <details class="faq-item">
+                <summary><span>{it.q}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+                <p class="muted">{it.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-16 text-center">
+      <p class="muted">Nie znalazłaś odpowiedzi?</p>
+      <a href={lp('/kontakt')} class="btn btn-primary mt-4">Napisz do nas</a>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .faq-item { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; }
+  .faq-item summary { list-style: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; font-weight: 500; gap: 1rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary svg { transition: transform 0.3s; flex-shrink: 0; }
+  .faq-item[open] summary svg { transform: rotate(180deg); }
+  .faq-item p { padding: 0 1.25rem 1.1rem; line-height: 1.6; }
+  .faq-item:hover { background: var(--color-sand-light); }
+</style>

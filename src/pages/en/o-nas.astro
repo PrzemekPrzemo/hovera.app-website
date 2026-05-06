@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import HorseshoeMark from '../../components/HorseshoeMark.astro';
+const locale = 'en' as const;
+---
+
+<Base title="About — Hovera" description="Hovera is a team of people who know stables both from the muck-out and from the codebase. We build the SaaS we'd want to use.">
+  <PageHero eyebrow="About" title="The SaaS we'd want to use ourselves" subtitle="Hovera was born because no system fit how a Polish stable actually runs. So we built our own — with the belief that a stable isn't a corporation, and working with horses isn't a spreadsheet." />
+
+  <section class="container-x py-16">
+    <div class="grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center">
+      <div data-reveal>
+        <span class="eyebrow">Our story</span>
+        <h2 class="display-3 mt-3">From a Google Sheet to a product</h2>
+        <p class="muted mt-4 leading-relaxed">
+          We started with one stable and one spreadsheet. Six months in, the spreadsheet had 14 tabs and nobody knew if Anna's pass had run out. We looked for a ready-made tool — Horstable, Equicty, EquineM. Each had its 'but': no e-invoicing, dated UX, no mobile. So we wrote our own. A year in, the codebase served 8 stables by referral. After two — we launched publicly as Hovera.
+        </p>
+      </div>
+      <div data-reveal class="about-mark">
+        <HorseshoeMark class="h-full w-full text-[var(--color-ochre)]" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      <div class="value-card"><div class="value-num">01</div><h3 class="value-title">Product over marketing</h3><p class="muted mt-3">We'd rather spend a week improving one feature than running ads. Customers can tell.</p></div>
+      <div class="value-card"><div class="value-num">02</div><h3 class="value-title">Truth about the product</h3><p class="muted mt-3">If we don't have something, we say 'we don't'. Roadmap is public, changelog is live.</p></div>
+      <div class="value-card"><div class="value-num">03</div><h3 class="value-title">Polish first, EU as bonus</h3><p class="muted mt-3">KSeF since MVP. Peppol BIS Billing 3.0 — same. The EU is our second yard, not an afterthought.</p></div>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .about-mark { width: 16rem; height: 16rem; margin: 0 auto; opacity: 0.7; animation: spin 30s linear infinite; }
+  @keyframes spin { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+  .value-card { padding: 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .value-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-ochre-dark); letter-spacing: 0.18em; }
+  .value-title { font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 0.6rem; }
+</style>

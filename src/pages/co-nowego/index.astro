@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { localizePath } from '../../i18n/utils';
+
+const entries = (await getCollection('changelog', (e) => e.data.locale === 'pl'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const locale = 'pl' as const;
+const lp = (p: string) => localizePath(p, locale);
+
+const typeColor: Record<string, string> = {
+  Feature: 'var(--color-ochre)',
+  Improvement: '#6FB67A',
+  Fix: '#B14848',
+  Mobile: 'var(--color-bark)',
+  API: 'var(--color-ochre-dark)',
+  Integration: '#5478B5',
+};
+---
+
+<Base title="Co nowego — Hovera" description="Public changelog Hovera. Nowe funkcje, ulepszenia, integracje. Aktualizujemy 1-2 razy tygodniowo.">
+  <PageHero
+    eyebrow="Co nowego"
+    title="Hovera rośnie razem ze stajniami"
+    subtitle="Tu trzymamy historię tego, co dodajemy. Każdy commit, który dotyka klienta, ma swój wpis."
+  />
+
+  <section class="container-x py-16">
+    <div class="changelog-list">
+      {entries.map((e) => {
+        const Content = (e as any).Content;
+        return (
+          <article class="cl-entry" data-reveal>
+            <div class="cl-meta">
+              <time datetime={e.data.date}>{new Date(e.data.date).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</time>
+              <span class="cl-type" style={`--c: ${typeColor[e.data.type] || 'var(--color-bark)'}`}>{e.data.type}</span>
+            </div>
+            <h2 class="cl-title">{e.data.title}</h2>
+            <p class="muted mt-3">{e.data.summary}</p>
+            {Content && (
+              <div class="cl-body mt-4">
+                <Content />
+              </div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+
+    <div class="mt-16 text-center">
+      <p class="muted text-sm">Chcesz dostawać podsumowanie miesięczne?</p>
+      <a href={lp('/kontakt')} class="btn btn-secondary mt-3 text-sm">Zapisz się na newsletter</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .changelog-list { max-width: 48rem; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; }
+  .cl-entry {
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .cl-entry:last-child { border-bottom: none; padding-bottom: 0; }
+  .cl-meta {
+    display: flex; gap: 0.75rem; align-items: center;
+    font-size: 0.85rem; color: var(--color-fg-muted);
+  }
+  .cl-type {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--c) 14%, transparent);
+    color: var(--c);
+  }
+  .cl-title {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin-top: 0.5rem;
+  }
+  .cl-body :global(h2) { font-size: 1.1rem; margin-top: 1.5rem; font-weight: 500; }
+  .cl-body :global(ul) { list-style: disc; padding-left: 1.25rem; margin-top: 0.75rem; line-height: 1.6; }
+  .cl-body :global(p) { margin-top: 0.75rem; line-height: 1.6; color: var(--color-fg-muted); }
+</style>

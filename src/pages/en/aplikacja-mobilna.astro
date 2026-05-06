@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+const locale = 'en' as const;
+
+const features = [
+  { title: 'Calendar in your pocket', body: 'Full navigation, drag & drop, daily and weekly views.' },
+  { title: 'Offline mode', body: 'Read and write in the barn without wifi. Syncs when you reconnect.' },
+  { title: 'Push notifications', body: "Tomorrow's vaccination. Client cancelled. Invoice paid. Real-time." },
+  { title: 'Horse journal in 3 taps', body: 'Note, photo, geo-tag — all from the stall.' },
+  { title: 'Home screen widgets', body: 'Next ride, today plan, common actions — without opening the app.' },
+  { title: 'Quick actions', body: "Long-press the icon = 'Add ride', 'New invoice', 'Show today'." },
+];
+---
+
+<Base title="Mobile app — Hovera iOS and Android" description="Hovera in your pocket. iOS 16+ and Android 10+. Full offline mode, push notifications, home screen widgets.">
+  <PageHero eyebrow="Mobile app" title="Your stable in your pocket" subtitle="Full functionality on iOS and Android. Works without wifi. iOS 16+ / Android 10+. RAM 2GB+.">
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <a href="#" class="badge-store">
+        <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M11.6 9.6c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.6.9-.8 0-1.9-.9-3.1-.8C2 4.3.7 5.2 0 6.5c-1.6 2.7-.4 6.7 1.1 8.9.7 1.1 1.6 2.3 2.8 2.3 1.1 0 1.6-.7 2.9-.7 1.4 0 1.7.7 2.9.7 1.2 0 2-1.1 2.7-2.2.9-1.3 1.2-2.5 1.3-2.6 0 0-2.5-1-2.5-3.8.1-2.3 1.9-3.4 2-3.5-.4-.6-2-2-3.6-1z"/></svg>
+        <span><small>Download on the</small><br/><b>App Store</b></span>
+      </a>
+      <a href="#" class="badge-store">
+        <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M.4 0C.2.3 0 .8 0 1.4v17.2c0 .6.2 1 .5 1.3l9.6-9.9L.4 0zm10.7 10.5L1.6 19.9l9-5.2 1.7-1c.4-.2.6-.5.5-.8 0-.3-.2-.6-.6-.8L11.1 11l-.8-.5z"/></svg>
+        <span><small>Get it on</small><br/><b>Google Play</b></span>
+      </a>
+    </div>
+    <p class="mt-4 text-xs muted">App included in every plan, even Free.</p>
+  </PageHero>
+
+  <section class="container-x py-24">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {features.map((f, i) => (
+        <article class="mob-feat-card" data-reveal>
+          <div class="mob-feat-num">{(i+1).toString().padStart(2, '0')}</div>
+          <h3 class="mob-feat-title">{f.title}</h3>
+          <p class="muted mt-3">{f.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .badge-store { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; background: var(--color-bark); color: var(--color-cream); border-radius: 14px; transition: transform 0.2s, box-shadow 0.2s; }
+  .badge-store:hover { transform: translateY(-1px); box-shadow: var(--shadow-warm); }
+  .badge-store small { font-size: 11px; opacity: 0.7; }
+  .badge-store b { font-size: 16px; font-weight: 500; }
+  .mob-feat-card { padding: 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-xl); transition: all 0.4s var(--ease-out-expo); }
+  .mob-feat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); }
+  .mob-feat-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-ochre-dark); letter-spacing: 0.18em; }
+  .mob-feat-title { font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 0.6rem; }
+</style>

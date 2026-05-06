@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { localizePath } from '../../i18n/utils';
+const locale = 'en' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title="Demo — Hovera" description="See Hovera in action. Self-serve video tour or live demo tailored to your stable.">
+  <PageHero eyebrow="Demo" title="See Hovera in action" subtitle="Pick what fits you. Watch a video on your own, or have a 30-minute call with our CSM." />
+
+  <section class="container-x py-16">
+    <div class="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+      <article class="demo-card" data-reveal>
+        <div class="demo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg></div>
+        <h3 class="display-3 mt-4">Self-serve video tour</h3>
+        <p class="muted mt-3">5-7 minutes through the most important Hovera screens with voice-over. No login, no form.</p>
+        <ul class="demo-list mt-6">
+          <li>A stable's hero (Anna and Halicz)</li>
+          <li>Add a horse and the first ride</li>
+          <li>Client buys a pass online</li>
+          <li>Issue an e-invoice</li>
+          <li>Check it in the mobile app</li>
+        </ul>
+        <button class="btn btn-primary mt-6" disabled>Play video (coming soon)</button>
+      </article>
+
+      <article class="demo-card" data-reveal>
+        <div class="demo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h18v14H3z" stroke-linejoin="round"/><path d="M3 5l9 7 9-7" stroke-linejoin="round"/></svg></div>
+        <h3 class="display-3 mt-4">Live demo for your stable</h3>
+        <p class="muted mt-3">30-minute online meeting. We show Hovera in the context of your stable: school, livery, sport or breeding.</p>
+        <ul class="demo-list mt-6">
+          <li>Quick interview about your stable</li>
+          <li>Demo for specific use cases</li>
+          <li>Live questions</li>
+          <li>Migration plan from your current tool</li>
+          <li>Plan recommendation</li>
+        </ul>
+        <a href={lp('/kontakt')} class="btn btn-primary mt-6">Book a demo</a>
+      </article>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .demo-card { padding: 2.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); transition: all 0.4s var(--ease-out-expo); }
+  .demo-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); }
+  .demo-icon { width: 56px; height: 56px; border-radius: 14px; background: var(--color-sand-light); color: var(--color-bark); display: inline-flex; align-items: center; justify-content: center; }
+  .demo-icon svg { width: 28px; height: 28px; }
+  .demo-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.95rem; color: var(--color-fg-muted); }
+  .demo-list li { padding-left: 1.5rem; position: relative; }
+  .demo-list li::before { content: "→"; position: absolute; left: 0; color: var(--color-ochre); }
+</style>

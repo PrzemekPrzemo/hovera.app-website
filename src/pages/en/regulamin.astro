@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<Base title="Terms of service — Hovera" description="Hovera terms of service.">
+  <PageHero eyebrow="Legal" title="Terms of service" subtitle="Last updated: 6 May 2026" />
+  <article class="container-x py-16">
+    <div class="legal-body max-w-3xl mx-auto">
+      <p><strong>Note:</strong> Placeholder document — requires legal review before production.</p>
+
+      <h2>1. General provisions</h2>
+      <p>These Terms govern the use of the Hovera service (the "Service") provided electronically by Hovera Sp. z o.o. with registered office in Warsaw, Poland (KRS: 0000000000, VAT ID: PL0000000000).</p>
+
+      <h2>2. Definitions</h2>
+      <ul>
+        <li><strong>Provider</strong> — Hovera Sp. z o.o.</li>
+        <li><strong>Customer</strong> — entity or consumer using the Service.</li>
+        <li><strong>Account</strong> — Customer's individual resources within the Service.</li>
+        <li><strong>Plan</strong> — scope of features and limits per pricing.</li>
+      </ul>
+
+      <h2>3. Scope of services</h2>
+      <p>Hovera provides SaaS for managing equestrian stables. Full feature scope depends on the chosen Plan.</p>
+
+      <h2>4. Contract formation</h2>
+      <p>The contract is concluded upon acceptance of these Terms and account creation, or payment of the first billing period.</p>
+
+      <h2>5. Payments</h2>
+      <p>Fees are charged in advance, monthly or annually. VAT invoices issued in PLN or EUR depending on Customer's billing location.</p>
+
+      <h2>6. 30-day money-back guarantee</h2>
+      <p>If you cancel within 30 days of the first payment, you receive a full refund without explanation.</p>
+
+      <h2>7. Complaints</h2>
+      <p>Complaints to <a href="mailto:hello@hovera.app">hello@hovera.app</a>. Resolved within 14 business days.</p>
+
+      <h2>8. Liability</h2>
+      <p>Provider strives for service continuity. SLA for Pro plan: 99.5% monthly uptime. Enterprise: 99.9% with credits.</p>
+
+      <h2>9. Final provisions</h2>
+      <p>Matters not regulated herein are governed by Polish Civil Code and applicable EU regulations.</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal-body :global(h2) { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 2.5rem; }
+  .legal-body :global(p) { margin-top: 1rem; line-height: 1.7; }
+  .legal-body :global(ul) { margin-top: 1rem; padding-left: 1.5rem; line-height: 1.7; list-style: disc; }
+  .legal-body :global(li) { margin-top: 0.4rem; }
+  .legal-body :global(a) { color: var(--color-ochre-dark); text-decoration: underline; }
+</style>

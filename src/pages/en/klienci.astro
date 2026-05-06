@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+const locale = 'en' as const;
+
+const stories = [
+  { name: 'Anna Kowalska', stable: 'Halicz Stables', profile: 'School · 38 horses · 120 clients', quote: 'Two weeks into Hovera I cancelled the second phone. Clients book themselves, the system tracks passes, and I can finally focus on the horses.' },
+  { name: 'Marek Wójcik', stable: 'Borowa Stables', profile: 'Boarding · 60-horse livery', quote: "I run a 60-horse boarding facility. Every owner used to text me directly. Now everyone has the app and sees what they need." },
+  { name: 'Karolina Lis', stable: 'Junior Team', profile: 'Sport · 12 horse-rider pairs · national coach', quote: 'I coach 12 pairs at national and international level. Hovera replaced Excel, the show calendar and group SMS. All in one.' },
+  { name: 'Tomasz Kowalski', stable: 'SK Janowice', profile: 'Breeding · 30 brood mares · 4 stallions', quote: 'Used to keep everything in three notebooks and one Excel. Hovera holds genealogy, breeding calendar and passports in one place.' },
+];
+
+const stats = [
+  { value: '120+', label: 'active stables' },
+  { value: '4 200+', label: 'horses in the system' },
+  { value: '38 000+', label: 'rides per month' },
+  { value: '4.8 / 5', label: 'avg App Store rating' },
+];
+---
+
+<Base title="Customers — Hovera" description="Stables using Hovera. Real stories, real numbers, real people.">
+  <PageHero eyebrow="Customers" title="Stables already working with us" subtitle="Every story different. The decision shared: hand operations to a tool, so you can do what really matters." />
+
+  <section class="container-x py-16" data-reveal>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {stats.map((s) => (
+        <div class="stat-card text-center">
+          <div class="stat-num">{s.value}</div>
+          <div class="text-xs muted mt-2">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-x py-16">
+    <div class="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+      {stories.map((s) => (
+        <article class="story-card" data-reveal>
+          <svg class="qm" viewBox="0 0 64 48" fill="currentColor"><path d="M0 28C0 12.5 9.3 1 24 0v8C16 9.5 12 14 12 22h12v26H0V28zm40 0c0-15.5 9.3-27 24-28v8c-8 1.5-12 6-12 14h12v26H40V28z"/></svg>
+          <blockquote class="story-quote">{s.quote}</blockquote>
+          <footer class="story-foot">
+            <div class="story-avatar">{s.name.charAt(0)}</div>
+            <div>
+              <div class="font-medium">{s.name}</div>
+              <div class="text-sm muted">{s.stable} · {s.profile}</div>
+            </div>
+          </footer>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .stat-card { padding: 1.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+  .stat-num { font-size: 2.25rem; line-height: 1; font-weight: 500; letter-spacing: -0.04em; }
+  .story-card { padding: 2.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); transition: all 0.4s var(--ease-out-expo); }
+  .story-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); }
+  .qm { width: 36px; height: 28px; color: var(--color-ochre); opacity: 0.5; }
+  .story-quote { font-family: var(--font-serif); font-size: 1.35rem; line-height: 1.4; margin-top: 1rem; }
+  .story-foot { display: flex; gap: 0.8rem; align-items: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+  .story-avatar { width: 40px; height: 40px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; }
+</style>

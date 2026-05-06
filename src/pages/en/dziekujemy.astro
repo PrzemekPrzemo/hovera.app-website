@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import { localizePath } from '../../i18n/utils';
+import HorseshoeMark from '../../components/HorseshoeMark.astro';
+const locale = 'en' as const;
+---
+
+<Base title="Thank you — Hovera" description="We received your inquiry. We'll reply within 24h." noIndex>
+  <section class="container-x py-32 text-center">
+    <div class="thanks-mark mx-auto" aria-hidden="true">
+      <HorseshoeMark class="h-full w-full text-[var(--color-ochre)]" />
+    </div>
+    <h1 class="display-2 mt-8">Thank you.</h1>
+    <p class="lead mt-5 max-w-xl mx-auto">
+      Your inquiry has reached us. We will read it carefully and reply within 24 hours.
+    </p>
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+      <a href={localizePath('/', locale)} class="btn btn-primary">Back to home</a>
+      <a href={localizePath('/co-nowego', locale)} class="btn btn-secondary">See what's new</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks-mark { width: 8rem; height: 8rem; animation: spin 18s linear infinite; }
+  @keyframes spin { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+</style>

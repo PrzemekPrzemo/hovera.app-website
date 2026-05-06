@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+const locale = 'pl' as const;
+
+const stories = [
+  {
+    name: 'Anna Kowalska',
+    stable: 'Stajnia Halicz',
+    profile: 'Szkółka · 38 koni · 120 klientów',
+    quote: 'Po dwóch tygodniach z Hoverą oddałam telefon dyżurny. Klienci sami się zapisują, system pilnuje karnetów, a ja mogę wreszcie skupić się na koniach.',
+  },
+  {
+    name: 'Marek Wójcik',
+    stable: 'Stajnia Borowa',
+    profile: 'Pensjonat · 60 koni livery',
+    quote: 'Zarządzam 60 końmi w pensjonacie. Wcześniej każdy właściciel pisał mi sam SMSa. Teraz każdy ma swoją apkę i wszystko widzi sam.',
+  },
+  {
+    name: 'Karolina Lis',
+    stable: 'KJ Kadra Junior',
+    profile: 'Sport · 12 zespołów · trenerka kadry',
+    quote: 'Trenuję 12 par jeździec-koń na poziomie krajowym i międzynarodowym. Hovera zastąpiła mi excela, kalendarz zawodów i grupowe SMSy. Wszystko w jednym.',
+  },
+  {
+    name: 'Tomasz Kowalski',
+    stable: 'SK Janowice',
+    profile: 'Hodowla · 30 klaczy hodowlanych · 4 ogiery',
+    quote: 'Mam 30 klaczy hodowlanych i 4 ogiery. Wcześniej wszystko było w trzech notesach i jednym excelu. Hovera trzyma genealogię i paszporty w jednym miejscu.',
+  },
+];
+
+const stats = [
+  { value: '120+', label: 'aktywnych stajni' },
+  { value: '4 200+', label: 'koni w systemie' },
+  { value: '38 000+', label: 'jazd miesięcznie' },
+  { value: '4.8 / 5', label: 'średnia ocena App Store' },
+];
+---
+
+<Base title="Klienci — Hovera" description="Stajnie, które używają Hovery. Realne historie, prawdziwe liczby, konkretni ludzie.">
+  <PageHero eyebrow="Klienci" title="Stajnie, które już z nami pracują" subtitle="Każda historia inna. Wspólna jest decyzja: oddać operacje narzędziu, żeby zająć się tym, co naprawdę ważne." />
+
+  <section class="container-x py-16" data-reveal>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {stats.map((s) => (
+        <div class="stat-card text-center">
+          <div class="stat-num">{s.value}</div>
+          <div class="text-xs muted mt-2">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-x py-16">
+    <div class="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+      {stories.map((s) => (
+        <article class="story-card" data-reveal>
+          <svg class="qm" viewBox="0 0 64 48" fill="currentColor"><path d="M0 28C0 12.5 9.3 1 24 0v8C16 9.5 12 14 12 22h12v26H0V28zm40 0c0-15.5 9.3-27 24-28v8c-8 1.5-12 6-12 14h12v26H40V28z"/></svg>
+          <blockquote class="story-quote">{s.quote}</blockquote>
+          <footer class="story-foot">
+            <div class="story-avatar">{s.name.charAt(0)}</div>
+            <div>
+              <div class="font-medium">{s.name}</div>
+              <div class="text-sm muted">{s.stable} · {s.profile}</div>
+            </div>
+          </footer>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .stat-card { padding: 1.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+  .stat-num { font-size: 2.25rem; line-height: 1; font-weight: 500; letter-spacing: -0.04em; }
+  .story-card { padding: 2.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); transition: all 0.4s var(--ease-out-expo); }
+  .story-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); }
+  .qm { width: 36px; height: 28px; color: var(--color-ochre); opacity: 0.5; }
+  .story-quote { font-family: var(--font-serif); font-size: 1.35rem; line-height: 1.4; margin-top: 1rem; }
+  .story-foot { display: flex; gap: 0.8rem; align-items: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+  .story-avatar { width: 40px; height: 40px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; }
+</style>

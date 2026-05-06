@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { localizePath } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const all = await getCollection('post', (e) => e.data.locale === 'en');
+  return all.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const locale = 'en' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title={d.title} description={d.description}>
+  <article class="container-x py-16">
+    <div class="max-w-3xl mx-auto">
+      <a href={lp('/blog')} class="muted text-sm">← Back to blog</a>
+      <header class="mt-8" data-reveal>
+        <div class="post-meta">
+          <time datetime={d.date}>{new Date(d.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>
+          <span class="muted">·</span>
+          <span class="muted">{d.author}</span>
+          {d.tags && (<span class="muted">·</span>)}
+          {d.tags && d.tags.map((t: string) => <span class="post-tag">{t}</span>)}
+        </div>
+        <h1 class="display-2 mt-4 text-balance">{d.title}</h1>
+        <p class="lead mt-5">{d.description}</p>
+      </header>
+
+      <div class="post-body mt-12" data-reveal>
+        <Content />
+      </div>
+
+      <footer class="mt-16 pt-8 border-t" style="border-color: var(--color-border);">
+        <div class="flex flex-wrap justify-between items-center gap-4">
+          <a href={lp('/blog')} class="btn btn-secondary text-sm">More posts</a>
+          <a href={lp('/kontakt')} class="btn btn-primary text-sm">Try Hovera</a>
+        </div>
+      </footer>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post-meta { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; font-size: 0.85rem; }
+  .post-tag { font-size: 11px; padding: 2px 8px; background: var(--color-sand-light); border-radius: 999px; }
+  .post-body :global(h2) { font-size: 1.6rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 2.5rem; }
+  .post-body :global(h3) { font-size: 1.25rem; line-height: 1.3; font-weight: 500; margin-top: 2rem; }
+  .post-body :global(p) { margin-top: 1rem; line-height: 1.7; font-size: 1.05rem; color: var(--color-fg); }
+  .post-body :global(ul), .post-body :global(ol) { margin-top: 1rem; padding-left: 1.5rem; line-height: 1.7; }
+  .post-body :global(ul) { list-style: disc; }
+  .post-body :global(ol) { list-style: decimal; }
+  .post-body :global(li) { margin-top: 0.4rem; }
+  .post-body :global(strong) { color: var(--color-bark); font-weight: 600; }
+  .post-body :global(a) { color: var(--color-ochre-dark); text-decoration: underline; text-underline-offset: 3px; }
+  .post-body :global(a:hover) { color: var(--color-bark); }
+  .post-body :global(hr) { margin: 3rem 0; border: none; border-top: 1px solid var(--color-border); }
+  .post-body :global(blockquote) { padding-left: 1rem; border-left: 3px solid var(--color-ochre); font-style: italic; margin: 1.5rem 0; color: var(--color-fg-muted); }
+</style>

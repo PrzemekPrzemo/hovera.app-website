@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import HorseshoeMark from '../components/HorseshoeMark.astro';
+const locale = 'pl' as const;
+---
+
+<Base title="O nas — Hovera" description="Hovera to zespół ludzi, którzy znają stajnię od strony obornika i kodu. Budujemy SaaS, którego sami chcielibyśmy używać.">
+  <PageHero eyebrow="O nas" title="Robimy SaaS, którego sami byśmy używali" subtitle="Hovera powstała, bo żaden system nie pasował do tego, jak działa polska stajnia. Więc zbudowaliśmy własny — z myślą, że stajnia to nie korpo, a praca z końmi to nie spreadsheet." />
+
+  <section class="container-x py-16">
+    <div class="grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center">
+      <div data-reveal>
+        <span class="eyebrow">Nasza historia</span>
+        <h2 class="display-3 mt-3">Z arkusza Google do produktu</h2>
+        <p class="muted mt-4 leading-relaxed">
+          Zaczęliśmy od jednej stajni i jednego excela. Po pół roku excel miał 14 zakładek i nikt nie wiedział, czy karnet Anny się skończył. Szukaliśmy gotowego rozwiązania — Horstable, Equicty, EquineM. Każde miało swoje 'ale': brak KSeF, archaiczny UX, brak mobile. Zatem zaczęliśmy pisać własne. Po roku kod ten obsługiwał 8 stajni z polecenia. Po dwóch — wystartowaliśmy publicznie jako Hovera.
+        </p>
+      </div>
+      <div data-reveal class="about-mark">
+        <HorseshoeMark class="h-full w-full text-[var(--color-ochre)]" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      <div class="value-card">
+        <div class="value-num">01</div>
+        <h3 class="value-title">Produkt nad marketingiem</h3>
+        <p class="muted mt-3">Wolimy spędzić tydzień nad poprawą jednej funkcji niż nad reklamą. Klienci to widzą.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">02</div>
+        <h3 class="value-title">Mówimy prawdę o produkcie</h3>
+        <p class="muted mt-3">Jeśli czegoś nie ma, mówimy 'nie ma'. Roadmapa jest publiczna, changelog jest na żywo.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-num">03</div>
+        <h3 class="value-title">Polski first, europejski w bonusie</h3>
+        <p class="muted mt-3">KSeF mamy od MVP. Peppol BIS Billing 3.0 — tak samo. UE to nasze drugie podwórko, nie afterthought.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="company-info max-w-3xl mx-auto">
+      <h3 class="display-3 text-center">Dane firmy</h3>
+      <dl class="mt-8 grid gap-4 md:grid-cols-2">
+        <div><dt class="muted text-xs uppercase tracking-widest">Pełna nazwa</dt><dd class="mt-1 font-medium">Hovera Sp. z o.o.</dd></div>
+        <div><dt class="muted text-xs uppercase tracking-widest">Siedziba</dt><dd class="mt-1 font-medium">ul. Stajenna 12, 00-000 Warszawa</dd></div>
+        <div><dt class="muted text-xs uppercase tracking-widest">NIP</dt><dd class="mt-1 font-medium">0000000000</dd></div>
+        <div><dt class="muted text-xs uppercase tracking-widest">REGON</dt><dd class="mt-1 font-medium">000000000</dd></div>
+        <div><dt class="muted text-xs uppercase tracking-widest">KRS</dt><dd class="mt-1 font-medium">0000000000</dd></div>
+        <div><dt class="muted text-xs uppercase tracking-widest">Kontakt</dt><dd class="mt-1 font-medium"><a href="mailto:hello@hovera.app">hello@hovera.app</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .about-mark { width: 16rem; height: 16rem; margin: 0 auto; opacity: 0.7; animation: spin 30s linear infinite; }
+  @keyframes spin { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+  .value-card { padding: 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .value-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-ochre-dark); letter-spacing: 0.18em; }
+  .value-title { font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 0.6rem; }
+  .company-info { padding: 2.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); }
+</style>

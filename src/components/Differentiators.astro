@@ -1,0 +1,78 @@
+---
+import { useTranslations, type Locale } from '../i18n/utils';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const items = locale === 'pl' ? [
+  { icon: 'shield', title: 'Polski KSeF i Peppol UE od pierwszego dnia', body: 'Nie po latach, nie jako addon. Pełna integracja od MVP, certyfikat Type 2.' },
+  { icon: 'wifi-off', title: 'Aplikacja mobilna, która działa offline', body: 'W stajni bez wifi, sync gdy wrócisz w zasięg. Konflikty rozwiązywane automatycznie.' },
+  { icon: 'globe', title: 'Publiczna strona Twojej stajni', body: 'Klienci znajdują Cię w Google, rezerwują online — bez Facebooka, bez excela.' },
+] : [
+  { icon: 'shield', title: 'Polish e-invoicing & EU Peppol from day one', body: 'Not in years, not as an add-on. Full integration from MVP, Type 2 certified.' },
+  { icon: 'wifi-off', title: 'A mobile app that works offline', body: 'In the barn without wifi — sync when you reconnect. Conflicts resolved automatically.' },
+  { icon: 'globe', title: 'A public page for your stable', body: 'Clients find you on Google and book online — no Facebook chaos, no spreadsheets.' },
+];
+---
+
+<section class="container-x py-24" data-reveal>
+  <header class="mx-auto max-w-3xl text-center">
+    <span class="eyebrow">{t('diff.eyebrow')}</span>
+    <h2 class="display-2 mt-4 text-balance">{t('diff.title')}</h2>
+  </header>
+
+  <div class="mt-14 grid gap-6 md:grid-cols-3">
+    {items.map((it) => (
+      <div class="diff-card">
+        <div class="diff-icon">
+          {it.icon === 'shield' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" stroke-linejoin="round"/>
+              <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          )}
+          {it.icon === 'wifi-off' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13a10 10 0 0114 0M2 9a14 14 0 0120 0M8.5 16.5a5 5 0 017 0M12 20l0 0M3 3l18 18"/>
+            </svg>
+          )}
+          {it.icon === 'globe' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>
+            </svg>
+          )}
+        </div>
+        <h3 class="diff-title">{it.title}</h3>
+        <p class="diff-body muted mt-3">{it.body}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .diff-card {
+    padding: 2rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    background: var(--color-cream);
+    box-shadow: var(--shadow-soft);
+  }
+  .diff-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, var(--color-sand-light) 0%, var(--color-sand) 100%);
+    border: 1px solid var(--color-border);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--color-bark);
+  }
+  .diff-icon svg { width: 22px; height: 22px; }
+  .diff-title {
+    font-size: 1.25rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    margin-top: 1.25rem;
+  }
+  .diff-body { font-size: 0.95rem; line-height: 1.55; }
+</style>

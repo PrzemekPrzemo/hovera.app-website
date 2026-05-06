@@ -1,0 +1,42 @@
+---
+import Legal from '../layouts/Legal.astro';
+---
+
+<Legal title="RODO / GDPR" eyebrow="Compliance" description="Hovera a RODO. Jak realizujemy obowiązki administratora i procesora." updated="6 maja 2026">
+  <h2>Hovera jako Procesor</h2>
+  <p>Gdy korzystasz z Hovery, my (Hovera Sp. z o.o.) jesteśmy Procesorem Twoich danych — przetwarzamy je w Twoim imieniu i na Twoje polecenie. Ty pozostajesz Administratorem danych Twoich klientów.</p>
+
+  <h2>Umowa powierzenia (DPA)</h2>
+  <p>Każdy płatny plan Hovery zawiera w sobie automatycznie zawartą umowę powierzenia danych. Pełna treść w sekcji <a href="/regulamin">Regulamin</a>, Załącznik A.</p>
+
+  <h2>Kategorie przetwarzanych danych</h2>
+  <ul>
+    <li>Dane identyfikacyjne klientów stajni (imię, nazwisko, email, telefon)</li>
+    <li>Dane operacyjne (jazdy, karnety, faktury)</li>
+    <li>Dane konia (właściciel, historia weterynaryjna)</li>
+  </ul>
+
+  <h2>Środki bezpieczeństwa</h2>
+  <ul>
+    <li>Szyfrowanie at rest (AES-256) i in transit (TLS 1.3)</li>
+    <li>Backupy szyfrowane, codzienne, retencja 30 dni, georeplikacja</li>
+    <li>Pełen audit log każdej zmiany w danych</li>
+    <li>Dostęp do produkcji: 2-osobowa autoryzacja, 2FA, log przesyłany do SOC</li>
+    <li>RBAC (role-based access) dla użytkowników stajni</li>
+  </ul>
+
+  <h2>Sub-procesorzy</h2>
+  <ul>
+    <li>Hetzner Online GmbH (Niemcy) — hosting</li>
+    <li>Cloudflare (UE) — CDN i WAF</li>
+    <li>Stripe (Irlandia) — płatności</li>
+    <li>Postmark (USA) — email (Standard Contractual Clauses)</li>
+  </ul>
+  <p>Powiadomimy Cię z 30-dniowym wyprzedzeniem o każdej zmianie sub-procesorów.</p>
+
+  <h2>Twoje prawa</h2>
+  <p>Eksport pełnych danych w formacie JSON dostępny z poziomu panelu (Profil → Dane → Eksport). Usunięcie konta i danych — w ciągu 30 dni od żądania.</p>
+
+  <h2>Kontakt</h2>
+  <p>Inspektor Ochrony Danych: <a href="mailto:rodo@hovera.app">rodo@hovera.app</a></p>
+</Legal>

@@ -1,0 +1,33 @@
+---
+import Base from './Base.astro';
+import PageHero from '../components/PageHero.astro';
+
+interface Props {
+  title: string;
+  eyebrow: string;
+  description: string;
+  updated: string;
+}
+const { title, eyebrow, description, updated } = Astro.props;
+---
+
+<Base title={`${title} — Hovera`} description={description}>
+  <PageHero eyebrow={eyebrow} title={title} subtitle={`Ostatnia aktualizacja: ${updated}`} />
+  <article class="container-x py-16">
+    <div class="legal-body max-w-3xl mx-auto">
+      <slot />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal-body :global(h2) { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 2.5rem; }
+  .legal-body :global(h3) { font-size: 1.15rem; line-height: 1.3; font-weight: 500; margin-top: 1.75rem; }
+  .legal-body :global(p) { margin-top: 1rem; line-height: 1.7; color: var(--color-fg); }
+  .legal-body :global(ul), .legal-body :global(ol) { margin-top: 1rem; padding-left: 1.5rem; line-height: 1.7; }
+  .legal-body :global(ul) { list-style: disc; }
+  .legal-body :global(ol) { list-style: decimal; }
+  .legal-body :global(li) { margin-top: 0.4rem; }
+  .legal-body :global(strong) { color: var(--color-bark); font-weight: 600; }
+  .legal-body :global(a) { color: var(--color-ochre-dark); text-decoration: underline; text-underline-offset: 3px; }
+</style>

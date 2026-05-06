@@ -1,0 +1,61 @@
+name: Build and deploy to Plesk
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Copy PHP API into dist
+        run: |
+          if [ -d "public/api" ]; then
+            mkdir -p dist/api
+            cp -r public/api/. dist/api/
+          fi
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PLESK_SSH_KEY }}
+
+      - name: Add Plesk host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.PLESK_SSH_PORT || '22' }} -H ${{ secrets.PLESK_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: |
+          rsync -avz --delete \
+            --exclude='/api/.env' \
+            --exclude='/admin/' \
+            -e "ssh -p ${{ secrets.PLESK_SSH_PORT || '22' }}" \
+            ./dist/ \
+            ${{ secrets.PLESK_USER }}@${{ secrets.PLESK_HOST }}:${{ secrets.PLESK_PATH }}/
+
+      - name: Sync /admin separately (for CMS updates)
+        run: |
+          rsync -avz \
+            -e "ssh -p ${{ secrets.PLESK_SSH_PORT || '22' }}" \
+            ./public/admin/ \
+            ${{ secrets.PLESK_USER }}@${{ secrets.PLESK_HOST }}:${{ secrets.PLESK_PATH }}/admin/

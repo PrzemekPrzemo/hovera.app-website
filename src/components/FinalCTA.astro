@@ -1,0 +1,77 @@
+---
+import { useTranslations, localizePath, type Locale } from '../i18n/utils';
+import HorseshoeMark from './HorseshoeMark.astro';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<section class="container-x py-24">
+  <div class="final-cta" data-reveal>
+    <div class="final-mark" aria-hidden="true">
+      <HorseshoeMark class="h-full w-full text-[var(--color-ochre)] opacity-30" />
+    </div>
+    <div class="relative z-10 text-center max-w-3xl mx-auto">
+      <h2 class="display-2 text-balance" style="color: var(--color-cream);">{t('final.title')}</h2>
+      <p class="mt-5 text-balance" style="color: rgba(250,248,244,0.75); font-size: 1.1rem;">{t('final.subtitle')}</p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href={lp('/kontakt')} class="btn btn-cream magnetic">
+          {t('final.cta')}
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href={lp('/demo')} class="btn btn-cream-outline">
+          {t('hero.cta.secondary')}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final-cta {
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--radius-2xl);
+    background: linear-gradient(135deg, var(--color-bark) 0%, #2a2018 100%);
+    padding: 5rem 2rem;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(600px 300px at 20% 20%, rgba(168,149,107,0.35), transparent 60%),
+      radial-gradient(500px 250px at 90% 80%, rgba(168,149,107,0.18), transparent 60%);
+  }
+  .final-mark {
+    position: absolute;
+    width: 28rem; height: 28rem;
+    bottom: -8rem;
+    right: -6rem;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .btn-cream {
+    background: var(--color-cream);
+    color: var(--color-bark);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .btn-cream:hover {
+    background: white;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+  .btn-cream-outline {
+    background: transparent;
+    color: var(--color-cream);
+    border: 1px solid rgba(250,248,244,0.3);
+  }
+  .btn-cream-outline:hover {
+    background: rgba(250,248,244,0.08);
+    border-color: rgba(250,248,244,0.5);
+  }
+</style>

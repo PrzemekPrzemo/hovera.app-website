@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<Base title="Privacy policy — Hovera" description="How Hovera processes your data.">
+  <PageHero eyebrow="Legal" title="Privacy policy" subtitle="Last updated: 6 May 2026" />
+  <article class="container-x py-16">
+    <div class="legal-body max-w-3xl mx-auto">
+      <p><strong>Note:</strong> Placeholder — requires legal review before production.</p>
+
+      <h2>1. Data controller</h2>
+      <p>Data controller: Hovera Sp. z o.o., Warsaw, Poland (VAT ID: PL0000000000). GDPR contact: <a href="mailto:gdpr@hovera.app">gdpr@hovera.app</a>.</p>
+
+      <h2>2. Data we process</h2>
+      <ul>
+        <li>Identification (name, email, phone)</li>
+        <li>Company data (name, VAT ID, address)</li>
+        <li>Operational data (stable clients, horses, transactions)</li>
+        <li>Technical data (IP, cookies, access logs)</li>
+      </ul>
+
+      <h2>3. Purposes</h2>
+      <ul>
+        <li>Service provision (Art. 6(1)(b) GDPR)</li>
+        <li>Payments and invoicing (Art. 6(1)(c))</li>
+        <li>Marketing of own services (Art. 6(1)(f), legitimate interest)</li>
+        <li>Inquiry handling (Art. 6(1)(a), consent)</li>
+      </ul>
+
+      <h2>4. Retention</h2>
+      <p>Operational data — duration of contract + 5 years (legal requirement). Marketing — until consent withdrawn.</p>
+
+      <h2>5. Your rights</h2>
+      <ul>
+        <li>Right of access</li>
+        <li>Right to rectification</li>
+        <li>Right to erasure ("right to be forgotten")</li>
+        <li>Right to data portability</li>
+        <li>Right to object</li>
+        <li>Right to lodge a complaint with the supervisory authority</li>
+      </ul>
+
+      <h2>6. Processing location</h2>
+      <p>Data stored in the EU (Frankfurt, Warsaw). No transfers outside the EEA.</p>
+
+      <h2>7. Sub-processors</h2>
+      <ul>
+        <li>Hetzner Online (hosting)</li>
+        <li>Stripe (payments)</li>
+        <li>Postmark (transactional email)</li>
+        <li>Cloudflare (CDN)</li>
+      </ul>
+
+      <h2>8. Security</h2>
+      <p>Encryption at rest (AES-256) and in transit (TLS 1.3). Production access limited, 2FA required. Audit logs for every change.</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal-body :global(h2) { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 2.5rem; }
+  .legal-body :global(p) { margin-top: 1rem; line-height: 1.7; }
+  .legal-body :global(ul) { margin-top: 1rem; padding-left: 1.5rem; line-height: 1.7; list-style: disc; }
+  .legal-body :global(li) { margin-top: 0.4rem; }
+  .legal-body :global(a) { color: var(--color-ochre-dark); text-decoration: underline; }
+</style>
