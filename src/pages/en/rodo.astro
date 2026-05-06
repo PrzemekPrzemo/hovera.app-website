@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<Base title="GDPR — Hovera" description="Hovera's GDPR compliance. How we fulfill controller and processor obligations.">
+  <PageHero eyebrow="Compliance" title="GDPR / RODO" subtitle="Last updated: 6 May 2026" />
+  <article class="container-x py-16">
+    <div class="legal-body max-w-3xl mx-auto">
+      <h2>Hovera as Processor</h2>
+      <p>When you use Hovera, we (Hovera Sp. z o.o.) are the Processor of your data — we process it on your behalf and on your instructions. You remain the Controller of your clients' data.</p>
+
+      <h2>Data Processing Agreement (DPA)</h2>
+      <p>Every paid Hovera plan includes an automatically concluded data processing agreement. Full text in <a href="/en/regulamin">Terms</a>, Annex A.</p>
+
+      <h2>Categories of data processed</h2>
+      <ul>
+        <li>Identification of stable clients (name, email, phone)</li>
+        <li>Operational data (rides, passes, invoices)</li>
+        <li>Horse data (owner, veterinary history)</li>
+      </ul>
+
+      <h2>Security measures</h2>
+      <ul>
+        <li>Encryption at rest (AES-256) and in transit (TLS 1.3)</li>
+        <li>Encrypted backups, daily, 30-day retention, geo-replicated</li>
+        <li>Full audit log of every data change</li>
+        <li>Production access: 2-person authorization, 2FA, log forwarded to SOC</li>
+        <li>RBAC for stable users</li>
+      </ul>
+
+      <h2>Sub-processors</h2>
+      <ul>
+        <li>Hetzner Online GmbH (Germany) — hosting</li>
+        <li>Cloudflare (EU) — CDN and WAF</li>
+        <li>Stripe (Ireland) — payments</li>
+        <li>Postmark (USA) — email (Standard Contractual Clauses)</li>
+      </ul>
+      <p>30-day notice for sub-processor changes.</p>
+
+      <h2>Your rights</h2>
+      <p>Full data export as JSON available from the panel (Profile → Data → Export). Account and data deletion within 30 days of request.</p>
+
+      <h2>Contact</h2>
+      <p>Data Protection Officer: <a href="mailto:gdpr@hovera.app">gdpr@hovera.app</a></p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal-body :global(h2) { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 2.5rem; }
+  .legal-body :global(p) { margin-top: 1rem; line-height: 1.7; }
+  .legal-body :global(ul) { margin-top: 1rem; padding-left: 1.5rem; line-height: 1.7; list-style: disc; }
+  .legal-body :global(li) { margin-top: 0.4rem; }
+  .legal-body :global(a) { color: var(--color-ochre-dark); text-decoration: underline; }
+</style>

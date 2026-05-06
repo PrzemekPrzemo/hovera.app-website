@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { localizePath } from '../../i18n/utils';
+
+export async function getStaticPaths() {
+  const all = await getCollection('versus', (e) => e.data.locale === 'pl');
+  return all.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const locale = 'pl' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title={d.title} description={d.description}>
+  <PageHero eyebrow="Porównanie" title={`Hovera vs ${d.competitor}`} subtitle={d.tldr} />
+
+  <section class="container-x py-16" data-reveal>
+    <div class="vs-table">
+      <div class="vs-row vs-head">
+        <div></div>
+        <div class="vs-h-hovera">Hovera</div>
+        <div class="vs-h-them">{d.competitor}</div>
+      </div>
+      {d.table.map((row: any) => (
+        <div class="vs-row">
+          <div class="vs-feat">{row.feature}</div>
+          <div class="vs-h-hovera">{row.hovera}</div>
+          <div class="vs-h-them">{row.them}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="choice-card choice-h">
+        <span class="eyebrow">Wybierz Hoverę jeśli</span>
+        <ul class="mt-4 space-y-2.5">
+          {d.chooseHovera.map((c: string) => (
+            <li class="choice-row">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="choice-card">
+        <span class="eyebrow">Wybierz {d.competitor} jeśli</span>
+        <ul class="mt-4 space-y-2.5">
+          {d.chooseThem.map((c: string) => (
+            <li class="choice-row">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{c}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .vs-table {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    background: var(--color-cream);
+  }
+  .vs-row { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr; border-bottom: 1px solid var(--color-border); font-size: 0.95rem; }
+  .vs-row:last-child { border-bottom: none; }
+  .vs-row > div { padding: 1rem 1.25rem; border-right: 1px solid var(--color-border); }
+  .vs-row > div:last-child { border-right: none; }
+  .vs-head { background: var(--color-sand-light); font-weight: 500; }
+  .vs-head .vs-h-hovera { color: var(--color-bark); font-weight: 600; }
+  .vs-head .vs-h-them { color: var(--color-fg-muted); }
+  .vs-feat { color: var(--color-fg); font-weight: 500; }
+  .vs-h-hovera { background: rgba(168,149,107,0.06); }
+  @media (max-width: 700px) {
+    .vs-row { grid-template-columns: 1.5fr 1fr 1fr; font-size: 0.78rem; }
+    .vs-row > div { padding: 0.6rem 0.5rem; }
+  }
+
+  .choice-card {
+    padding: 2rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    background: var(--color-cream);
+  }
+  .choice-h {
+    background: linear-gradient(180deg, var(--color-sand-light) 0%, var(--color-cream) 100%);
+    border-color: var(--color-bark-300);
+  }
+  .choice-row { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.95rem; }
+  .choice-row svg { color: var(--color-ochre); flex-shrink: 0; margin-top: 0.4rem; }
+</style>

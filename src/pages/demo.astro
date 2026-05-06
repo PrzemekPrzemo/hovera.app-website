@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import { localizePath } from '../i18n/utils';
+const locale = 'pl' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title="Demo — Hovera" description="Zobacz Hoverę w akcji. Self-serve video tour albo live demo dopasowane do Twojej stajni.">
+  <PageHero
+    eyebrow="Demo"
+    title="Zobacz Hoverę w akcji"
+    subtitle="Wybierz opcję, która Ci pasuje. Video samodzielnie albo rozmowa 30 minut z naszym CSM."
+  />
+
+  <section class="container-x py-16">
+    <div class="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+      <article class="demo-card" data-reveal>
+        <div class="demo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="14" rx="2"/>
+            <path d="M10 9l5 3-5 3V9z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3 class="display-3 mt-4">Self-serve video tour</h3>
+        <p class="muted mt-3">5-7 minut przeklikania przez najważniejsze ekrany Hovery z lektorem. Bez logowania, bez formularza.</p>
+        <ul class="demo-list mt-6">
+          <li>Hero hero stajni (Anna i Halicz)</li>
+          <li>Dodajemy konia i pierwszą jazdę</li>
+          <li>Klient kupuje karnet online</li>
+          <li>Wystawiamy fakturę KSeF</li>
+          <li>Sprawdzamy w aplikacji mobilnej</li>
+        </ul>
+        <button class="btn btn-primary mt-6" disabled>Zagraj video (wkrótce)</button>
+      </article>
+
+      <article class="demo-card" data-reveal>
+        <div class="demo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 5h18v14H3z" stroke-linejoin="round"/>
+            <path d="M3 5l9 7 9-7" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="display-3 mt-4">Live demo dla Twojej stajni</h3>
+        <p class="muted mt-3">30-minutowe spotkanie online. Pokazujemy Hoverę w kontekście Twojej stajni: szkółki, pensjonatu, sportu czy hodowli.</p>
+        <ul class="demo-list mt-6">
+          <li>Krótki wywiad o Twojej stajni</li>
+          <li>Demo pod konkretne use case'y</li>
+          <li>Pytania na żywo</li>
+          <li>Plan migracji z Twojego systemu</li>
+          <li>Wycena planu</li>
+        </ul>
+        <a href={lp('/kontakt')} class="btn btn-primary mt-6">Umów demo</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="demo-faq">
+      <h3 class="display-3 text-center">Pytania o demo</h3>
+      <div class="mt-8 max-w-3xl mx-auto space-y-3">
+        <details class="faq-item">
+          <summary><span>Czy live demo jest sprzedażowe?</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <p class="muted">Nie. To pokaz produktu, nie pitch. Jeśli to nie dla Ciebie, mówimy 'OK' i kończymy spotkanie.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span>Kto prowadzi demo?</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <p class="muted">Customer Success Manager Hovery — osoba, która zna produkt od kuchni i potrafi pokazać go w kontekście Twojej stajni.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span>Co przygotować?</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <p class="muted">Nic specjalnego. Wystarczy stabilne łącze i 30 minut. Po stronie Hovery przygotujemy demo dopasowane do Twojego profilu.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span>Czy mogę pominąć demo i wypróbować sama?</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <p class="muted">Tak. Wszystkie funkcje są dostępne w 14-dniowym trialu. Demo pomaga, gdy chcesz mieć drugą parę oczu na własną stajnię.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .demo-card {
+    padding: 2.5rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    transition: all 0.4s var(--ease-out-expo);
+  }
+  .demo-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); }
+  .demo-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: var(--color-sand-light);
+    color: var(--color-bark);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .demo-icon svg { width: 28px; height: 28px; }
+  .demo-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.95rem; color: var(--color-fg-muted); }
+  .demo-list li { padding-left: 1.5rem; position: relative; }
+  .demo-list li::before { content: "→"; position: absolute; left: 0; color: var(--color-ochre); }
+
+  .faq-item { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; }
+  .faq-item summary { list-style: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary svg { transition: transform 0.3s; }
+  .faq-item[open] summary svg { transform: rotate(180deg); }
+  .faq-item p { padding: 0 1.25rem 1.1rem; line-height: 1.6; }
+</style>

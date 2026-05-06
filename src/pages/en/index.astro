@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import SocialProof from '../../components/SocialProof.astro';
+import ProductTour from '../../components/ProductTour.astro';
+import UseCases from '../../components/UseCases.astro';
+import Differentiators from '../../components/Differentiators.astro';
+import PricingTeaser from '../../components/PricingTeaser.astro';
+import Testimonial from '../../components/Testimonial.astro';
+import TechBar from '../../components/TechBar.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const locale = 'en' as const;
+---
+
+<Base
+  title="Hovera — Lift the weight off your stable."
+  description="Operations SaaS for stables. Schedule, passes, e-invoicing and horse care in one tool. Mobile, offline, Polish-first, EU-ready."
+>
+  <Hero locale={locale} />
+  <SocialProof locale={locale} />
+  <ProductTour locale={locale} />
+  <UseCases locale={locale} />
+  <Differentiators locale={locale} />
+  <PricingTeaser locale={locale} />
+  <Testimonial locale={locale} />
+  <TechBar locale={locale} />
+  <FinalCTA locale={locale} />
+</Base>

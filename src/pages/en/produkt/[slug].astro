@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import ProductHero from '../../../components/ProductHero.astro';
+import FinalCTA from '../../../components/FinalCTA.astro';
+import { localizePath } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const all = await getCollection('product', (e) => e.data.locale === 'en');
+  return all.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const locale = 'en' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title={d.title} description={d.description}>
+  <ProductHero eyebrow={d.eyebrow} headline={d.headline} subtitle={d.subtitle} accent={d.accent} />
+
+  <section class="container-x py-24" data-reveal>
+    <div class="grid gap-10 md:grid-cols-12 items-start">
+      <div class="md:col-span-5">
+        <h2 class="display-3 text-balance">What you get</h2>
+        <p class="lead mt-4">{d.subtitle}</p>
+      </div>
+      <ul class="md:col-span-7 grid gap-3">
+        {d.bullets.map((b: string) => (
+          <li class="bullet-row">
+            <span class="bullet-check">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container-x py-24" data-reveal>
+    <h2 class="display-2 text-center text-balance max-w-3xl mx-auto">Why it works</h2>
+    <div class="mt-14 grid gap-6 md:grid-cols-2">
+      {d.subFeatures.map((sf: { title: string; body: string }) => (
+        <div class="sub-card">
+          <h3 class="sub-title">{sf.title}</h3>
+          <p class="muted mt-3">{sf.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {d.integrations && d.integrations.length > 0 && (
+    <section class="container-x py-16" data-reveal>
+      <h2 class="display-3 text-center">Works with</h2>
+      <div class="mt-8 flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+        {d.integrations.map((i: string) => (<span class="integration-pill">{i}</span>))}
+      </div>
+    </section>
+  )}
+
+  <section class="container-x py-16" data-reveal>
+    <div class="pricing-note">
+      <span class="eyebrow">Included with</span>
+      <p class="mt-3">{d.pricingNote}</p>
+      <div class="mt-5 flex flex-wrap gap-3 justify-center">
+        <a href={lp('/cennik')} class="btn btn-primary">See pricing</a>
+        <a href={lp('/kontakt')} class="btn btn-secondary">Ask for demo</a>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .bullet-row { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.85rem 1rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 12px; }
+  .bullet-check { width: 24px; height: 24px; border-radius: 999px; background: var(--color-bark); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sub-card { padding: 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-xl); transition: all 0.4s var(--ease-out-expo); }
+  .sub-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); border-color: var(--color-bark-300); }
+  .sub-title { font-size: 1.35rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; }
+  .integration-pill { padding: 8px 16px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 999px; font-size: 13px; transition: all 0.2s; }
+  .integration-pill:hover { background: var(--color-bark); color: var(--color-cream); border-color: var(--color-bark); }
+  .pricing-note { max-width: 36rem; margin: 0 auto; text-align: center; padding: 2.5rem; background: linear-gradient(180deg, var(--color-sand-light) 0%, var(--color-cream) 100%); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); }
+</style>

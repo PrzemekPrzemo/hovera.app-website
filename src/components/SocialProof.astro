@@ -1,0 +1,51 @@
+---
+import { useTranslations, type Locale } from '../i18n/utils';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const logos = [
+  'Stajnia Halicz',
+  'KJ Pegaz',
+  'SK Mazury',
+  'Klub Pod Lasem',
+  'Stajnia Borowa',
+  'Equestria',
+  'KJ Janów',
+  'Stajnia Wisła',
+];
+---
+
+<section class="hovera-social py-16 md:py-24" data-reveal>
+  <div class="container-x">
+    <p class="text-center text-sm muted">{t('social.title')}</p>
+    <div class="logos-marquee mt-8">
+      <div class="marquee-track flex items-center gap-12 whitespace-nowrap">
+        {[...logos, ...logos].map((logo) => (
+          <span class="logo-item">{logo}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .logos-marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  }
+  .logo-item {
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-fg-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0.55;
+    transition: opacity 0.3s, color 0.3s;
+  }
+  .logo-item:hover {
+    opacity: 1;
+    color: var(--color-bark);
+  }
+</style>

@@ -1,0 +1,363 @@
+---
+import { useTranslations, localizePath, type Locale } from '../i18n/utils';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const lp = (p: string) => localizePath(p, locale);
+
+type Feature = {
+  eyebrow: string;
+  title: string;
+  body: string;
+  bullets: string[];
+  href: string;
+  visual: 'calendar' | 'passes' | 'invoice' | 'journal' | 'mobile';
+};
+
+const features: Feature[] = locale === 'pl' ? [
+  {
+    eyebrow: 'Kalendarz',
+    title: 'Kalendarz, który nie pozwoli zarezerwować dwóch jazd na ten sam koń.',
+    body: 'Multi-resource scheduling z wykrywaniem konfliktów w czasie rzeczywistym. Drag & drop, widoki dla instruktora, klienta i właściciela konia. Eksport do Google Calendar i iCal.',
+    bullets: ['Wykrywanie konfliktów w czasie rzeczywistym', 'Widoki: dzień, tydzień, miesiąc, koń, instruktor', 'Powtarzające się rezerwacje i programy treningowe'],
+    href: lp('/produkt/kalendarz'),
+    visual: 'calendar',
+  },
+  {
+    eyebrow: 'Karnety',
+    title: 'Karnety, które same się rozliczają.',
+    body: 'Klient kupuje karnet — system automatycznie odlicza jazdy, generuje faktury i wysyła powiadomienia, gdy zostały ostatnie wejścia. Bez excela, bez liczenia w pamięci.',
+    bullets: ['Auto-rozliczanie po każdej jeździe', 'Karnety czasowe i ilościowe', 'Wpłaty BLIK / Przelewy24 / przelew'],
+    href: lp('/produkt/karnety'),
+    visual: 'passes',
+  },
+  {
+    eyebrow: 'Faktury i KSeF',
+    title: 'Faktury z KSeF jednym kliknięciem.',
+    body: 'Pełna integracja z KSeF od pierwszego dnia. Wystawiasz fakturę, system wysyła do KSeF, dostajesz numer i potwierdzenie. Również Peppol BIS Billing 3.0 dla UE.',
+    bullets: ['KSeF Type 2 cert', 'Eksport do iFirma, Wfirma, Comarch ERP', 'Faktury cykliczne dla pensjonatu'],
+    href: lp('/produkt/finanse-ksef'),
+    visual: 'invoice',
+  },
+  {
+    eyebrow: 'Dziennik konia',
+    title: 'Cała historia konia w jednym widoku.',
+    body: 'Szczepienia, wizyty weterynarza, kowal, treningi, notatki, zdjęcia. Timeline, którego nie zgubisz, gdy zmieni się instruktor. Eksport PDF na zawody i do paszportu.',
+    bullets: ['Timeline z filtrami', 'Przypomnienia o szczepieniach i kowalu', 'Eksport PDF i integracje z FEI / PZJ'],
+    href: lp('/produkt/dziennik-konia'),
+    visual: 'journal',
+  },
+  {
+    eyebrow: 'Aplikacja mobilna',
+    title: 'Aplikacja mobilna, która działa nawet bez wifi.',
+    body: 'Pełen tryb offline — planuj jazdy, dodawaj notatki, rób zdjęcia w stajni bez zasięgu. Synchronizacja gdy wrócisz w sieć, konflikty rozwiązywane automatycznie.',
+    bullets: ['iOS 16+, Android 10+', 'Offline-first architecture', 'Push notifications + widgety home screen'],
+    href: lp('/produkt/aplikacja-mobilna'),
+    visual: 'mobile',
+  },
+] : [
+  {
+    eyebrow: 'Calendar',
+    title: "A calendar that won't let you double-book the same horse.",
+    body: 'Multi-resource scheduling with real-time conflict detection. Drag & drop, separate views for instructor, client and horse owner. Export to Google Calendar and iCal.',
+    bullets: ['Real-time conflict detection', 'Views: day, week, month, by horse, by instructor', 'Recurring bookings and training programs'],
+    href: lp('/produkt/kalendarz'),
+    visual: 'calendar',
+  },
+  {
+    eyebrow: 'Passes',
+    title: 'Passes that settle themselves.',
+    body: 'Client buys a pass — the system deducts rides, generates invoices and sends notifications when only a few entries remain. No spreadsheets, no mental math.',
+    bullets: ['Auto-settlement after each ride', 'Time-based and count-based passes', 'Payments via Stripe / SEPA / bank transfer'],
+    href: lp('/produkt/karnety'),
+    visual: 'passes',
+  },
+  {
+    eyebrow: 'E-invoicing',
+    title: 'E-invoices in one click.',
+    body: 'Full KSeF integration from day one. Issue an invoice, system sends to KSeF, you get the number and confirmation. Peppol BIS Billing 3.0 for the rest of the EU.',
+    bullets: ['KSeF Type 2 certified', 'Export to iFirma, Wfirma, Comarch ERP', 'Recurring invoices for boarding'],
+    href: lp('/produkt/finanse-ksef'),
+    visual: 'invoice',
+  },
+  {
+    eyebrow: 'Horse journal',
+    title: "Every horse's full history in one view.",
+    body: "Vaccinations, vet visits, farrier, training, notes, photos. A timeline you won't lose when the instructor changes. PDF export for shows and passport records.",
+    bullets: ['Filterable timeline', 'Reminders for vaccinations and farrier', 'PDF export and FEI / PZJ integrations'],
+    href: lp('/produkt/dziennik-konia'),
+    visual: 'journal',
+  },
+  {
+    eyebrow: 'Mobile app',
+    title: 'A mobile app that works without wifi.',
+    body: 'Full offline mode — plan rides, add notes, take photos in the barn without coverage. Sync when you reconnect, conflicts resolved automatically.',
+    bullets: ['iOS 16+, Android 10+', 'Offline-first architecture', 'Push notifications + home screen widgets'],
+    href: lp('/produkt/aplikacja-mobilna'),
+    visual: 'mobile',
+  },
+];
+---
+
+<section class="container-x py-24 md:py-32">
+  <header class="mx-auto max-w-3xl text-center" data-reveal>
+    <span class="eyebrow">{t('tour.eyebrow')}</span>
+    <h2 class="display-2 mt-4 text-balance">{t('tour.title')}</h2>
+    <p class="lead mt-5 text-balance">{t('tour.subtitle')}</p>
+  </header>
+
+  <div class="mt-20 space-y-32">
+    {features.map((f, i) => (
+      <article class="feature-row" data-reveal>
+        <div class="feature-grid">
+          <div class={`feature-text ${i % 2 === 0 ? 'order-1' : 'md:order-2'}`}>
+            <span class="eyebrow">{f.eyebrow}</span>
+            <h3 class="display-3 mt-3 text-balance">{f.title}</h3>
+            <p class="lead mt-4">{f.body}</p>
+            <ul class="mt-6 space-y-2.5">
+              {f.bullets.map((b) => (
+                <li class="feature-bullet">
+                  <span class="bullet-dot"></span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+            <a href={f.href} class="btn btn-secondary mt-8">
+              {t('tour.learn')}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+          <div class={`feature-visual ${i % 2 === 0 ? 'order-2' : 'md:order-1'}`}>
+            <div class="visual-frame">
+              {f.visual === 'calendar' && (
+                <div class="visual-cal">
+                  <div class="vc-row" style="--c: var(--color-ochre); --x: 0%; --w: 30%;"><span>09:00 Anna · Halina</span></div>
+                  <div class="vc-row" style="--c: var(--color-bark); --x: 32%; --w: 24%;"><span>10:30 Marek · Atos</span></div>
+                  <div class="vc-row" style="--c: var(--color-ochre); --x: 58%; --w: 38%;"><span>11:00 Karolina · Bonita</span></div>
+                  <div class="vc-row vc-conflict" style="--c: #B14848; --x: 18%; --w: 28%; --y: 40px;"><span>13:00 Konflikt</span></div>
+                  <div class="vc-row" style="--c: var(--color-ochre-dark); --x: 50%; --w: 42%; --y: 40px;"><span>14:00 Grupa B</span></div>
+                  <div class="vc-row" style="--c: var(--color-ochre); --x: 4%; --w: 22%; --y: 80px;"><span>16:00 Open</span></div>
+                  <div class="vc-row vc-drag" style="--c: var(--color-bark); --x: 32%; --w: 30%; --y: 80px;"><span>17:00 Tomek · drag</span></div>
+                </div>
+              )}
+              {f.visual === 'passes' && (
+                <div class="visual-pass">
+                  <div class="pass-card">
+                    <div class="pass-row">
+                      <span class="pass-name">Anna Kowalska</span>
+                      <span class="pass-pill">{locale === 'pl' ? '8 / 12 jazd' : '8 / 12 rides'}</span>
+                    </div>
+                    <div class="pass-meter"><div class="pass-meter-fill" style="width: 66%"></div></div>
+                    <div class="pass-foot">
+                      <span class="muted text-[11px]">{locale === 'pl' ? 'Karnet 12 jazd · ważny do 30.06' : '12-ride pass · valid until 30/06'}</span>
+                      <span class="text-[11px]">580 zł</span>
+                    </div>
+                  </div>
+                  <div class="pass-flow">
+                    <div class="pass-step">{locale === 'pl' ? 'Zaplanowana jazda' : 'Ride scheduled'}</div>
+                    <div class="pass-arrow">→</div>
+                    <div class="pass-step">{locale === 'pl' ? 'Karnet -1' : 'Pass -1'}</div>
+                    <div class="pass-arrow">→</div>
+                    <div class="pass-step is-active">{locale === 'pl' ? 'Faktura' : 'Invoice'}</div>
+                  </div>
+                </div>
+              )}
+              {f.visual === 'invoice' && (
+                <div class="visual-invoice">
+                  <div class="invoice-head">
+                    <div>
+                      <div class="text-[11px] muted">FV/2026/041</div>
+                      <div class="text-base font-medium mt-1">Hovera Sp. z o.o.</div>
+                    </div>
+                    <div class="invoice-stamp">
+                      <span>KSeF</span>
+                      <small>{locale === 'pl' ? 'Wysłano' : 'Sent'}</small>
+                    </div>
+                  </div>
+                  <div class="invoice-rows">
+                    <div class="invoice-row"><span>Karnet 12 jazd</span><span>580,00 zł</span></div>
+                    <div class="invoice-row"><span>{locale === 'pl' ? 'Pensjonat - Halina' : 'Boarding - Halina'}</span><span>1 200,00 zł</span></div>
+                    <div class="invoice-row"><span>{locale === 'pl' ? 'Lekcja indywidualna' : 'Private lesson'}</span><span>180,00 zł</span></div>
+                  </div>
+                  <div class="invoice-total">
+                    <span>{locale === 'pl' ? 'Razem brutto' : 'Total'}</span>
+                    <span class="text-xl font-medium">1 960,00 zł</span>
+                  </div>
+                  <div class="invoice-status">
+                    <span class="status-dot"></span>
+                    {locale === 'pl' ? 'Numer KSeF: 5260123456-2026' : 'e-Invoicing ID: 5260123456-2026'}
+                  </div>
+                </div>
+              )}
+              {f.visual === 'journal' && (
+                <div class="visual-journal">
+                  <div class="journal-head">
+                    <div class="horse-avatar">H</div>
+                    <div>
+                      <div class="font-medium">Halina · KWPN, 2018</div>
+                      <div class="text-[11px] muted">{locale === 'pl' ? 'Ostatnia szczepionka: 12 mar 2026' : 'Last vaccine: 12 Mar 2026'}</div>
+                    </div>
+                  </div>
+                  <ul class="journal-timeline">
+                    <li class="j-item"><span class="j-dot j-vet"></span><div><b>{locale === 'pl' ? 'Szczepienie' : 'Vaccination'}</b><small> · 12.03 · {locale === 'pl' ? 'Wet. Nowak' : 'Vet Nowak'}</small></div></li>
+                    <li class="j-item"><span class="j-dot j-train"></span><div><b>{locale === 'pl' ? 'Trening skok' : 'Jumping'}</b><small> · 15.03 · 95cm</small></div></li>
+                    <li class="j-item"><span class="j-dot j-shoe"></span><div><b>{locale === 'pl' ? 'Kowal' : 'Farrier'}</b><small> · 20.03 · {locale === 'pl' ? 'Pełne podk.' : 'Full set'}</small></div></li>
+                    <li class="j-item"><span class="j-dot j-note"></span><div><b>{locale === 'pl' ? 'Notatka' : 'Note'}</b><small> · 22.03 · {locale === 'pl' ? 'Lekka kontuzja' : 'Mild strain'}</small></div></li>
+                  </ul>
+                </div>
+              )}
+              {f.visual === 'mobile' && (
+                <div class="visual-mobile">
+                  <div class="mob-phone">
+                    <div class="mob-screen">
+                      <div class="mob-row mob-offline-bar">
+                        <span class="dot"></span>
+                        {locale === 'pl' ? 'Offline · 3 zmiany czekają' : 'Offline · 3 changes pending'}
+                      </div>
+                      <div class="mob-card">
+                        <div class="mob-card-title">{locale === 'pl' ? 'Dzisiaj · 6 jazd' : 'Today · 6 rides'}</div>
+                        <div class="mob-card-list">
+                          <div>09:00 · Anna K.</div>
+                          <div>10:30 · Marek W.</div>
+                          <div>11:00 · Karolina</div>
+                        </div>
+                      </div>
+                      <div class="mob-row mob-action">{locale === 'pl' ? '+ Dodaj jazdę' : '+ Add ride'}</div>
+                    </div>
+                  </div>
+                  <div class="mob-sync">
+                    <span class="mob-sync-dot"></span>
+                    {locale === 'pl' ? 'Wracam w zasięg → sync' : 'Back online → syncing'}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .feature-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .feature-grid {
+      grid-template-columns: 1fr 1.1fr;
+      gap: 5rem;
+    }
+  }
+  .feature-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--color-fg);
+  }
+  .bullet-dot {
+    flex-shrink: 0;
+    width: 6px; height: 6px; border-radius: 999px;
+    background: var(--color-ochre);
+    margin-top: 0.55rem;
+  }
+
+  .visual-frame {
+    position: relative;
+    border-radius: var(--radius-2xl);
+    background: linear-gradient(180deg, #fff 0%, var(--color-sand-light) 100%);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-warm);
+    padding: 1.5rem;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  /* Calendar visual */
+  .visual-cal { position: relative; height: 100%; padding: 1rem 0; }
+  .vc-row {
+    position: absolute;
+    left: var(--x);
+    top: var(--y, 0);
+    width: var(--w);
+    background: var(--c);
+    color: var(--color-cream);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(61,46,34,0.12);
+    animation: rowSlide 0.7s var(--ease-out-expo) backwards;
+  }
+  .vc-conflict { animation: vcPulse 2s ease-in-out infinite; }
+  .vc-drag { animation: vcDrag 4s ease-in-out infinite; }
+  @keyframes rowSlide { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes vcPulse { 0%,100% { box-shadow: 0 4px 8px rgba(177,72,72,0.4),0 0 0 0 rgba(177,72,72,0.4);} 50% { box-shadow: 0 4px 8px rgba(177,72,72,0.4),0 0 0 8px rgba(177,72,72,0);} }
+  @keyframes vcDrag { 0%,100% { transform: translate(0,0);} 50% { transform: translate(10px,-4px); box-shadow: 0 12px 24px rgba(61,46,34,0.3);} }
+
+  /* Pass visual */
+  .visual-pass { display: flex; flex-direction: column; gap: 1.25rem; height: 100%; justify-content: center; }
+  .pass-card {
+    background: white; border: 1px solid var(--color-border); border-radius: 12px; padding: 16px;
+  }
+  .pass-row { display: flex; justify-content: space-between; align-items: center; }
+  .pass-name { font-weight: 500; }
+  .pass-pill { font-size: 11px; padding: 4px 10px; background: var(--color-bark); color: var(--color-cream); border-radius: 999px; }
+  .pass-meter { margin-top: 12px; height: 6px; background: var(--color-sand-light); border-radius: 999px; overflow: hidden; }
+  .pass-meter-fill { height: 100%; background: linear-gradient(90deg, var(--color-ochre) 0%, var(--color-ochre-dark) 100%); border-radius: 999px; animation: meterFill 2s var(--ease-out-expo); }
+  @keyframes meterFill { from { width: 0; } to { width: 66%; } }
+  .pass-foot { display: flex; justify-content: space-between; margin-top: 12px; }
+  .pass-flow { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .pass-step { background: var(--color-cream); border: 1px solid var(--color-border); padding: 6px 12px; border-radius: 999px; font-size: 11px; }
+  .pass-step.is-active { background: var(--color-bark); color: var(--color-cream); border-color: var(--color-bark); }
+  .pass-arrow { color: var(--color-fg-muted); font-size: 14px; }
+
+  /* Invoice visual */
+  .visual-invoice { display: flex; flex-direction: column; gap: 0.9rem; height: 100%; }
+  .invoice-head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .invoice-stamp { background: var(--color-bark); color: var(--color-cream); padding: 8px 12px; border-radius: 10px; text-align: center; transform: rotate(-3deg); animation: stampIn 0.6s var(--ease-out-expo); }
+  .invoice-stamp span { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; }
+  .invoice-stamp small { font-size: 9px; opacity: 0.7; }
+  @keyframes stampIn { from { transform: rotate(-12deg) scale(0.8); opacity: 0; } to { transform: rotate(-3deg) scale(1); opacity: 1; } }
+  .invoice-rows { background: white; border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; }
+  .invoice-row { display: flex; justify-content: space-between; padding: 10px 14px; font-size: 12px; border-bottom: 1px solid var(--color-border); }
+  .invoice-row:last-child { border-bottom: none; }
+  .invoice-total { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 14px; background: var(--color-sand-light); border-radius: 10px; }
+  .invoice-status { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--color-fg-muted); padding: 4px 10px; background: rgba(111,182,122,0.16); border-radius: 999px; align-self: flex-start; }
+  .status-dot { width: 6px; height: 6px; border-radius: 999px; background: #6FB67A; box-shadow: 0 0 0 0 rgba(111,182,122,0.6); animation: pulseDot 2s infinite; }
+  @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(111,182,122,0.6);} 100% { box-shadow: 0 0 0 6px rgba(111,182,122,0);} }
+
+  /* Journal visual */
+  .visual-journal { display: flex; flex-direction: column; gap: 1rem; height: 100%; }
+  .journal-head { display: flex; align-items: center; gap: 12px; }
+  .horse-avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; }
+  .journal-timeline { list-style: none; padding: 0; margin: 0; position: relative; padding-left: 24px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .journal-timeline::before {
+    content: ""; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px; background: var(--color-border);
+  }
+  .j-item { position: relative; display: flex; gap: 8px; align-items: baseline; font-size: 12px; }
+  .j-dot { position: absolute; left: -19px; top: 4px; width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--color-cream); }
+  .j-vet { background: #6FB67A; }
+  .j-train { background: var(--color-ochre); }
+  .j-shoe { background: var(--color-bark); }
+  .j-note { background: #B14848; }
+  .j-item small { color: var(--color-fg-muted); margin-left: 4px; }
+
+  /* Mobile visual */
+  .visual-mobile { display: flex; align-items: center; gap: 1.5rem; justify-content: center; height: 100%; }
+  .mob-phone { width: 160px; aspect-ratio: 9/19; background: var(--color-bark); border-radius: 24px; padding: 6px; box-shadow: var(--shadow-warm); }
+  .mob-screen { background: var(--color-cream); border-radius: 18px; height: 100%; padding: 16px 10px; display: flex; flex-direction: column; gap: 8px; }
+  .mob-offline-bar { background: rgba(168,149,107,0.18); padding: 6px 8px; border-radius: 8px; font-size: 9px; display: flex; align-items: center; gap: 5px; }
+  .mob-offline-bar .dot { width: 6px; height: 6px; border-radius: 999px; background: #E2A04C; }
+  .mob-card { background: white; border-radius: 10px; padding: 8px; }
+  .mob-card-title { font-size: 10px; font-weight: 600; }
+  .mob-card-list { font-size: 9px; color: var(--color-fg-muted); margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
+  .mob-action { background: var(--color-bark); color: var(--color-cream); border-radius: 8px; text-align: center; padding: 8px; font-size: 10px; font-weight: 500; margin-top: auto; }
+  .mob-sync { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: white; border: 1px solid var(--color-border); border-radius: 999px; font-size: 11px; }
+  .mob-sync-dot { width: 6px; height: 6px; border-radius: 999px; background: #6FB67A; animation: pulseDot 2s infinite; }
+</style>

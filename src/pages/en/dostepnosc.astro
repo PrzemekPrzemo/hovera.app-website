@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<Base title="Accessibility statement — Hovera" description="Hovera digital accessibility statement aligned with WCAG 2.1 AA.">
+  <PageHero eyebrow="Compliance" title="Accessibility statement" subtitle="Last updated: 6 May 2026" />
+  <article class="container-x py-16">
+    <div class="legal-body max-w-3xl mx-auto">
+      <h2>Compliance status</h2>
+      <p>The site <strong>hovera.app</strong> is <strong>partially compliant</strong> with the Web Content Accessibility Guidelines WCAG 2.1 at AA level due to the non-compliances listed below.</p>
+
+      <h2>Non-compliances</h2>
+      <ul>
+        <li>Some product animations lack a text alternative (planned: Q3 2026)</li>
+        <li>Some embedded videos lack captions (added gradually)</li>
+      </ul>
+
+      <h2>What we have done</h2>
+      <ul>
+        <li>Full keyboard navigation</li>
+        <li>Skip-to-content link on every page</li>
+        <li><code>aria-label</code> attributes for decorative elements</li>
+        <li>Support for <code>prefers-reduced-motion</code> — animations disabled at OS level</li>
+        <li>Text contrast meets AA (4.5:1)</li>
+        <li>Visible focus on every interactive element</li>
+        <li>Scalable typography (minimum 16px body)</li>
+        <li>Screen reader support (NVDA and VoiceOver tested)</li>
+      </ul>
+
+      <h2>Feedback</h2>
+      <p>You may report accessibility issues to <a href="mailto:accessibility@hovera.app">accessibility@hovera.app</a> or via the <a href="/en/kontakt">contact form</a>. We respond within 14 days.</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal-body :global(h2) { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 2.5rem; }
+  .legal-body :global(p) { margin-top: 1rem; line-height: 1.7; }
+  .legal-body :global(ul) { margin-top: 1rem; padding-left: 1.5rem; line-height: 1.7; list-style: disc; }
+  .legal-body :global(li) { margin-top: 0.4rem; }
+  .legal-body :global(a) { color: var(--color-ochre-dark); text-decoration: underline; }
+</style>

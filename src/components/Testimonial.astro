@@ -1,0 +1,68 @@
+---
+import { type Locale } from '../i18n/utils';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+const quote = locale === 'pl'
+  ? 'Zaczęliśmy od excela i grupowych SMS-ów. Po dwóch tygodniach z Hoverą oddałam telefon z oszczędności — klienci sami się zapisują, faktury wystawiają się same.'
+  : 'We started with spreadsheets and group SMS. Two weeks into Hovera I cancelled the second phone — clients book themselves, invoices issue themselves.';
+const name = locale === 'pl' ? 'Anna Kowalska' : 'Anna Kowalska';
+const role = locale === 'pl' ? 'Stajnia Halicz · 38 koni' : 'Halicz Stables · 38 horses';
+---
+
+<section class="hovera-testimonial py-24" data-reveal>
+  <div class="container-x">
+    <div class="testimonial-shell">
+      <svg class="quote-mark" viewBox="0 0 64 48" fill="currentColor" aria-hidden="true">
+        <path d="M0 28C0 12.5 9.3 1 24 0v8C16 9.5 12 14 12 22h12v26H0V28zm40 0c0-15.5 9.3-27 24-28v8c-8 1.5-12 6-12 14h12v26H40V28z"/>
+      </svg>
+      <blockquote class="testimonial-quote">{quote}</blockquote>
+      <footer class="testimonial-foot">
+        <div class="t-avatar">A</div>
+        <div>
+          <div class="t-name">{name}</div>
+          <div class="t-role muted">{role}</div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonial-shell {
+    position: relative;
+    max-width: 56rem;
+    margin: 0 auto;
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+  .quote-mark {
+    width: 48px; height: 36px;
+    color: var(--color-ochre);
+    opacity: 0.5;
+    margin: 0 auto 1.5rem;
+    display: block;
+  }
+  .testimonial-quote {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    color: var(--color-bark);
+  }
+  .testimonial-foot {
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .t-avatar {
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    background: var(--color-ochre);
+    color: var(--color-cream);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 600;
+  }
+  .t-name { font-weight: 500; text-align: left; }
+  .t-role { font-size: 0.85rem; text-align: left; }
+</style>

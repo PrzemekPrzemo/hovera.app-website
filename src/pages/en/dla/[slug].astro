@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import FinalCTA from '../../../components/FinalCTA.astro';
+import { localizePath } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const all = await getCollection('useCase', (e) => e.data.locale === 'en');
+  return all.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const locale = 'en' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title={d.title} description={d.description}>
+  <PageHero eyebrow={d.eyebrow} title={d.headline} subtitle={d.description} />
+
+  <section class="container-x py-24" data-reveal>
+    <h2 class="display-3 text-center max-w-3xl mx-auto text-balance">A day in your stable, with Hovera</h2>
+    <div class="mt-14 grid gap-6 md:grid-cols-2">
+      {d.scenarios.map((s: { title: string; body: string }, i: number) => (
+        <article class="scenario-card">
+          <span class="scenario-num">0{i + 1}</span>
+          <h3 class="scenario-title mt-3">{s.title}</h3>
+          <p class="muted mt-3">{s.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-x py-24" data-reveal>
+    <div class="features-block">
+      <div>
+        <span class="eyebrow">What you get</span>
+        <h2 class="display-3 mt-3 text-balance">Features you actually use</h2>
+        <p class="muted mt-4 max-w-md">Everything ready from day one. No rollout, no consultants, no extra modules to buy.</p>
+        <div class="mt-6 p-5 rounded-2xl" style="background: var(--color-sand-light); border: 1px solid var(--color-border);">
+          <span class="eyebrow">Recommended plan</span>
+          <p class="text-2xl font-medium mt-2">{d.plan}</p>
+          <a href={lp('/cennik')} class="btn btn-secondary mt-4 text-xs">See pricing</a>
+        </div>
+      </div>
+      <ul class="features-list">
+        {d.features.map((f: string) => (
+          <li>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container-x py-24" data-reveal>
+    <div class="usecase-quote">
+      <svg class="qm" viewBox="0 0 64 48" fill="currentColor"><path d="M0 28C0 12.5 9.3 1 24 0v8C16 9.5 12 14 12 22h12v26H0V28zm40 0c0-15.5 9.3-27 24-28v8c-8 1.5-12 6-12 14h12v26H40V28z"/></svg>
+      <p class="usecase-q-text">{d.quote.text}</p>
+      <div class="usecase-q-foot">
+        <span>{d.quote.name}</span>
+        <small class="muted">{d.quote.role}</small>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .scenario-card { padding: 2.5rem 2rem 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); transition: all 0.4s var(--ease-out-expo); }
+  .scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); }
+  .scenario-num { display: inline-block; font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-ochre-dark); letter-spacing: 0.18em; }
+  .scenario-title { font-size: 1.4rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; }
+  .features-block { display: grid; gap: 3rem; grid-template-columns: 1fr; }
+  @media (min-width: 800px) { .features-block { grid-template-columns: 1fr 1.4fr; gap: 5rem; } }
+  .features-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+  .features-list li { display: flex; gap: 0.75rem; align-items: center; padding: 1rem 1.25rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 12px; }
+  .features-list svg { color: var(--color-ochre); flex-shrink: 0; }
+  .usecase-quote { max-width: 50rem; margin: 0 auto; padding: 3rem; border-radius: var(--radius-2xl); background: linear-gradient(180deg, var(--color-sand-light) 0%, var(--color-cream) 100%); border: 1px solid var(--color-border); text-align: center; }
+  .qm { width: 40px; height: 30px; color: var(--color-ochre); opacity: 0.5; margin: 0 auto 1.5rem; display: block; }
+  .usecase-q-text { font-family: var(--font-serif); font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.4; }
+  .usecase-q-foot { margin-top: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; font-weight: 500; }
+</style>

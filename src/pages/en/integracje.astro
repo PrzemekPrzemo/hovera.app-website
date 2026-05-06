@@ -1,0 +1,73 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+const locale = 'en' as const;
+
+const groups = [
+  { title: 'Invoicing & e-invoicing', items: [
+    { name: 'KSeF (Poland)', desc: 'National e-invoicing — Type 2 cert.' },
+    { name: 'Peppol BIS Billing 3.0', desc: 'EU e-invoicing. 16 countries, one config.' },
+    { name: 'iFirma / Wfirma', desc: 'Direct API and CSV/XML export.' },
+    { name: 'Comarch ERP / Optima', desc: 'XML JPK_FA for accountants.' },
+    { name: 'Saldeo', desc: 'Import-ready format.' },
+  ]},
+  { title: 'Payments', items: [
+    { name: 'Stripe', desc: 'Cards, instant transfers, SEPA. Boarding subscriptions.' },
+    { name: 'Przelewy24 / PayU', desc: 'Popular in Poland for B2B.' },
+    { name: 'SEPA Direct Debit', desc: 'Automated monthly billing for boarding.' },
+  ]},
+  { title: 'Horse & sport', items: [
+    { name: 'FEI Database', desc: 'Show entries and results export.' },
+    { name: 'National federations', desc: 'Polish PZJ, Dutch KNHS, German FN.' },
+    { name: 'PASB', desc: 'Polish breeding passports.' },
+  ]},
+  { title: 'Calendar & comms', items: [
+    { name: 'Google Calendar', desc: 'Two-way sync per instructor.' },
+    { name: 'Apple Calendar / iCal', desc: 'Calendar subscription export.' },
+    { name: 'Outlook 365', desc: 'Full Microsoft integration.' },
+    { name: 'Postmark', desc: 'Transactional email with high deliverability.' },
+    { name: 'SMS providers', desc: 'Client notifications via SMS.' },
+  ]},
+  { title: 'Marketing & SEO', items: [
+    { name: 'Google Business Profile', desc: 'Reviews, photos, hours — synchronized.' },
+    { name: 'Google Maps embed', desc: 'Directions on your public stable page.' },
+    { name: 'Schema.org + JSON-LD', desc: 'SEO out-of-the-box for your page.' },
+  ]},
+  { title: 'API & automations', items: [
+    { name: 'Public REST API', desc: 'Full access to your stable data. Pro plan.' },
+    { name: 'Webhooks', desc: 'React to events (ride scheduled, invoice issued).' },
+    { name: 'Zapier / n8n', desc: 'No-code automations — Hovera ↔ Slack, Notion, Airtable.' },
+  ]},
+];
+---
+
+<Base title="Integrations — Hovera" description="Hovera integrations. KSeF, Peppol, Stripe, Google Calendar, FEI, public API and webhooks.">
+  <PageHero eyebrow="Integrations" title="Hovera doesn't live alone" subtitle="We connect to the systems you already use — e-invoicing, Stripe, Google Calendar, FEI. Plus public API for everything else." />
+
+  <section class="container-x py-16">
+    <div class="space-y-16">
+      {groups.map((g) => (
+        <div data-reveal>
+          <h2 class="display-3 text-balance">{g.title}</h2>
+          <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {g.items.map((it) => (
+              <div class="int-card">
+                <div class="int-name">{it.name}</div>
+                <p class="muted text-sm mt-2">{it.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .int-card { padding: 1.5rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-lg); transition: all 0.3s; }
+  .int-card:hover { border-color: var(--color-bark-300); box-shadow: var(--shadow-soft); }
+  .int-name { font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+</style>

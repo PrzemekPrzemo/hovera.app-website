@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import PricingTable from '../../components/PricingTable.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const locale = 'en' as const;
+---
+
+<Base
+  title="Pricing — Hovera"
+  description="Transparent pricing. Pick a plan that fits your stable. Free, Solo, Stable, Pro and Enterprise. 30-day money-back guarantee."
+>
+  <PageHero
+    eyebrow="Pricing"
+    title="Pick a plan that fits your stable"
+    subtitle="Full transparency. No hidden fees. E-invoicing included. 30-day money-back guarantee."
+  />
+  <PricingTable locale={locale} />
+  <FinalCTA locale={locale} />
+</Base>

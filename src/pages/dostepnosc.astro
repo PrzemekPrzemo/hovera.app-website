@@ -1,0 +1,31 @@
+---
+import Legal from '../layouts/Legal.astro';
+---
+
+<Legal title="Deklaracja dostępności" eyebrow="Compliance" description="Deklaracja dostępności cyfrowej strony Hovera zgodnie z WCAG 2.1 AA." updated="6 maja 2026">
+  <h2>Status zgodności</h2>
+  <p>Strona <strong>hovera.app</strong> jest <strong>częściowo zgodna</strong> z Wytycznymi dotyczącymi dostępności treści internetowych WCAG 2.1 na poziomie AA z powodu niezgodności wymienionych poniżej.</p>
+
+  <h2>Niezgodności</h2>
+  <ul>
+    <li>Niektóre animacje produktowe nie mają tekstowej alternatywy (planowana naprawa: Q3 2026)</li>
+    <li>Niektóre osadzone wideo nie mają napisów (zostaną dodane sukcesywnie)</li>
+  </ul>
+
+  <h2>Co zrobiliśmy</h2>
+  <ul>
+    <li>Pełna obsługa nawigacji klawiaturą</li>
+    <li>Skip-to-content link na każdej stronie</li>
+    <li>Atrybuty <code>aria-label</code> dla elementów dekoracyjnych</li>
+    <li>Wsparcie dla <code>prefers-reduced-motion</code> — animacje wyłączane systemowo</li>
+    <li>Kontrast tekstu spełnia AA (4.5:1)</li>
+    <li>Widoczny focus na każdym elemencie interaktywnym</li>
+    <li>Skalowalna typografia (minimalnie 16px na body)</li>
+    <li>Obsługa screen readerów (testy z NVDA i VoiceOver)</li>
+  </ul>
+
+  <h2>Informacje zwrotne</h2>
+  <p>Każdy ma prawo zgłaszać uwagi dotyczące dostępności tej strony. Kontakt: <a href="mailto:dostepnosc@hovera.app">dostepnosc@hovera.app</a> lub przez <a href="/kontakt">formularz kontaktowy</a>.</p>
+
+  <p>Każde zgłoszenie rozpatrujemy w ciągu 14 dni. Jeśli nie jesteś zadowolony z naszej odpowiedzi, możesz zwrócić się do Rzecznika Praw Obywatelskich.</p>
+</Legal>

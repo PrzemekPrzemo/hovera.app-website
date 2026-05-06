@@ -1,0 +1,109 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { getLocaleFromUrl, alternateLocale, localizePath, unlocalizePath } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noIndex?: boolean;
+}
+const { title, description, image = '/og-default.png', noIndex } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const altLocale = alternateLocale(locale);
+const altUrl = new URL(localizePath(unlocalizePath(Astro.url.pathname), altLocale), Astro.site).toString();
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang={locale === 'pl' ? 'pl-PL' : 'en-GB'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={locale} href={canonical} />
+    <link rel="alternate" hreflang={altLocale} href={altUrl} />
+    <link rel="alternate" hreflang="x-default" href={new URL(unlocalizePath(Astro.url.pathname), Astro.site).toString()} />
+
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=instrument-serif:400,400i|inter:400,500,600,700&display=swap" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#FAF8F4" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site).toString()} />
+    <meta property="og:locale" content={locale === 'pl' ? 'pl_PL' : 'en_GB'} />
+    <meta property="og:site_name" content="Hovera" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site).toString()} />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-[var(--color-bark)] focus:px-4 focus:py-2 focus:text-[var(--color-cream)]">
+      {locale === 'pl' ? 'Przejdź do treści' : 'Skip to content'}
+    </a>
+
+    <Nav locale={locale} />
+
+    <main id="main" class="pt-28 md:pt-32">
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+
+    <script>
+      // Reveal-on-scroll observer
+      const initReveal = () => {
+        const els = document.querySelectorAll('[data-reveal]');
+        if (!('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('is-visible'));
+          return;
+        }
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              (e.target as HTMLElement).classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+        els.forEach((el) => io.observe(el));
+      };
+      initReveal();
+      document.addEventListener('astro:page-load', initReveal);
+
+      // Magnetic CTA effect
+      const initMagnetic = () => {
+        const els = document.querySelectorAll<HTMLElement>('.magnetic');
+        els.forEach((el) => {
+          const onMove = (e: PointerEvent) => {
+            const r = el.getBoundingClientRect();
+            const x = e.clientX - (r.left + r.width / 2);
+            const y = e.clientY - (r.top + r.height / 2);
+            el.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
+          };
+          const onLeave = () => { el.style.transform = ''; };
+          el.addEventListener('pointermove', onMove);
+          el.addEventListener('pointerleave', onLeave);
+        });
+      };
+      initMagnetic();
+      document.addEventListener('astro:page-load', initMagnetic);
+    </script>
+  </body>
+</html>

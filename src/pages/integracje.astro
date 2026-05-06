@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+const locale = 'pl' as const;
+
+const groups = [
+  {
+    title: 'Faktury i KSeF',
+    items: [
+      { name: 'KSeF', desc: 'Krajowy System e-Faktur — Type 2 cert, certyfikacja od MF.' },
+      { name: 'Peppol BIS Billing 3.0', desc: 'E-faktury w UE. 16 krajów, jedna konfiguracja.' },
+      { name: 'iFirma', desc: 'Eksport faktur bezpośrednio przez API.' },
+      { name: 'Wfirma', desc: 'Eksport CSV + XML zgodny z formatem.' },
+      { name: 'Comarch ERP / Optima', desc: 'XML JPK_FA dla księgowych.' },
+      { name: 'Saldeo', desc: 'Format gotowy do importu.' },
+    ],
+  },
+  {
+    title: 'Płatności',
+    items: [
+      { name: 'Stripe', desc: 'Karty, BLIK, SEPA. Subskrypcje pensjonatu.' },
+      { name: 'Przelewy24', desc: 'BLIK, karta, przelew online — popularne w PL.' },
+      { name: 'PayU', desc: 'Wsparcie dla modelu B2B.' },
+    ],
+  },
+  {
+    title: 'Konie i sport',
+    items: [
+      { name: 'FEI Database', desc: 'Eksport startów i wyników na zawody.' },
+      { name: 'PZJ', desc: 'Polski rejestr — eksport danych zawodnika i konia.' },
+      { name: 'PASB', desc: 'Polska Akademia Sportów Bazowych — paszporty hodowlane.' },
+    ],
+  },
+  {
+    title: 'Kalendarz i komunikacja',
+    items: [
+      { name: 'Google Calendar', desc: 'Dwustronna synchronizacja dla każdego instruktora.' },
+      { name: 'Apple Calendar / iCal', desc: 'Eksport jako subskrypcja kalendarza.' },
+      { name: 'Outlook 365', desc: 'Pełna integracja z konta Microsoft.' },
+      { name: 'Postmark', desc: 'Transactional email z szybkim deliverability.' },
+      { name: 'SMSAPI', desc: 'Powiadomienia SMS dla klientów stajni.' },
+    ],
+  },
+  {
+    title: 'Marketing i SEO',
+    items: [
+      { name: 'Google Business Profile', desc: 'Opinie, zdjęcia, godziny otwarcia stajni — synchronizowane.' },
+      { name: 'Google Maps embed', desc: 'Mapa dojazdu na stronie publicznej stajni.' },
+      { name: 'Schema.org + JSON-LD', desc: 'SEO out-of-the-box dla Twojej strony.' },
+    ],
+  },
+  {
+    title: 'API i automatyzacje',
+    items: [
+      { name: 'Public REST API', desc: 'Pełen dostęp do danych Twojej stajni. Plan Pro.' },
+      { name: 'Webhooks', desc: 'Reakcja na zdarzenia (jazda zaplanowana, faktura wystawiona).' },
+      { name: 'Zapier / n8n', desc: 'No-code automatyzacje — Hovera ↔ Slack, Notion, Airtable.' },
+    ],
+  },
+];
+---
+
+<Base title="Integracje — Hovera" description="Pełna lista integracji Hovera. KSeF, Peppol, Stripe, Google Calendar, FEI, PZJ, public API i webhooks.">
+  <PageHero
+    eyebrow="Integracje"
+    title="Hovera nie żyje w izolacji"
+    subtitle="Łączymy się z systemami, których już używasz — KSeF, Stripe, Google Calendar, FEI. Plus public API dla wszystkiego innego."
+  />
+
+  <section class="container-x py-16">
+    <div class="space-y-16">
+      {groups.map((g) => (
+        <div data-reveal>
+          <h2 class="display-3 text-balance">{g.title}</h2>
+          <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {g.items.map((it) => (
+              <div class="int-card">
+                <div class="int-name">{it.name}</div>
+                <p class="muted text-sm mt-2">{it.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .int-card {
+    padding: 1.5rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all 0.3s;
+  }
+  .int-card:hover { border-color: var(--color-bark-300); box-shadow: var(--shadow-soft); }
+  .int-name { font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; }
+</style>

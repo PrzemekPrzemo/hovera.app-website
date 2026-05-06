@@ -1,0 +1,166 @@
+# Sveltia CMS configuration
+# Sveltia CMS is a drop-in modern alternative to Decap CMS, with the same
+# config schema. Stores content directly in your GitHub repo via OAuth.
+#
+# Setup steps:
+# 1. Create a GitHub OAuth App at https://github.com/settings/developers
+#    - Authorization callback: https://api.netlify.com/auth/done
+#      (or use https://decap-proxy.example.com/auth — see "self-hosted OAuth"
+#      below if you don't want to depend on Netlify)
+# 2. In Sveltia, sign in with GitHub.
+# 3. Edits land as commits to the `main` branch. GitHub Actions rebuilds
+#    the static site and rsyncs it to Plesk (see .github/workflows/deploy.yml).
+#
+# Repository settings ↓
+
+backend:
+  name: github
+  repo: PrzemekPrzemo/hovera.app-website
+  branch: main
+  base_url: https://api.netlify.com
+  # If you want to drop the Netlify dependency entirely, host the small OAuth
+  # proxy yourself (see https://github.com/sveltia/sveltia-cms#authentication)
+  # and set base_url + auth_endpoint accordingly.
+
+publish_mode: editorial_workflow
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+i18n:
+  structure: multiple_folders
+  locales: [pl, en]
+  default_locale: pl
+
+site_url: https://hovera.app
+
+logo_url: /favicon.svg
+
+collections:
+  # ───── Product deep-dives ─────
+  - name: product
+    label: "Produkt — funkcje"
+    label_singular: "Funkcja"
+    folder: "src/content/product"
+    path: "{{locale}}/{{slug}}"
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    i18n: false
+    fields:
+      - { label: "Język (locale)", name: locale, widget: select, options: ["pl", "en"] }
+      - { label: "Slug (URL)", name: slug, widget: string, hint: "Np. kalendarz, karnety, finanse-ksef" }
+      - { label: "Tytuł SEO", name: title, widget: string }
+      - { label: "Eyebrow", name: eyebrow, widget: string }
+      - { label: "Headline (H1)", name: headline, widget: string }
+      - { label: "Subtitle", name: subtitle, widget: text }
+      - { label: "Meta description", name: description, widget: text }
+      - { label: "Wizualny akcent", name: accent, widget: select, options: ["calendar","passes","invoice","journal","mobile","booking","ai"] }
+      - { label: "Bullets (lista funkcji)", name: bullets, widget: list, field: { label: "Funkcja", name: item, widget: string } }
+      - label: "Pod-funkcje (sekcje)"
+        name: subFeatures
+        widget: list
+        fields:
+          - { label: "Tytuł", name: title, widget: string }
+          - { label: "Treść", name: body, widget: text }
+      - { label: "Integracje", name: integrations, widget: list, required: false, field: { label: "Integracja", name: item, widget: string } }
+      - { label: "Notka cenowa", name: pricingNote, widget: text }
+
+  # ───── Use cases ─────
+  - name: usecase
+    label: "Dla kogo — use cases"
+    label_singular: "Use case"
+    folder: "src/content/usecase"
+    path: "{{locale}}/{{slug}}"
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    fields:
+      - { label: "Język (locale)", name: locale, widget: select, options: ["pl", "en"] }
+      - { label: "Slug", name: slug, widget: string }
+      - { label: "Tytuł SEO", name: title, widget: string }
+      - { label: "Eyebrow", name: eyebrow, widget: string }
+      - { label: "Headline (H1)", name: headline, widget: string }
+      - { label: "Meta description", name: description, widget: text }
+      - { label: "Polecany plan", name: plan, widget: string }
+      - label: "Scenariusze"
+        name: scenarios
+        widget: list
+        fields:
+          - { label: "Tytuł", name: title, widget: string }
+          - { label: "Treść", name: body, widget: text }
+      - { label: "Funkcje", name: features, widget: list, field: { label: "Funkcja", name: item, widget: string } }
+      - label: "Cytat klienta"
+        name: quote
+        widget: object
+        fields:
+          - { label: "Cytat", name: text, widget: text }
+          - { label: "Imię i nazwisko", name: name, widget: string }
+          - { label: "Stajnia / rola", name: role, widget: string }
+
+  # ───── Comparison /vs/* ─────
+  - name: versus
+    label: "Porównania (vs)"
+    label_singular: "Porównanie"
+    folder: "src/content/versus"
+    path: "{{locale}}/{{slug}}"
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    fields:
+      - { label: "Język (locale)", name: locale, widget: select, options: ["pl", "en"] }
+      - { label: "Slug", name: slug, widget: string }
+      - { label: "Konkurent (nazwa)", name: competitor, widget: string }
+      - { label: "Tytuł SEO", name: title, widget: string }
+      - { label: "Meta description", name: description, widget: text }
+      - { label: "TL;DR", name: tldr, widget: text }
+      - label: "Tabela porównawcza"
+        name: table
+        widget: list
+        fields:
+          - { label: "Funkcja", name: feature, widget: string }
+          - { label: "Hovera", name: hovera, widget: string }
+          - { label: "Konkurent", name: them, widget: string }
+      - { label: "Wybierz Hoverę jeśli", name: chooseHovera, widget: list, field: { label: "Powód", name: item, widget: string } }
+      - { label: "Wybierz konkurenta jeśli", name: chooseThem, widget: list, field: { label: "Powód", name: item, widget: string } }
+
+  # ───── Changelog ─────
+  - name: changelog
+    label: "Co nowego (changelog)"
+    label_singular: "Wpis"
+    folder: "src/content/changelog"
+    path: "{{locale}}/{{date}}-{{slug}}"
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: "Język (locale)", name: locale, widget: select, options: ["pl", "en"] }
+      - { label: "Data", name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Typ", name: type, widget: select, options: ["Feature","Improvement","Fix","Mobile","API","Integration"] }
+      - { label: "Tytuł", name: title, widget: string }
+      - { label: "Krótkie podsumowanie", name: summary, widget: text }
+      - { label: "Treść (markdown)", name: body, widget: markdown }
+
+  # ───── Blog ─────
+  - name: post
+    label: "Blog"
+    label_singular: "Post"
+    folder: "src/content/blog"
+    path: "{{locale}}/{{slug}}"
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: "Język (locale)", name: locale, widget: select, options: ["pl", "en"] }
+      - { label: "Slug", name: slug, widget: string }
+      - { label: "Tytuł", name: title, widget: string }
+      - { label: "Meta description", name: description, widget: text }
+      - { label: "Data", name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Autor", name: author, widget: string, default: "Przemek" }
+      - { label: "Tagi", name: tags, widget: list, required: false, field: { label: "Tag", name: tag, widget: string } }
+      - { label: "Treść", name: body, widget: markdown }

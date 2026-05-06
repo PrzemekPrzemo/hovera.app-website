@@ -1,0 +1,227 @@
+---
+import Logo from './Logo.astro';
+import { useTranslations, localizePath, alternateLocale, unlocalizePath, type Locale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const altLocale = alternateLocale(locale);
+const altPath = localizePath(unlocalizePath(Astro.url.pathname), altLocale);
+
+const lp = (p: string) => localizePath(p, locale);
+
+const productItems = [
+  { href: lp('/produkt/kalendarz'), label: t('nav.product.calendar') },
+  { href: lp('/produkt/karnety'), label: t('nav.product.passes') },
+  { href: lp('/produkt/dziennik-konia'), label: t('nav.product.horse-journal') },
+  { href: lp('/produkt/finanse-ksef'), label: t('nav.product.finance') },
+  { href: lp('/produkt/aplikacja-mobilna'), label: t('nav.product.mobile') },
+  { href: lp('/produkt/zapisy-online'), label: t('nav.product.online-booking') },
+  { href: lp('/produkt/ai-copilot'), label: t('nav.product.ai') },
+];
+
+const forItems = [
+  { href: lp('/dla/szkolki'), label: t('nav.for.school') },
+  { href: lp('/dla/pensjonatu'), label: t('nav.for.boarding') },
+  { href: lp('/dla/sportu'), label: t('nav.for.sport') },
+  { href: lp('/dla/hodowli'), label: t('nav.for.breeding') },
+  { href: lp('/dla/sieci-stajni'), label: t('nav.for.network') },
+];
+---
+
+<header class="hovera-nav fixed inset-x-0 top-0 z-50" data-nav>
+  <div class="container-x">
+    <div class="hovera-nav-shell mt-4 flex items-center justify-between gap-6 rounded-full border px-4 py-2.5 backdrop-blur-md md:px-5">
+      <a href={lp('/')} class="flex items-center gap-2 text-[1.35rem] tracking-tight" aria-label="Hovera">
+        <Logo />
+      </a>
+
+      <nav class="hidden items-center gap-1 lg:flex">
+        <div class="hovera-dropdown group relative">
+          <button class="dropdown-trigger" type="button">
+            {t('nav.product')}
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="dropdown-panel" role="menu">
+            {productItems.map((it) => (
+              <a href={it.href} class="dropdown-item">{it.label}</a>
+            ))}
+          </div>
+        </div>
+
+        <div class="hovera-dropdown group relative">
+          <button class="dropdown-trigger" type="button">
+            {t('nav.for')}
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="dropdown-panel" role="menu">
+            {forItems.map((it) => (
+              <a href={it.href} class="dropdown-item">{it.label}</a>
+            ))}
+          </div>
+        </div>
+
+        <a class="nav-link" href={lp('/cennik')}>{t('nav.pricing')}</a>
+        <a class="nav-link" href={lp('/co-nowego')}>{t('nav.changelog')}</a>
+        <a class="nav-link" href={lp('/demo')}>{t('nav.demo')}</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href={altPath} class="nav-link hidden md:inline-flex" aria-label={`Switch to ${altLocale}`}>
+          {t('lang.switch')}
+        </a>
+        <a href={lp('/kontakt')} class="btn btn-primary text-[13px] px-4 py-2">
+          {t('nav.cta')}
+        </a>
+        <button
+          class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border"
+          aria-label="Menu"
+          data-mobile-toggle
+          type="button"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hovera-mobile lg:hidden" data-mobile-panel hidden>
+    <div class="container-x py-4">
+      <div class="surface p-4 space-y-1">
+        <details class="group">
+          <summary class="flex cursor-pointer items-center justify-between py-2 text-sm font-medium">
+            {t('nav.product')}
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" class="transition-transform group-open:rotate-180" aria-hidden="true">
+              <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="ml-2 mt-1 flex flex-col">
+            {productItems.map((it) => (
+              <a href={it.href} class="dropdown-item">{it.label}</a>
+            ))}
+          </div>
+        </details>
+        <details class="group">
+          <summary class="flex cursor-pointer items-center justify-between py-2 text-sm font-medium">
+            {t('nav.for')}
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" class="transition-transform group-open:rotate-180" aria-hidden="true">
+              <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <div class="ml-2 mt-1 flex flex-col">
+            {forItems.map((it) => (
+              <a href={it.href} class="dropdown-item">{it.label}</a>
+            ))}
+          </div>
+        </details>
+        <a class="block py-2 text-sm font-medium" href={lp('/cennik')}>{t('nav.pricing')}</a>
+        <a class="block py-2 text-sm font-medium" href={lp('/co-nowego')}>{t('nav.changelog')}</a>
+        <a class="block py-2 text-sm font-medium" href={lp('/demo')}>{t('nav.demo')}</a>
+        <a class="block py-2 text-sm font-medium" href={altPath}>{t('lang.switch')}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hovera-nav-shell {
+    background: rgba(250, 248, 244, 0.78);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-soft);
+    transition: background 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+  }
+  [data-nav].is-scrolled .hovera-nav-shell {
+    background: rgba(250, 248, 244, 0.92);
+    box-shadow: var(--shadow-warm);
+  }
+  .nav-link {
+    border-radius: 9999px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    color: var(--color-fg);
+  }
+  .nav-link:hover {
+    background: var(--color-sand-light);
+  }
+  .dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 9999px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    color: var(--color-fg);
+  }
+  .dropdown-trigger:hover {
+    background: var(--color-sand-light);
+  }
+  .dropdown-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    min-width: 240px;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-warm);
+    padding: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.25s var(--ease-out-expo),
+      transform 0.25s var(--ease-out-expo);
+    z-index: 60;
+  }
+  .hovera-dropdown:hover .dropdown-panel,
+  .hovera-dropdown:focus-within .dropdown-panel {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .dropdown-item {
+    display: block;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: background-color 0.2s, color 0.2s;
+    color: var(--color-fg);
+  }
+  .dropdown-item:hover {
+    background: var(--color-sand-light);
+    color: var(--color-bark);
+  }
+  .hovera-mobile[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const onScroll = () => {
+    if (!nav) return;
+    if (window.scrollY > 8) nav.classList.add('is-scrolled');
+    else nav.classList.remove('is-scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-mobile-panel]');
+  toggle?.addEventListener('click', () => {
+    if (!panel) return;
+    panel.hidden = !panel.hidden;
+  });
+</script>

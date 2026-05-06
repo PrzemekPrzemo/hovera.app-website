@@ -1,0 +1,73 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { localizePath } from '../../i18n/utils';
+const locale = 'en' as const;
+const lp = (p: string) => localizePath(p, locale);
+
+const groups = [
+  { title: 'Getting started', items: [
+    { q: 'How do I create a Hovera account?', a: 'Fill in the contact form — we reply within 24h, recommend a plan and create your account. First login arrives by email.' },
+    { q: 'Is there a trial?', a: 'Yes — 14 days free for any paid plan. No card required.' },
+    { q: 'How long does setup take?', a: 'Self-serve setup takes 30-60 minutes. For larger stables we offer 1:1 onboarding including data import — 2-4 hours over 1-2 calls.' },
+    { q: 'Can I import data from another system?', a: 'Yes. We support import from Excel / Google Sheets, Horstable, Nasza Stajnia, EquineM. Other systems via CSV.' },
+  ]},
+  { title: 'Payments & billing', items: [
+    { q: 'How is billing handled?', a: 'Up-front — monthly or annually. Annual = 20% off.' },
+    { q: 'What about VAT?', a: 'Every invoice is VAT-compliant. Invoices to a registered company (with VAT ID) carry deductible VAT.' },
+    { q: 'Can I change plan mid-month?', a: 'Yes. Upgrade — instant, prorated. Downgrade — from the next period.' },
+    { q: 'What happens if I miss a payment?', a: 'Email reminder after 7 days. After 14 days, new features locked (read still works). After 30 days, full lock. Data kept for 90 days.' },
+  ]},
+  { title: 'Security & GDPR', items: [
+    { q: 'Where is my data stored?', a: 'EU data centers (Frankfurt, Warsaw). GDPR-compliant. Encrypted backups, daily, 30-day retention.' },
+    { q: 'Do clients see my data?', a: 'Only their own — own passes, rides, invoices. They do not see other clients or the full stable calendar.' },
+    { q: 'How do I delete the account and data?', a: 'Profile → Settings → Delete account. We delete data within 30 days. Full data export as JSON is available before deletion.' },
+    { q: 'Do you have ISO 27001?', a: 'Currently in the certification process (planned Q4 2026). Already operating to its procedures today.' },
+  ]},
+  { title: 'Mobile app', items: [
+    { q: 'Which iOS and Android versions?', a: 'iOS 16+, Android 10+. App size ~80 MB.' },
+    { q: 'Does it work offline?', a: 'Yes — full offline read+write. Sync when you reconnect.' },
+    { q: 'Can I use Hovera without the app?', a: 'Yes — the web version is fully featured. The app is a convenience for in-barn use.' },
+  ]},
+];
+---
+
+<Base title="Help — Hovera" description="Frequently asked questions about Hovera. Setup, payments, security, mobile app.">
+  <PageHero eyebrow="Help" title="Help center" subtitle="Most common questions. If anything is missing — write to us, we'll add it." />
+
+  <section class="container-x py-16">
+    <div class="space-y-16 max-w-3xl mx-auto">
+      {groups.map((g) => (
+        <div data-reveal>
+          <h2 class="display-3">{g.title}</h2>
+          <div class="mt-6 space-y-3">
+            {g.items.map((it) => (
+              <details class="faq-item">
+                <summary><span>{it.q}</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+                <p class="muted">{it.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-16 text-center">
+      <p class="muted">Didn't find what you need?</p>
+      <a href={lp('/kontakt')} class="btn btn-primary mt-4">Write to us</a>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .faq-item { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; }
+  .faq-item summary { list-style: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; font-weight: 500; gap: 1rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary svg { transition: transform 0.3s; flex-shrink: 0; }
+  .faq-item[open] summary svg { transform: rotate(180deg); }
+  .faq-item p { padding: 0 1.25rem 1.1rem; line-height: 1.6; }
+  .faq-item:hover { background: var(--color-sand-light); }
+</style>

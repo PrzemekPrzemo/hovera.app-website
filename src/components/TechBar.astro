@@ -1,0 +1,54 @@
+---
+import { type Locale } from '../i18n/utils';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+const items = locale === 'pl' ? [
+  { ico: '🔒', label: 'Pełne szyfrowanie + RODO' },
+  { ico: '🇵🇱', label: 'KSeF Type 2 cert' },
+  { ico: '🇪🇺', label: 'Peppol BIS Billing 3.0' },
+  { ico: '📱', label: 'iOS + Android natywnie' },
+  { ico: '🔌', label: 'Public API + webhooks' },
+  { ico: '⚙️', label: 'Eksport iFirma / Wfirma / Comarch' },
+] : [
+  { ico: '🔒', label: 'Full encryption + GDPR' },
+  { ico: '🇵🇱', label: 'KSeF Type 2 cert' },
+  { ico: '🇪🇺', label: 'Peppol BIS Billing 3.0' },
+  { ico: '📱', label: 'Native iOS + Android' },
+  { ico: '🔌', label: 'Public API + webhooks' },
+  { ico: '⚙️', label: 'Export to ERP systems' },
+];
+---
+
+<section class="container-x py-16" data-reveal>
+  <div class="tech-grid">
+    {items.map((it) => (
+      <div class="tech-pill">
+        <span class="tech-ico">{it.ico}</span>
+        <span>{it.label}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .tech-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .tech-pill {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    background: var(--color-cream);
+    font-size: 0.9rem;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .tech-pill:hover {
+    background: var(--color-sand-light);
+    border-color: var(--color-bark-300);
+  }
+  .tech-ico { font-size: 1.2rem; }
+</style>

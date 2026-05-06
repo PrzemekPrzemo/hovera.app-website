@@ -1,0 +1,124 @@
+---
+import { useTranslations, localizePath, type Locale } from '../i18n/utils';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const lp = (p: string) => localizePath(p, locale);
+
+const cases = locale === 'pl' ? [
+  { href: lp('/dla/szkolki'), label: 'Szkółka', tag: 'Szkółka', headline: 'Mniej telefonów, więcej jazd', features: ['Booking online', 'Karnety', 'Grafik instruktorów'] },
+  { href: lp('/dla/pensjonatu'), label: 'Pensjonat', tag: 'Pensjonat', headline: 'Każdy właściciel widzi swojego konia', features: ['Boksy + rozliczenia', 'Portal właściciela', 'Cykliczne faktury'] },
+  { href: lp('/dla/sportu'), label: 'Sport i trening', tag: 'Sport', headline: 'Programy + zawody + integracje FEI', features: ['Plany treningowe', 'Integracja FEI / PZJ', 'Statystyki konia'] },
+  { href: lp('/dla/hodowli'), label: 'Hodowla', tag: 'Hodowla', headline: 'Klacze, ogiery, źrebięta, paszporty', features: ['Kalendarz reprodukcyjny', 'Drzewo genealogiczne', 'Paszporty PASB'] },
+] : [
+  { href: lp('/dla/szkolki'), label: 'Riding school', tag: 'School', headline: 'Fewer calls, more rides', features: ['Online booking', 'Passes', 'Instructor scheduling'] },
+  { href: lp('/dla/pensjonatu'), label: 'Boarding', tag: 'Boarding', headline: 'Every owner sees their horse', features: ['Stalls + billing', 'Owner portal', 'Recurring invoices'] },
+  { href: lp('/dla/sportu'), label: 'Sport & training', tag: 'Sport', headline: 'Programs + shows + FEI integrations', features: ['Training plans', 'FEI / national integrations', 'Horse analytics'] },
+  { href: lp('/dla/hodowli'), label: 'Breeding', tag: 'Breeding', headline: 'Mares, stallions, foals, passports', features: ['Reproduction calendar', 'Pedigree tree', 'PASB passports'] },
+];
+---
+
+<section class="container-x py-24 md:py-32" data-reveal>
+  <header class="mx-auto max-w-3xl text-center">
+    <span class="eyebrow">{t('usecase.eyebrow')}</span>
+    <h2 class="display-2 mt-4 text-balance">{t('usecase.title')}</h2>
+  </header>
+
+  <div class="mt-14 grid gap-6 md:grid-cols-2">
+    {cases.map((c) => (
+      <a href={c.href} class="usecase-card group">
+        <div class="uc-tag">{c.tag}</div>
+        <h3 class="uc-title">{c.headline}</h3>
+        <ul class="uc-features">
+          {c.features.map((f) => <li>{f}</li>)}
+        </ul>
+        <span class="uc-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M3 7h8m-3-3l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .usecase-card {
+    position: relative;
+    display: block;
+    padding: 2rem;
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--color-border);
+    background: linear-gradient(180deg, #fff 0%, var(--color-sand-light) 100%);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+    overflow: hidden;
+    min-height: 220px;
+  }
+  .usecase-card::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 60%;
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(168,149,107,0.25), transparent 70%);
+    transition: opacity 0.5s, transform 0.6s var(--ease-out-expo);
+    opacity: 0;
+  }
+  .usecase-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-warm);
+  }
+  .usecase-card:hover::before {
+    opacity: 1;
+    transform: translate(-10%, 10%);
+  }
+  .uc-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ochre-dark);
+    margin-bottom: 1rem;
+  }
+  .uc-title {
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+  .uc-features {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .uc-features li {
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-cream);
+  }
+  .uc-arrow {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: var(--color-bark);
+    color: var(--color-cream);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+  .usecase-card:hover .uc-arrow {
+    transform: translate(4px, -4px);
+  }
+</style>
