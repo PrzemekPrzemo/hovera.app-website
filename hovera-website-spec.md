@@ -1,9 +1,9 @@
-# Hovera — Specyfikacja strony internetowej
+# Hovera — Specyfikacja strony internetowej (product-led)
 
 > Dokument dla zespołu odpowiedzialnego za stronę marketingową `hovera.app`.
 > Komplementarny do `hovera-spec.md` (specyfikacja produktu/aplikacji).
 >
-> **Wersja:** 1.0 (draft)
+> **Wersja:** 2.0
 > **Status:** Pre-build, do uzgodnień
 > **Domena docelowa:** `hovera.app` (z aliasami `hovera.io`, `hovera.eu` redirectującymi na primary)
 > **Aplikacja webowa SaaS:** `app.hovera.app` (osobny projekt, opisany w `hovera-spec.md`)
@@ -12,248 +12,318 @@
 
 ## 1. Cel strony i jej rola
 
-Strona `hovera.app` to **maszyna do generowania trial signupów** dla aplikacji SaaS. Nie jest portalem produktowym ani blogiem branżowym — to landing platform z trzema priorytetami w ścisłej kolejności:
+Strona `hovera.app` to **product-led marketing site** — nie prosty landing dla lead-genu, lecz pełna prezentacja produktu, która sprzedaje subskrypcję SaaS. Wzorce: Linear, Raycast, Notion, Vercel, Stripe — strony, gdzie produkt jest gwiazdą, każda sekcja pokazuje co oprogramowanie potrafi, a konwersja prowadzi do **płatnej subskrypcji** (z 14-dniowym trial jako technicznym etapem, nie głównym celem).
 
-1. **Konwersja** — odwiedzający → trial signup (`app.hovera.app/register`)
-2. **Edukacja rynku** — wyjaśnienie wartości (prześcignięcie Horstable na komunikacji)
-3. **SEO** — łapanie organicznego ruchu z PL i kluczowych rynków UE
+### 1.1 Trzy priorytety w ścisłej kolejności
 
-Strona nie jest:
+1. **Pokazanie produktu** — odwiedzający musi w ciągu 30 sekund zobaczyć, jak Hovera wygląda, co umie i dlaczego jest lepsza niż arkusz/Horstable
+2. **Sprzedaż subskrypcji** — jasne pakiety, transparentne ceny, frictionless checkout (karta → konto → praca z produktem)
+3. **SEO i organic traffic** — wsparcie wzrostu, nie główny driver konwersji
 
-- ❌ Bloggerem (nie piszemy "10 trików dla jeźdźców" — to nie nasz target)
+### 1.2 Strona NIE jest
+
+- ❌ Lead-genowym lejem z 5 lead magnetami
+- ❌ Blogiem branżowym
 - ❌ Forum / community
-- ❌ Dokumentacją produktu (to idzie do `docs.hovera.app` jako osobny projekt)
-- ❌ Statusem usługi (to `status.hovera.app`)
+- ❌ Dokumentacją techniczną (idzie do `docs.hovera.app`)
+- ❌ Statusem usługi (`status.hovera.app`)
+- ❌ Stroną korporacyjną z misją i wartościami zespołu
 
-### 1.1 KPI sukcesu strony
+### 1.3 KPI sukcesu
 
 | Metryka | Target 6 miesięcy | Target 12 miesięcy |
 |---------|-------------------|--------------------|
-| Unique visitors / mies. | 8 000 | 30 000 |
-| Konwersja visitor → trial signup | 3% | 5% |
-| Bounce rate | <55% | <45% |
-| Avg session duration | >90s | >150s |
-| Pages per session | >2.0 | >2.8 |
-| Organic traffic share | 40% | 65% |
+| Unique visitors / mies. | 10 000 | 35 000 |
+| Konwersja visitor → trial signup | 4% | 6% |
+| **Konwersja trial → paid (subscription)** | **30%** | **40%** |
+| **Konwersja visitor → paid (end-to-end)** | **1.2%** | **2.4%** |
+| Direct paid signup (bez trial) | 5% płacących | 15% płacących |
+| Bounce rate | <50% | <40% |
+| Avg session duration | >120s | >180s |
+| Pages per session | >2.5 | >3.5 |
 | Lighthouse Performance | 90+ | 95+ |
-| Lighthouse Accessibility | 95+ | 100 |
+
+Najważniejsza metryka: **visitor → paid subscription**. Trial jest etapem pośrednim, nie celem.
 
 ---
 
-## 2. Tone of voice i pozycjonowanie komunikacji
+## 2. Tone of voice i pozycjonowanie
 
 ### 2.1 Brand voice
 
-Krótko: **spokojny ekspert, nie sprzedawca**.
+Krótko: **product-confident expert, nie sprzedawca**.
 
 | ✅ Robimy | ❌ Nie robimy |
 |----------|--------------|
-| Mówimy "ogarnij grafik w 30 minut" | "Zrewolucjonizuj swoją stajnię!" |
-| Pokazujemy realne screeny z aplikacji | Stockowe zdjęcia uśmiechniętych ludzi z laptopem |
-| Liczby z konkretnym kontekstem ("3 godziny tygodniowo") | "Oszczędź mnóstwo czasu!" |
-| Zwracamy się per "Ty" (nie "Państwo") | Korpo-mowa, hołubimy |
-| Krótkie zdania. Konkret. | Zdania złożone z trzema myślnikami i rozbudowanymi metaforami |
-| Przyznajemy że produkt jest młody | Udajemy że jesteśmy na rynku 10 lat |
-| Polski naturalny, anglicyzmy tylko gdy nie ma odpowiednika | Nie używamy "scheduluj", "userzy", "feature" |
+| Pokazujemy realne screeny z prawdziwymi danymi | Stockowe zdjęcia szczęśliwych jeźdźców |
+| "Tak wygląda nasz kalendarz przy 30 koniach" | "Rewolucjonizujemy zarządzanie!" |
+| Liczby z kontekstem ("18 sekund od kliknięcia do gotowej faktury") | "Oszczędź mnóstwo czasu!" |
+| Animacje produktu w akcji (loops, GIF, video) | Słajdshow z marketingowymi grafikami |
+| Zwracamy się per "Ty" | Korpo-mowa |
+| Krótkie zdania. Konkret. | Złożone zdania o synergiach |
+| Pokazujemy zarówno mocne, jak i nieukończone strony | Udajemy że jesteśmy 10 lat na rynku |
 
-### 2.2 Pozycjonowanie vs konkurencja
+### 2.2 Pozycjonowanie produktu vs konkurencja
 
-Komunikacyjna luka rynkowa:
+Komunikacyjna luka rynkowa po analizie konkurentów (`hovera-spec.md` sekcja 3):
 
-- **Horstable** komunikuje "mniej telefonów, mniej chaosu" — to ich claim. Nie kopiujemy.
-- **Equicty** komunikuje korporacyjnie po angielsku — nudno i niedostępnie.
-- **Nasza Stajnia** komunikuje feature-list — nudno i nie-emocjonalnie.
+- **Horstable** prezentuje produkt minimalnie (3-4 screeny na stronie), bardziej sprzedaje "wdrożenie 1:1" niż produkt
+- **Equicty** prezentuje produkt ale chaotycznie, korpo-EN, brak jednego "wow"
+- **EquineM** strona z 2018, screenshoty wyglądają jak Windows XP
+- **Nasza Stajnia** lista funkcji, brak wizualnego storytellingu
+- **Mosson Stable** ładnie ale powierzchownie
 
-Hovera komunikuje **lekkość** (zgodnie z etymologią marki "hover"):
+**Hovera robi to inaczej**: każda strona to dedykowany product showcase. Inspiracja wprost z Linear i Raycast — gdzie strona to praktycznie interaktywna prezentacja produktu, a kupno jest naturalną konsekwencją.
 
-- "Stajnia działa. Ty oddychasz." (PL primary tagline)
-- "Lift the weight off your stable." (EN)
-- "Mniej rzeczy do pilnowania. Więcej spokoju w głowie."
+### 2.3 Centralne komunikaty
 
-Atmosfera: minimalizm, dużo whitespace, edytorski layout, **brak stockowych zdjęć szczęśliwych jeźdźców**. Realne screeny aplikacji + abstrakcyjne ilustracje + zdjęcia z polskich stajni naszych pierwszych klientów.
+Hierarchia messagingu (od najmocniejszego do detalu):
 
-### 2.3 Czego unikamy w copy
-
-- ❌ "Innowacyjny", "rewolucyjny", "next-gen", "AI-powered" (jeszcze)
-- ❌ "Najlepszy / numer 1 / lider rynku" (jeszcze nie jesteśmy)
-- ❌ Buzzwords: "synergie", "ekosystem", "transformacja cyfrowa"
-- ❌ Wykrzykniki!!! Trzy z rzędu szczególnie!!!
-- ❌ Wszelkie "kliknij tutaj"
+1. **Lekkość** (brand promise): "Stajnia działa. Ty oddychasz."
+2. **Wszystko w jednym** (product breadth): grafik + karnety + finanse + opieka + KSeF
+3. **Polski first, europejski w bonusie** (compliance): "Robimy to z myślą o polskim prawie. Działamy też w UE."
+4. **Mobile + offline** (technical edge): "Działa nawet w boksie bez wifi."
 
 ---
 
-## 3. Architektura informacji
+## 3. Architektura informacji — product-led
 
-### 3.1 Mapa stron (sitemap) — MVP
+### 3.1 Mapa stron — MVP
 
 ```
-hovera.app/                      Home / landing główny
-├── /szkolka-jezdziecka         Use case: szkółka (target: Anna)
-├── /pensjonat                   Use case: livery (target: Marek)
-├── /sport                       Use case: trening sport (target: Karolina)
-├── /hodowla                     Use case: hodowla (target: Tomasz)
-├── /funkcje                     Lista wszystkich modułów
-│   ├── /funkcje/konie
-│   ├── /funkcje/kalendarz
-│   ├── /funkcje/karnety
-│   ├── /funkcje/finanse
-│   └── /funkcje/aplikacja-mobilna
-├── /cennik                      Pricing (4 pakiety + add-ony)
-├── /vs/horstable                Comparison page (delikatna, faktografia)
-├── /vs/excel                    Comparison: dlaczego nie arkusz
-├── /integracje                  KSeF, Stripe, Przelewy24, FEI, PZJ
-├── /o-nas                       O zespole, mission, kontakt
-├── /kontakt                     Form + dane kontaktowe + Calendly
-├── /blog                        Content marketing (start z 5 postami)
-│   └── /blog/{slug}
-├── /case-studies                Pierwsze case'y (puste w MVP, gotowe na v2)
-│   └── /case-studies/{slug}
-├── /pomoc                       FAQ + linki do docs.hovera.app
-├── /regulamin                   ToS
-├── /polityka-prywatnosci        Privacy policy
-├── /rodo                        DPA i compliance info
-└── /cookies                     Cookie policy
+hovera.app/                          Home / product showcase
+│
+├── /produkt                         Pełen tour produktu (główna sales page)
+│   ├── /produkt/kalendarz           Deep-dive: kalendarz multi-resource
+│   ├── /produkt/karnety             Deep-dive: karnety i auto-rozliczenia
+│   ├── /produkt/dziennik-konia      Deep-dive: timeline konia, zdrowie
+│   ├── /produkt/finanse-ksef        Deep-dive: faktury + KSeF
+│   ├── /produkt/aplikacja-mobilna   Deep-dive: iOS/Android + offline
+│   ├── /produkt/zapisy-online       Deep-dive: portal klienta + booking
+│   └── /produkt/ai-copilot          Deep-dive: AI assistant (gdy dostępny)
+│
+├── /dla/szkolki                     Use case: szkółka (target: Anna)
+├── /dla/pensjonatu                  Use case: livery (target: Marek)
+├── /dla/sportu                      Use case: trening sport (target: Karolina)
+├── /dla/hodowli                     Use case: hodowla (target: Tomasz)
+├── /dla/sieci-stajni                Use case: multi-location (Enterprise)
+│
+├── /cennik                          Plany + checkout (4 pakiety + Enterprise)
+├── /aplikacja-mobilna               Marketing landing dla mobile + App Store / Google Play
+├── /integracje                      KSeF, Stripe, Przelewy24, FEI, PZJ, Peppol
+├── /co-nowego                       Public changelog (changelog-driven marketing)
+│
+├── /vs/horstable                    Comparison
+├── /vs/excel
+├── /vs/nasza-stajnia
+│
+├── /demo                            Interaktywne demo / video tour / book a call
+├── /klienci                         Case studies + testimonials
+├── /blog                            Wsparcie SEO (mniejsze niż w v1)
+│
+├── /o-nas                           Krótka wizytówka zespołu
+├── /kontakt                         Form + Calendly
+├── /pomoc                           FAQ + link do docs
+│
+└── (legal: /regulamin, /polityka-prywatnosci, /rodo, /cookies, /dostepnosc)
 ```
 
 ### 3.2 Mapa stron — v2 (po 6 miesiącach)
 
-Dodajemy:
-
-- **Wersje językowe**: `/en/...`, `/de/...`, `/nl/...`
-- **Programmatic SEO**: `/system-zarzadzania-stajnia/{miasto}` (Warszawa, Kraków, Poznań, Wrocław, Gdańsk + 30 innych)
-- **Calculator**: `/kalkulator-czasu` — "ile zaoszczędzisz na administracji?"
-- **API marketing**: `/api` (z odsyłaniem do `docs.hovera.app/api`)
-- **Webinary**: `/webinary`
-- **Partnerzy**: `/partnerzy` (program partnerski dla księgowych, weterynarzy, branży)
+- Wersje językowe: `/en`, `/de`, `/nl`
+- `/api` — dev marketing
+- `/szablony` — gotowe konfiguracje (jak Notion templates) dla: szkółki, livery, hodowli
+- `/sandbox` — interaktywne demo bez logowania (klikanie w prawdziwy UI z fake data)
+- `/akademia` — kursy onboardingowe
+- Programmatic SEO: `/dla-stajni-w/{miasto}`
 
 ### 3.3 Mapa stron — v3 (po roku)
 
-- **Marketplace usług**: `/marketplace` (publiczny katalog weterynarzy, kowali)
-- **Akademia Hovera**: `/akademia` (kursy, certyfikaty)
-- **Forum / community**: `/forum` (jeśli traction wymaga)
-- **Job board branżowy**: `/praca` (revenue stream)
-- Pełne wersje językowe FR/IT/ES
+- `/marketplace` (publiczny katalog weterynarzy/kowali)
+- `/partnerzy` (program partnerski)
+- Pełne FR/IT/ES wersje
+- `/api/playground` (interaktywny API explorer)
 
 ---
 
-## 4. Strona główna (home) — anatomia
+## 4. Strona główna (home) — product showcase
 
-Najważniejsza strona. 70% odwiedzin zacznie tutaj.
+Najważniejsza strona. Cel: w 30 sekundach pokazać produkt, w 90 sekundach przekonać do trial / kupna.
 
 ### 4.1 Sekcje w kolejności
 
-**1. Hero (above the fold)**
+**1. Hero z animowanym product mockupem**
 
-- Logo Hovera (lewy górny róg)
-- Nawigacja: Funkcje · Cennik · Use cases (dropdown) · Blog · Zaloguj · **[CTA primary: Wypróbuj za 0 zł]**
+- Logo Hovera + nawigacja: Produkt (dropdown z 7 funkcjami) · Dla kogo (dropdown 5 use cases) · Cennik · Demo · Co nowego · Zaloguj · **[CTA: Wypróbuj za 0 zł]**
 - H1: "Stajnia działa. Ty oddychasz."
-- Subheadline: "Hovera porządkuje grafik, karnety, finanse i opiekę nad końmi w jednym miejscu. Bez instalacji, bez ściśle określonej dyscypliny, z polskim KSeF już dziś."
-- Primary CTA: "Załóż konto za 0 zł" (sage green button)
-- Secondary CTA: "Zobacz demo (15 min)" (link, nie button)
-- Hero visual: **screen aplikacji** (kalendarz na laptopie + mobile widok obok). NIE stockowy obraz konia.
-- Drobny tekst pod CTA: "Bez karty. Bez wdrożenia. Pierwsze konie w grafiku w 10 minut."
+- Subheadline (max 2 zdania): "Grafik, karnety, faktury z KSeF i opieka nad końmi w jednym narzędziu. Działa na komputerze, telefonie, w stajni bez wifi."
+- **Hero visual: animowany mockup aplikacji** — desktop + mobile obok siebie. Kalendarz przewija się sam, faktura generuje się, push notification przylatuje na telefon. Wzorzec: linear.app hero, raycast.com hero.
+- Primary CTA: "Wypróbuj za 0 zł" (sage)
+- Secondary CTA: "Zobacz demo (3 min)" — otwiera modal z video / interactive sandbox
+- Drobny tekst: "14 dni za darmo • Bez karty • KSeF w cenie"
 
-**2. Social proof bar**
+**2. Logo bar / social proof**
 
-Tuż pod hero, przed scrollem. Logo lub liczby:
+Tuż pod hero. Logo 6-8 stajni które używają (po pierwszych klientach). Przed nimi: "Już używają nas X stajni w Polsce" + 3 hard stats (np. "12 000 jazd zaplanowanych", "1 200 koni w systemie", "8 minut średnio na wystawienie faktury").
 
-- Pierwszy etap (przed klientami): "Budujemy z 8 polskimi stajniami w ramach early access"
-- Po klientach: logosy (5-8 stajni) + stats: "~Y koni w systemie", "~X jazd zaplanowanych w tym tygodniu"
+**3. Product tour — przewijalna sekcja "Co Hovera potrafi"**
 
-**3. Problem section — "To znasz?"**
+To jest serce strony. Format: 5-6 sekcji feature, każda z prawdziwym screenshotem/animacją + krótkim opisem + CTA "Dowiedz się więcej" do `/produkt/{feature}`.
 
-3 karty z konkretnymi bólami persony Anny / Marka:
+Każdy feature jako fullwidth section ze sticky tekstem po lewej i live mockupem po prawej (na desktop), wertykalny stack na mobile:
 
-- "Telefon dzwoni 40 razy dziennie z pytaniem o terminy."
-- "Karnety w zeszycie. Klient mówi że ma 5, Ty że 3."
-- "Co miesiąc walczysz z Excelem żeby wystawić faktury."
+- **Kalendarz, który nie pozwoli zarezerwować dwóch jazd na ten sam koń** — animacja drag&drop w kalendarzu, conflicts highlightowane
+- **Karnety, które same się rozliczają** — animacja: klient kupuje karnet → planuje jazdę → karnet ubywa → faktura wystawia się
+- **Faktury z KSeF jednym kliknięciem** — animacja: kliknięcie button → status "wysłana", check mark, "Numer KSeF: 2026/01/..."
+- **Dziennik konia w jednym widoku** — animacja timeline konia: szczepienie, jazda, kowal, notatka
+- **Aplikacja mobilna, która działa nawet bez wifi** — mockup phone + indicator "offline mode", potem "syncing"
 
-Każda karta ma drobną metaforę wizualną (nie zdjęcia ludzi — abstrakcja, ikona, prosty obrazek).
+Wzorce inspiracyjne: linear.app/method, raycast.com (przewijające się features), notion.so home.
 
-**4. Rozwiązanie — "Jak Hovera to rozwiązuje"**
+**4. Krótkie demo video / interactive sandbox**
 
-3-kolumnowa siatka, krótkie opisy + screenshot:
+Pełnoszerokościowa sekcja: "Sprawdź sama, jak to działa" + jedno z dwóch:
 
-- **Grafik bez konfliktów** — multi-resource calendar (konie × instruktorzy × ujeżdżalnie)
-- **Karnety same się rozliczają** — auto-decrement, alerty wyczerpania
-- **Faktury z KSeF jednym klikiem** — od razu w Krajowym Systemie
+- Embedded video (3-min product tour z lektorem)
+- LUB interactive sandbox: prawdziwy UI Hovery z mock data, klikalny, bez logowania
 
-**5. Use cases — "Hovera dla każdej stajni"**
+Rekomendacja: **oboje**, z toggle. Sandbox po MVP gdy będziemy mieli czas zbudować.
 
-Cztery duże karty z linkami do podstron:
+**5. Use case pivots — "Hovera w 4 rolach"**
 
-- 🏇 **Szkółka jeździecka** — zapisy online, karnety, instruktorzy → `/szkolka-jezdziecka`
-- 🐴 **Pensjonat (livery)** — boksy, dziennik konia, rozliczenia z właścicielami → `/pensjonat`
-- 🏆 **Sport i trening** — programy, integracje FEI/PZJ, zawody → `/sport`
-- 👶 **Hodowla** — klacze, krycia, źrebięta, paszporty → `/hodowla`
+Cztery duże karty (clickable):
 
-(Emoji ilustracyjne; w finalnym designie zastępujemy je customowymi piktogramami w stylu marki)
+- 🏇 **Szkółka** — "Mniej telefonów, więcej jazd"
+- 🐴 **Pensjonat** — "Każdy właściciel widzi swojego konia"
+- 🏆 **Sport i trening** — "Programy + zawody + integracje FEI"
+- 👶 **Hodowla** — "Klacze, ogiery, źrebięta, paszporty"
 
-**6. Differentiator section — "Czego nie znajdziesz u konkurencji"**
+Każda karta = mini-screenshot + 3 kluczowe funkcje + link do `/dla/{use-case}`.
 
-3-4 unikalne wartości, każda z konkretnym screenshotem:
+**6. Differentiator strip — "Czego nie znajdziesz nigdzie indziej"**
 
-- **Aplikacja mobilna z trybem offline** — działa nawet w boksie bez wifi
-- **Pełna integracja z KSeF** — od stycznia 2026 wymóg, my już to mamy
-- **Publiczna mini-strona Twojej stajni** — klienci znajdują Cię w Google i rezerwują online
+Trzy mocne wartości w prostej siatce, każda z jednym screenshotem:
+
+- **Polski KSeF i Peppol UE od pierwszego dnia** — nie po latach, nie jako addon
+- **Aplikacja mobilna, która działa offline** — w stajni bez wifi, sync kiedy wrócisz
+- **Publiczna strona Twojej stajni** — klienci znajdują Cię w Google, rezerwują online (tu screenshot mini-strony)
 
 **7. Pricing teaser**
 
-Trzy karty (Solo, Stable, Pro) z cenami i CTA "Zobacz pełen cennik" linkujący do `/cennik`.
+Trzy karty (Solo, Stable, Pro) z cenami i krótkim "co dostajesz". CTA "Zobacz pełen cennik" → `/cennik`.
 
-**8. Testimonial / case study spotlight**
+UWAGA: tu widać **realne ceny od razu**. Bez gier z "skontaktuj się". Tylko Enterprise jest "od X / na zapytanie".
 
-Jeden duży cytat z pierwszego klienta + zdjęcie + logo stajni. Format jak Linear.app testimonials.
+**8. Testimonial spotlight**
 
-**9. FAQ (5 najczęstszych pytań)**
+Jeden duży cytat z prawdziwego klienta + wideo selfie 30s + logo stajni. Format Linear/Vercel — duża typografia, bez decorations.
 
-- Czy Hovera działa na telefonie?
-- Czy mogę przenieść dane z Excela / Horstable / Nasza Stajnia?
-- Co z RODO i bezpieczeństwem?
-- Czy w trial muszę podać kartę?
-- Co jeśli przekroczę limity pakietu?
+**9. Built for the way stables actually work — sekcja techniczna**
 
-Z linkiem "Wszystkie pytania" → `/pomoc`.
+Krótka sekcja dla bardziej technicznych odbiorców (Marek, Karolina) — ikona + jeden bullet:
 
-**10. Final CTA**
+- 🔒 Pełne szyfrowanie + RODO compliance
+- 🇵🇱 KSeF Type 2 cert
+- 🇪🇺 Peppol BIS Billing 3.0
+- 📱 iOS + Android natywnie
+- 🔌 Public API + webhooks
+- ⚙️ Eksport do iFirma / Wfirma / Comarch ERP
 
-Pełnoszerokościowy banner: "Wypróbuj 14 dni za 0 zł" + wizualizacja produktu w tle.
+**10. Final CTA banner**
+
+Pełnoszerokościowy. "Zacznij dziś. Bez instalacji, bez wdrożenia, bez karty." + duży CTA + "lub zobacz demo".
 
 **11. Footer**
 
-- Kolumna 1: O nas, Kariera (link), Blog, Case studies
-- Kolumna 2: Funkcje, Cennik, Integracje, Aplikacja mobilna, API
-- Kolumna 3: Pomoc, Status systemu, Kontakt, Calendly demo
-- Kolumna 4: Polityka prywatności, Regulamin, RODO, Cookies
-- Newsletter signup
-- Social: LinkedIn, Instagram, YouTube
-- Locale switcher (PL/EN/DE/...)
-- Copyright + numer NIP/REGON Twojej firmy
+Standard 4 kolumny:
+
+- **Produkt**: Kalendarz, Karnety, Dziennik koni, Finanse i KSeF, Aplikacja mobilna, Co nowego, Roadmap
+- **Dla kogo**: Szkółka, Pensjonat, Sport, Hodowla, Sieci stajni
+- **Zasoby**: Cennik, Integracje, API, Pomoc, Kontakt, Demo, Blog, Klienci
+- **Firma**: O nas, Kariera, Status systemu, Bezpieczeństwo, Polityka prywatności, Regulamin, RODO, Cookies, Dostępność
+
+Plus: locale switcher, social, App Store + Google Play badges.
+
+### 4.2 Co odróżnia ten home od konkurencji
+
+- **70% strony to produkt w akcji** (animacje, screeny, video). Konkurencja ma 10-20%.
+- **Brak ramki "problemy które rozwiązujemy"** w tradycyjnym formacie. Zamiast tego — produkt sam pokazuje że rozwiązuje problemy.
+- **Cena widoczna na home**. Horstable trzyma ceny tylko w `/cennik`.
+- **Demo video / sandbox dostępne bez signupu**. Equicty wymaga "book a demo" call.
 
 ---
 
-## 5. Strony use case (4 sztuki)
+## 5. Strony deep-dive produktu (`/produkt/*`)
 
-Każda buduje argumentację pod jedną personę. Struktura ta sama:
+To jest **nowy poziom** w stosunku do typowej strony konkurencji. Każdy moduł produktu = osobna landing page wzorowana na Linear (np. linear.app/method). Cel: pokazać feature na poziomie szczegółu, który przekonuje że to rzeczywiście rozwiązuje problem.
 
-1. **Hero** — H1 specyficzne dla persony ("System dla szkółki jeździeckiej, który działa szybciej niż telefon")
-2. **Pain points** — 3-4 problemy specyficzne dla tej persony
-3. **Funkcje rozwiązujące** — mapping problem → fokus moduł produktu
-4. **Screenshoty** — kalendarz / karnety / dziennik koni — w kontekście tego use case
-5. **Mini-testimonial** — od kogoś z tej samej kategorii klienta
-6. **Tabela funkcji** — co dostajesz w którym pakiecie dla tego use case
-7. **FAQ specyficzne** — 5 pytań tej persony
-8. **CTA** — "Załóż konto za 0 zł"
+### 5.1 Struktura każdej strony /produkt/{feature}
+
+1. **Hero** — duża animacja/video tej funkcji + H1 specyficzne (np. "Kalendarz, który rozumie Twoją stajnię")
+2. **3-4 sub-features** — każde z dedykowanym mockupem/animacją (np. dla kalendarza: konflikt detection, drag&drop, multi-view, eksport)
+3. **Sekcja "Działa razem z..."** — pokazujemy integracje z innymi modułami (kalendarz → karnety → faktura → email)
+4. **Snippet kodu / API example** — gdzie ma sens (dla integrations, API)
+5. **Kto z tego korzysta** — krótkie 2-3 testimoniale specyficzne dla tej funkcji
+6. **CTA** — z subtelnym kontekstowym przypomnieniem ceny ("Dostępne we wszystkich pakietach od 49 zł/mies.")
+
+### 5.2 Lista stron
+
+| URL | Główne hasło | Priorytet build |
+|-----|--------------|-----------------|
+| `/produkt/kalendarz` | "Multi-resource calendar bez konfliktów" | P0 |
+| `/produkt/karnety` | "Karnety, które same się rozliczają" | P0 |
+| `/produkt/finanse-ksef` | "Faktury z KSeF jednym kliknięciem" | P0 (PL killer feature) |
+| `/produkt/zapisy-online` | "Twoja stajnia w Google. Klienci sami się zapisują." | P0 |
+| `/produkt/dziennik-konia` | "Cała historia konia w jednym widoku" | P1 |
+| `/produkt/aplikacja-mobilna` | "Stajnia w kieszeni. Działa też offline." | P1 |
+| `/produkt/ai-copilot` | "Mniej myślenia o operacjach, więcej o koniach" | P2 (po dostarczeniu AI) |
+| `/produkt/livery` | "Pensjonat, w którym właściciele wszystko widzą" | P2 |
+| `/produkt/api` | "Otwarte API. Buduj na Hoverze." | P3 |
+
+### 5.3 Animacje i video — jak to robimy
+
+To największa różnica względem konkurencji i największe ryzyko (czasowe + budżetowe).
+
+**Opcje (kompromis cost/quality):**
+
+| Metoda | Koszt | Jakość | Kiedy używać |
+|--------|-------|--------|--------------|
+| Loom screenshare + edycja | 0 zł | Niska | Quick first version, MVP |
+| Native screen recording + Premiere | ~10h pracy | Średnia | Dobre dla MVP |
+| Lottie animation (After Effects → JSON) | ~500-2000 zł / animacja | Wysoka | Hero animations, konkretne flow |
+| Custom motion design (zewnętrzny artysta) | 3-8k zł / animacja | Najwyższa | Hero strony głównej, kluczowe stories |
+| Interactive demo (HTML/CSS/React) | 20-40h dev / każdy | Bardzo wysoka, klikalne | Sandbox, zaawansowane sekcje |
+
+**Rekomendacja:**
+
+- MVP: **screen recordingi z Loom/Cleanshot, edytowane podstawowo** — tanio i wystarczająco
+- v2 (po 3 miesiącach): **2-3 kluczowe Lottie animacje** w hero strony głównej i `/produkt/kalendarz`
+- v3: **interactive sandbox** zastępuje video na home
 
 ---
 
-## 6. Strona cennika (`/cennik`)
+## 6. Strona cennika — primary purchase page
 
-Najważniejsza strona po home. Decyzje zakupowe się tu podejmują.
+To jest **strona, na której się sprzedaje**. Pricing to nie suchy cennik — to driver konwersji.
 
-### 6.1 Struktura
+### 6.1 Filozofia pricingowa na stronie
 
-**Sekcja 1: Tabela 4 pakietów**
+- **Pełna transparentność** — żadnych "Skontaktuj się" poza Enterprise
+- **Inline checkout** — po kliknięciu "Wybierz plan" → modal z formularzem karty (Stripe Checkout albo wbudowany)
+- **Direct paid możliwy** — można pominąć trial i zacząć od razu na karcie (z dyskretnym "Wolisz najpierw 14 dni za 0 zł?" jako alternative)
+- **Annual discount widoczny** — "-20% przy płatności rocznej" jako toggle na górze
+- **VAT clarity** — przełącznik "Netto / Brutto" dla firm
+
+### 6.2 Sekcje strony
+
+**1. Hero**
+
+- H1: "Wybierz plan dopasowany do Twojej stajni"
+- Toggle: "Miesięcznie / Rocznie (-20%)"
+- Toggle: "Netto / Brutto"
+- Locale-aware currency (PLN / EUR / CZK)
+
+**2. 4 pricing cards**
 
 | | Free | Solo | Stable | Pro |
 |---|---|---|---|---|
@@ -266,650 +336,495 @@ Najważniejsza strona po home. Decyzje zakupowe się tu podejmują.
 | Livery / pensjonat | – | – | – | ✓ |
 | Aplikacja mobilna | ✓ | ✓ | ✓ | ✓ |
 | Wsparcie | community | email | email + chat | priority |
-| **CTA** | Załóż konto | Wybierz Solo | **Najczęściej wybierany** | Wybierz Pro |
+| **CTA** | Załóż konto | **Kup plan Solo** | **Kup plan Stable** ⭐ | **Kup plan Pro** |
+| Alt CTA (poniżej) | – | "lub 14 dni za 0 zł" | "lub 14 dni za 0 zł" | "lub 14 dni za 0 zł" |
 
-**Sekcja 2: Enterprise / Multi-location**
+**3. Enterprise card**
 
-Osobna karta z "Skontaktuj się" — bez ceny. Dla sieci stajni, klubów sportowych, hodowli.
+Osobna karta na pełnej szerokości pod 4 pakietami. Z hasłem "Sieci stajni, kluby sportowe, hodowle z 100+ końmi." Lista ekstra: white-label, multi-location, dedicated support, custom SLA, SSO. CTA: "Skontaktuj się" + Calendly.
 
-**Sekcja 3: Add-ony**
+**4. Add-ony**
 
-- AI Copilot: +99 zł/mies (po dostarczeniu)
-- Custom domain dla mini-strony: +29 zł/mies
-- Pakiet SMS: 0,12 zł/SMS po pakiecie
+- AI Copilot: +99 zł/mies (od v2)
+- Custom domain: +29 zł/mies
+- Pakiet SMS po wyczerpaniu: 0,12 zł/SMS
+- Dodatkowe seats pracownika powyżej limitu: 9 zł/seat/mies
 
-**Sekcja 4: FAQ cennika**
+**5. Pełna tabela porównawcza funkcji**
 
-- Czy mogę zmienić plan w każdym momencie?
-- Co się dzieje gdy przekroczę limit?
-- Roczna płatność — jaki rabat?
-- Faktura czy paragon?
-- Czy w cenie jest wsparcie wdrożeniowe?
+Wertykalna tabela ze wszystkimi funkcjami × pakiety. Zwijalna, by default zwinięta po pierwszych 10 wierszach.
 
-**Sekcja 5: Porównanie funkcji szczegółowe**
+**6. ROI calculator (od v2)**
 
-Tabela ze wszystkimi funkcjami w pakietach (jak na Horstable, ale szerszy zakres).
+Interaktywny: "Ile mam koni? Ile klientów? Ile godzin na admin?" → output: "Hovera oszczędzi Ci ~X godzin tygodniowo, czyli ~Y zł rocznie. Plan Stable za 149 zł zwraca się w pierwszym tygodniu."
 
-### 6.2 Zasady cennikowe (UX)
+**7. Pricing FAQ**
 
-- Toggle "Miesięcznie / Rocznie (-20%)" u góry
-- Plan "najczęściej wybierany" (Stable) wyróżniony wizualnie
-- Każdy plan ma "od" przy pierwszej wizycie, jeśli różne kraje (waluty)
-- Przeliczanie waluty: detect locale → pokazuje EUR/PLN/CZK adekwatnie
-- Przy każdym CTA: "Bez karty. 14 dni testów."
+- Czy mogę zmienić plan w każdej chwili?
+- Co się dzieje gdy przekroczę limit koni / klientów?
+- Czy w cenie jest KSeF? *(tak, w Stable+)*
+- Czy potrzebuję podpisać umowę?
+- Czy faktura VAT jest standardowo?
+- Co z VAT MOSS / OSS dla zagranicznych klientów?
+
+**8. Money-back guarantee**
+
+"30-day money back guarantee" — pełny zwrot za pierwszy miesiąc bez pytań. To jest **kluczowy konwerter** — usuwa największą obawę przy direct paid.
+
+**9. Final CTA**
+
+"Wciąż nie pewna?" → "Wypróbuj 14 dni za 0 zł. Bez karty."
+
+### 6.3 Checkout flow
+
+Po kliknięciu "Kup plan Stable":
+
+1. Modal lub strona `/cennik/checkout?plan=stable`
+2. Email + nazwa stajni + kraj (już w defaultcie z geolokalizacji)
+3. NIP (opcjonalny, dla VAT)
+4. Stripe Checkout (karta) — z opcją "BLIK" w Polsce przez Stripe
+5. Po płatności: redirect do `app.hovera.app/onboarding?session={stripe_id}` — automatyczne utworzenie konta i logowanie
+6. Email z potwierdzeniem + faktura PDF
+
+Frictionless: od kliknięcia do działającego konta — mniej niż 90 sekund.
 
 ---
 
-## 7. Strony comparison (`/vs/{konkurencja}`)
+## 7. Strony use case (`/dla/*`) — produkt-led wersja
 
-Strony porównawcze są **organicznym ruchem złotem** — ludzie googlują "horstable vs" i znajdują nas. Robimy je, ale fair.
+Główna zmiana vs poprzedniej wersji: zamiast "ból persony → rozwiązanie", teraz **"konkretne use case'y → konkretne ekrany produktu w akcji"**.
 
-### 7.1 Zasady etyczne (musi być)
+### 7.1 Struktura każdej strony
 
-- ✅ Tylko fakty publicznie dostępne
-- ✅ Zachowujemy neutralny ton
-- ✅ Wskazujemy gdzie konkurencja jest lepsza (jeśli jest)
-- ✅ Zawsze link do strony konkurencji ("Sprawdź też Horstable")
-- ❌ Nie ośmieszamy
-- ❌ Nie sugerujemy że konkurencja działa źle
-- ❌ Nie cytujemy klientów konkurencji
+1. **Hero** — H1 specyficzny + screenshot tej osoby używającej Hovery (np. dashboard managera szkółki)
+2. **3-4 typowe scenariusze** — każdy z animacją produktu obsługującego ten scenariusz
+3. **Co dostaniesz w ramach Hovery** — tabela funkcji potrzebnych dla tego use case + który pakiet
+4. **Workflow w czasie rzeczywistym** — diagram + animacja: "tak wygląda Twój poniedziałek z Hoverą"
+5. **Mini-testimonial** — od kogoś z tej kategorii klienta
+6. **Pricing pivot** — "Dla {use case} polecamy plan {Stable/Pro}, X zł/mies."
+7. **CTA** — "Wybierz plan {X}" + "Zobacz demo"
 
-### 7.2 Lista do zrobienia
+### 7.2 Lista i akcenty
 
-| Strona | Priorytet | Uzasadnienie |
-|--------|-----------|--------------|
-| `/vs/horstable` | P0 | Najsilniejszy konkurent PL |
-| `/vs/excel` | P0 | Większość naszego TAM-u używa Excela |
-| `/vs/nasza-stajnia` | P1 | Drugi gracz PL |
-| `/vs/equinem` | P2 | Po wejściu na NL/EU |
-| `/vs/equicty` | P2 | Po wejściu na BE |
-| `/vs/notion` | P3 | Niche ale viral SEO potential |
+| URL | Akcent product showcase |
+|-----|-------------------------|
+| `/dla/szkolki` | Booking + karnety + grafik + portal klienta — pełna animacja zapisu klienta od strony klienta i managera |
+| `/dla/pensjonatu` | Boksy + rozliczenia miesięczne + portal właściciela konia — animacja "co widzi właściciel konia" |
+| `/dla/sportu` | Programy treningowe + integracja FEI + zawody — diagram "od planu do startu" |
+| `/dla/hodowli` | Klacze + krycia + źrebięta + paszporty PASB — kalendarz reprodukcyjny |
+| `/dla/sieci-stajni` | Multi-location dashboard + skonsolidowane raporty + white-label — Enterprise CTA |
 
-### 7.3 Struktura strony vs
+---
+
+## 8. Co nowego (`/co-nowego`) — changelog jako marketing
+
+Public changelog jest jednym z najsilniejszych narzędzi product-led marketingu (zobacz: linear.app/changelog, raycast.com/changelog, vercel.com/changelog).
+
+### 8.1 Dlaczego to robimy
+
+- Pokazuje że produkt **żyje** — kontrast z konkurencją typu EquineM, która wygląda jak from 2018
+- SEO content pisany za nas — każdy release to nowa strona indexowalna
+- Buduje zaufanie — "skoro tyle deployują, to muszą być serio"
+- Konwersja: visitors którzy widzą "wczoraj dodaliśmy KSeF dla wszystkich pakietów" → trial signup
+
+### 8.2 Format
+
+- 1-2 release per tydzień (zaczynamy od mniej, potem cadence rośnie)
+- Każdy entry: data, typ (Feature/Improvement/Fix/Mobile), tytuł, 2-4 zdania opisu, screenshot/GIF, ewentualnie link do dedykowanej strony
+- RSS feed — dla power userów
+- Email digest miesięczny dla subskrybentów newslettera
+
+### 8.3 Anatomia entry
+
+```markdown
+## 6 maja 2026
+
+### 🆕 Hovera Mobile 1.4: Tryb offline pełny
+
+Dotąd offline działał tylko dla widoków read-only. Teraz możesz w stajni bez wifi:
+- zaplanować jazdę
+- odznaczyć karmienie
+- dodać notatkę do dziennika konia
+- zrobić zdjęcie i przypisać do konia
+
+Synchronizacja gdy wrócisz w zasięg, konflikty rozwiązywane automatycznie.
+
+[Zobacz w produkcie →](/produkt/aplikacja-mobilna)
+```
+
+### 8.4 Implementacja
+
+- Wpisy w Sanity (typ: `changelog_entry`)
+- Pre-rendered statycznie
+- Tagging (Feature / Improvement / Fix / Mobile / API / Integration)
+- Filter po tagu na stronie
+
+---
+
+## 9. Comparison pages (`/vs/*`) — z więcej szczegółu produktowego
+
+Zachowujemy zasady etyczne z poprzedniej wersji. Dodajemy mocniejszy product showcase: zamiast tabeli "my mamy ✓, oni ✗", **pokazujemy screeny side-by-side** gdzie ma sens.
+
+### 9.1 Struktura
 
 1. Hero + dwie kolumny logo
-2. TL;DR table (3-4 najważniejsze różnice)
-3. Pełna tabela porównawcza (20-30 funkcji)
-4. "Wybierz X jeśli..." (kiedy konkurent jest lepszy)
-5. "Wybierz Hovera jeśli..." (kiedy my jesteśmy lepsi)
-6. CTA do trial
+2. TL;DR (3-4 zdania honest comparison)
+3. **Side-by-side screens** — np. "Tak wygląda dodawanie konia w Horstable | Tak wygląda w Hoverze" (real screenshots, 2 kolumny)
+4. Pełna tabela comparison
+5. Sekcje "Wybierz X jeśli..." i "Wybierz Hoverę jeśli..."
+6. Migration story — "Jak przenieść dane z {konkurent}" z linkiem do `/migracja/{konkurent}` (gdy gotowe)
+7. CTA do trial / demo
+
+### 9.2 Priorytety
+
+| Strona | Priorytet | Specyfika |
+|--------|-----------|-----------|
+| `/vs/horstable` | P0 | Direct attack ich największej luki: tylko szkółka, brak KSeF, brak hodowli |
+| `/vs/excel` | P0 | Most TAM uses Excel — pokazać jak system zastępuje arkusz |
+| `/vs/nasza-stajnia` | P1 | Drugi gracz PL |
+| `/vs/equinem` | P2 | Po wejściu na NL (akcent: stara estetyka EquineM) |
+| `/vs/equicty` | P2 | Po wejściu na BE |
+| `/vs/notion` | P3 | Niche SEO, "specialized vs generic" angle |
 
 ---
 
-## 8. Blog i content strategy
+## 10. Aplikacja mobilna — dedykowana strona marketingowa
 
-### 8.1 Cel bloga
+Mobile to nasz killer feature dla rynku stajni (offline mode, w terenie). Daje to dedykowaną stronę.
 
-**Wyłącznie SEO i nurturing**, nie thought leadership. Na każdy post pytanie:
+### 10.1 `/aplikacja-mobilna` — anatomia
 
-> "Czy ten artykuł skłoni właściciela stajni do założenia konta w ciągu 24h?"
-
-Jeśli nie — nie piszemy.
-
-### 8.2 Pillar topics (na 12 miesięcy)
-
-Klastry contentowe pod SEO:
-
-**Klaster 1: Operacje stajni**
-
-- Jak ułożyć grafik szkółki jeździeckiej
-- Karnety w stajni — jak rozliczać uczciwie
-- Dziennik koński — co warto zapisywać
-- Zarządzanie obciążeniem koni
-- RODO w stajni jeździeckiej (lawful basis dla zdjęć dzieci itd.)
-
-**Klaster 2: Finanse stajni**
-
-- Faktura za boarding — co musi zawierać
-- KSeF dla stajni — przewodnik 2026
-- Excel vs system — kiedy zmienić
-- Stawki za jazdę — analiza rynku 2026
-
-**Klaster 3: Dyscypliny**
-
-- Sport vs rekreacja — jak inaczej zarządzać
-- Hodowla — księgowość specjalistyczna
-- Livery / pensjonat — modele rozliczeń
-
-**Klaster 4: Trendy i regulacje**
-
-- E-invoicing w UE 2026
-- ViDA 2028 — co to znaczy dla stajni
-- Trendy SaaS w jeździectwie
-
-### 8.3 Format
-
-- 1500-3000 słów per post
-- Każdy post: 1 H1, struktura H2/H3, listy, **przynajmniej 2 obrazki** (screenshoty + diagram)
-- TOC (table of contents) automatyczny
-- "Related posts" sekcja na dole
-- CTA do trial w środku i na końcu (nie tylko na końcu)
-- Czas czytania policzony
-- Strukturalne dane: Article schema
-
-### 8.4 Cadence
-
-- MVP launch: 5 postów (klastry 1+2)
-- Po starcie: 2 posty / miesiąc
-- Po 6 miesiącach: 4 posty / miesiąc + 1 case study / miesiąc
-
-### 8.5 Autor i CMS
-
-- Autorzy: Ty + content writer freelance + zaproszeni eksperci (weterynarz, prawnik specjalizacja agro)
-- CMS: Sanity (rekomendowany — multilingual native, structured) lub MDX z plików w repo
+1. **Hero** — phone mockupy iOS i Android obok siebie + duży H1 "Hovera w kieszeni"
+2. **App Store + Google Play badges** — duże, klikalne
+3. **Co umie aplikacja** — 5-6 sekcji, każda z animacją na phone mockupie:
+   - Kalendarz w kieszeni
+   - Tryb offline (najmocniejsza sekcja, sample animation: "wracam z zasięgu, syncuje się")
+   - Push notifications (jutro szczepienie, klient odwołał, faktura zapłacona)
+   - Dziennik konia w 3 kliknięciach
+   - Quick actions z poziomu home screen widget
+4. **QR code** — do bezpośredniego pobrania na phone z desktopu
+5. **Recenzje z App Store / Play** — gdy będą
+6. **Compatibility info** — iOS 16+, Android 10+, RAM 2GB+
 
 ---
 
-## 9. SEO — strategia techniczna i contentowa
+## 11. Demo (`/demo`) — sales call + interactive
 
-### 9.1 SEO techniczne — checklista
+Strona o jednym celu: **konwersja Marka i wyższych segmentów** (livery, sport, hodowla, Enterprise) na rozmowę.
 
-- [ ] Każda strona ma unique title + meta description
-- [ ] Open Graph + Twitter Cards na każdej stronie
-- [ ] Canonical URL na każdej stronie
-- [ ] Sitemap.xml dynamiczny + indexowanie w Google Search Console
-- [ ] Robots.txt z wyłączeniem `/api`, `/admin` itd.
-- [ ] hreflang tags dla wersji językowych
-- [ ] Structured data (JSON-LD):
-  - Organization (na każdej stronie)
-  - SoftwareApplication (na home + features)
-  - Product + AggregateRating (na cennik, gdy mamy reviews)
-  - FAQPage (na FAQ)
-  - Article (na blog posts)
-  - BreadcrumbList (na zagłębionych stronach)
-- [ ] Core Web Vitals zielone (LCP < 2.5s, INP < 200ms, CLS < 0.1)
-- [ ] HTTPS wszędzie + HSTS
-- [ ] 404 page user-friendly z search bar
-- [ ] Wewnętrzne linkowanie kontekstowe (każdy post → 3-5 powiązanych)
-- [ ] Obrazki: AVIF/WebP, alt teksty, lazy loading
-- [ ] No render-blocking resources
+### 11.1 Struktura
 
-### 9.2 Słowa kluczowe — priorytety PL
-
-**P0 (must-rank w 6 miesięcy):**
-
-- system zarządzania stajnią
-- aplikacja do stajni jeździeckiej
-- program do szkółki jeździeckiej
-- zarządzanie szkółką jazdy konnej
-- karnety stajnia online
-
-**P1 (target 12 miesięcy):**
-
-- Horstable alternatywa
-- system rezerwacji jazd konnych
-- KSeF stajnia
-- pensjonat dla koni system
-- aplikacja dla instruktora jazdy konnej
-
-**P2 (programmatic SEO 12+ miesięcy):**
-
-- system zarządzania stajnią [miasto] × 50 miast PL
-- szkółka jeździecka oprogramowanie [województwo] × 16
-
-### 9.3 Słowa kluczowe — EN/DE/NL (po wejściu)
-
-EN (UK + IE + EU):
-
-- stable management software
-- equestrian booking system
-- riding school software
-- horse boarding software
-- livery yard management
-
-DE:
-
-- Reitschule Software
-- Pferdestall Verwaltung
-- Stallverwaltung App
-
-NL:
-
-- manege software
-- paardenstal beheer
-- ruitersport boekingssysteem
-
-### 9.4 Link building
-
-- Wpisy w polskich katalogach branżowych (PZJ, Konieipasja, Pferd)
-- Wymiana z weterynarzami i kowalami (linki w obie strony)
-- Guest posts na Pferd, Equita, Konieipasja, Galopuje.pl
-- Press release przy launchu (Bankier, Spider's Web — sektor SaaS)
+1. Hero: "Zobacz Hoverę w akcji. Dopasujemy demo do Twojej stajni."
+2. Dwie ścieżki side-by-side:
+   - **Self-serve demo** — embedded video 5-7 minut z Tobą lub product owner mówiącym przez UI
+   - **Live demo** — Calendly form, 30-min slot, customizowane do typu stajni (formularz: szkółka/livery/sport/hodowla/sieć)
+3. Dla power-userów: link do interactive sandbox (od v2)
+4. FAQ demo: czy to jest sprzedażowe? (nie), kto prowadzi? (Ty/CSM), co przygotować?
+5. CTA "Wypróbuj samemu za 0 zł" — dla tych co nie chcą rozmowy
 
 ---
 
-## 10. Design system
+## 12. Conversion paths (zaktualizowane)
 
-### 10.1 Kolory (z brandingu Hovera)
+### 12.1 Hierarchia CTA
 
-```css
-:root {
-  /* Primary palette */
-  --hovera-slate: #1A1F2E;        /* Default text, primary backgrounds */
-  --hovera-sand: #E8DDD0;         /* Soft accents, dividers */
-  --hovera-sage: #7A8B7A;         /* CTA buttons, brand accent */
-  --hovera-bg: #FAF8F4;           /* Off-white background */
+| CTA | Kontekst | Kolor / waga |
+|-----|----------|--------------|
+| **Kup plan {X}** | Strona cennika, karty pakietów | Sage button, primary |
+| **Wypróbuj za 0 zł** | Home, use cases, feature pages | Sage button, primary |
+| **Zobacz demo (3 min)** | Pod hero, w produkcie | Outline button, secondary |
+| **Umów rozmowę** | Enterprise, livery, sieci | Link albo outline |
+| **Pobierz aplikację** | Mobile-related sekcje | Badge App Store / Play |
 
-  /* Functional */
-  --hovera-success: #5C8A5F;      /* Success states */
-  --hovera-warning: #B89461;      /* Warnings, w spójnej palecie ziemi */
-  --hovera-danger: #A65A4A;       /* Errors, w spójnej palecie ziemi */
-  --hovera-link: #4A6B7C;         /* Linki, neutralny niebieski-szary */
-
-  /* Neutrals */
-  --hovera-gray-100: #F2EDE6;
-  --hovera-gray-300: #C9C2B5;
-  --hovera-gray-500: #8C8579;
-  --hovera-gray-700: #4D4940;
-}
-```
-
-Dark mode: tak, ale **nie w MVP** — odsuwamy do v2.
-
-### 10.2 Typografia
-
-```css
-/* Heading: Geist Sans */
-@font-face { font-family: 'Geist'; src: url('/fonts/Geist-Variable.woff2'); font-weight: 100 900; font-display: swap; }
-
-/* Body: Inter */
-@font-face { font-family: 'Inter'; src: url('/fonts/Inter-Variable.woff2'); font-weight: 100 900; font-display: swap; }
-
-/* Mono (dla kodu w blog/api): JetBrains Mono */
-```
-
-Skala typograficzna (rem-based, 16px base):
-
-- H1: 3.5rem (56px) / weight 600 / tracking -0.02em
-- H2: 2.5rem (40px) / 600 / -0.01em
-- H3: 1.75rem (28px) / 600 / 0
-- H4: 1.25rem (20px) / 600
-- Body: 1rem (16px) / 400 / line-height 1.65
-- Small: 0.875rem (14px)
-
-### 10.3 Spacing i layout
-
-- 8px grid (każdy spacing = wielokrotność 8px)
-- Max content width: 1280px
-- Reading width (prose): 720px
-- Generous whitespace — sekcje rozdzielone min. 96px na desktop, 64px na mobile
-
-### 10.4 Komponenty UI
-
-Stack: **Tailwind CSS + shadcn/ui** (consistent z aplikacją SaaS dla DRY).
-
-Custom komponenty:
-
-- `<HoveraButton>` — primary (sage bg), secondary (outline), tertiary (link)
-- `<HoveraCard>` — z subtle shadow, off-white tło
-- `<HoveraBadge>` — dla "Nowość", "Najczęściej wybierany"
-- `<HoveraTestimonial>` — duże cytaty
-- `<HoveraFeature>` — ikona + tytuł + opis + screenshot
-- `<HoveraComparisonRow>` — wiersz tabeli vs konkurencja
-- `<HoveraPriceCard>` — karta cenowa z toggle miesiąc/rok
-- `<HoveraFAQ>` — accordion z animacją
-- `<HoveraCTABanner>` — pełnoszerokościowy CTA na końcu sekcji
-
-### 10.5 Zasady wizualne
-
-- ❌ Brak gradientów (poza bardzo subtle linear w hero)
-- ❌ Brak mocnych shadowów (max `shadow-sm`)
-- ❌ Brak ramek dookoła wszystkiego — używamy whitespace zamiast borderów
-- ✅ Mocna typografia robi pracę za graphics
-- ✅ Screen prawdziwych danych z aplikacji jako głównego visualu
-- ✅ Mikrointerakcje subtelne (hover button: lekka zmiana koloru, 200ms easing)
-
-### 10.6 Ilustracje
-
-Brak stocków. Trzy źródła wizuali:
-
-1. **Screenshoty produktu** — z prawdziwymi (anonimizowanymi) danymi
-2. **Custom abstrakcyjne ilustracje** — geometryczne, w palecie marki, zlecone zewnętrznemu designerowi (~300-500 zł sztuka, ~10 ilustracji = 3-5k PLN)
-3. **Zdjęcia z polskich stajni** — robione na zamówienie u early-access klientów (1-2 sesje fotograficzne, ~2-3k PLN każda)
-
-### 10.7 Zasady accessibility
-
-- WCAG 2.1 AA na wszystkich stronach
-- Kontrasty ≥ 4.5:1 (sage #7A8B7A na off-white #FAF8F4 — sprawdzić, na granicy)
-- Focus states wyraźne (outline 2px sage)
-- Keyboard navigation pełna
-- Skip-to-content link
-- Aria-labels gdzie ikony bez tekstu
-- Screen reader friendly forms
-- Reduced motion respected (`prefers-reduced-motion`)
-
----
-
-## 11. Stack technologiczny
-
-### 11.1 Rekomendacje
-
-| Warstwa | Wybór | Uzasadnienie |
-|---------|-------|--------------|
-| **Framework** | Next.js 15 (App Router) + React 19 + TypeScript | SSG + ISR, świetny SEO, spójność z aplikacją |
-| **Styling** | Tailwind CSS 4 | Standard, spójność z aplikacją |
-| **Komponenty UI** | shadcn/ui (cherry-picked) | Bez vendor lock-in |
-| **CMS dla bloga** | Sanity v3 | Native multilingual, structured content, dobre DX, free tier |
-| **Forms** | React Hook Form + Zod | Standard |
-| **Email** | Resend (transactional) + Loops.so (lifecycle) | RODO compliant, dobre DX |
-| **Hosting** | Vercel (Pro plan) lub Cloudflare Pages | Vercel = najlepsze DX dla Next; Cloudflare = tańsze + lepsza pan-EU latency |
-| **CDN + DDoS** | Cloudflare | W obu wariantach |
-| **DNS** | Cloudflare | Standard |
-| **Analytics primary** | Plausible.io (self-host na Hetzner lub cloud) | RODO friendly, no-cookie default |
-| **Analytics secondary** | GA4 (po consent) | Dla zaawansowanych konwersji |
-| **Heatmaps** | Microsoft Clarity (free, RODO ok) | Lepsza alternatywa Hotjar |
-| **A/B testing** | Vercel Edge Config + własna logika lub PostHog | PostHog gdy mamy >5k visitors/mc |
-| **Forms backend** | Własny endpoint na app.hovera.app/api/leads + Resend | Trzymamy lead capture w naszych systemach |
-| **Cookie consent** | Cookiebot (płatne) lub własny minimalist | Cookiebot dla compliance, własny dla aestethic |
-| **Search (blog)** | Algolia free tier lub Pagefind (static) | Pagefind dla MVP |
-| **Newsletter** | Loops.so lub Buttondown | Resend+Loops jest tańsze |
-| **Testimonials** | Senja.io | Łatwe collecting + display |
-
-### 11.2 Architektura wysokopoziomowa
+### 12.2 Funnel mapping
 
 ```
-┌──────────────────────────────────────────┐
-│           Cloudflare CDN + WAF           │
-└─────────────────┬────────────────────────┘
-                  │
-        ┌─────────▼──────────┐
-        │   Next.js (Vercel) │
-        │   - Static (SSG)   │
-        │   - ISR (60s revalidate dla blog) │
-        │   - SSR (search, dynamic) │
-        └─────────┬──────────┘
-                  │
-        ┌─────────┴──────────┐
-        │                    │
-   ┌────▼─────┐       ┌──────▼────────┐
-   │  Sanity  │       │ app.hovera.app│
-   │  (CMS)   │       │ (lead capture │
-   │          │       │  + signup)    │
-   └──────────┘       └───────────────┘
-```
-
-### 11.3 Performance budget
-
-- Total page weight: < 500 KB initial (HTML + critical CSS + critical JS)
-- Hero image: < 100 KB (AVIF, lazy fallback do WebP)
-- Web fonts: max 2 woff2 files, subset PL+EN
-- Third-party scripts: tylko po consent, defer + async
-- LCP target: < 1.8s na 3G fast simulated
-- TTI target: < 3s na 3G fast
-
----
-
-## 12. Conversion paths
-
-### 12.1 Primary CTA: trial signup
-
-Każda strona ma minimum 2 instancje CTA "Załóż konto za 0 zł" (jedna w hero/górze, jedna w stopce). Strony długie (use cases, blog) mają też w środku.
-
-CTA → `app.hovera.app/register?source={page}&utm_source=...` (atrybucja źródła)
-
-### 12.2 Secondary CTA: demo booking
-
-"Zobacz demo (15 min)" → Calendly / Cal.com z grafikiem Twoim (lub customer success person).
-
-Dostępne na stronach use case + cennik + porównania.
-
-### 12.3 Tertiary CTA: lead magnets
-
-Email capture w zamian za:
-
-- **Checklista**: "20-punktowy audyt operacji stajni" (PDF, 4 strony)
-- **Kalkulator**: "Ile czasu marnujesz na administrację?" (interaktywny, na stronie)
-- **Webinar**: "KSeF dla stajni 2026 — co musisz wiedzieć" (livestream + recording)
-- **Mini-przewodnik**: "Jak przejść z Excela na system w 1 weekend" (PDF, 8 stron)
-
-Każdy lead magnet → email sequence (Loops.so) → kontekstowy push do trial signup.
-
-### 12.4 Funnel mapping
-
-```
-Visitor (organic/paid)
+Visitor (organic / paid / direct)
   │
-  ├─► Blog post / SEO landing
-  │     │
-  │     ├─► Lead magnet (email capture)  ──► Email sequence ──► Trial signup
-  │     └─► CTA in-content                ──► Trial signup
+  ├─► Home page (product showcase)
+  │     ├─► Trial signup ──► Onboarding ──► Trial → Paid
+  │     ├─► Direct paid ──► Stripe Checkout ──► Onboarding ──► Active subscription
+  │     ├─► Demo video / sandbox ──► Trial signup
+  │     └─► Demo booking (sales call) ──► Trial / Direct paid
   │
-  ├─► Home page
-  │     ├─► Trial signup (direct)
-  │     └─► Demo booking ──► Sales call ──► Trial / paid
-  │
-  ├─► Pricing page
+  ├─► /produkt/{feature} (deep-dive)
   │     ├─► Trial signup
-  │     └─► Demo booking (Enterprise)
+  │     └─► Pricing page
   │
-  └─► Comparison /vs page
-        └─► Trial signup
+  ├─► /dla/{use-case}
+  │     ├─► Trial signup
+  │     └─► Pricing (z domyślnym wyborem planu pasującego do use case)
+  │
+  ├─► /cennik
+  │     ├─► Direct paid (preferowane)
+  │     └─► Trial signup (alt)
+  │
+  ├─► /vs/* (comparison)
+  │     ├─► Trial signup
+  │     └─► Migration story page
+  │
+  └─► /co-nowego (changelog)
+        └─► Trial signup (when feature catches attention)
 ```
 
-Cel: każda strona ma jasny, mierzalny path do konwersji.
+### 12.3 Dla kogo direct paid, dla kogo trial
+
+Direct paid (bez trial) głównie dla:
+
+- Klientów którzy znają już Hoverę (z polecenia)
+- Po przeczytaniu comparison vs Horstable
+- Z money-back guarantee jako safety net
+- Klientów Enterprise (jak negocjujemy custom)
+
+Trial dla większości:
+
+- Pierwszy kontakt
+- Wciąż "research mode"
+- Niepewni czy spasuje do ich stajni
+
+UX musi tego dwie ścieżki obsłużyć równolegle bez forsowania jednej.
 
 ---
 
-## 13. Internacjonalizacja
+## 13. Blog i content strategy (downscale vs v1)
 
-### 13.1 Strategia rolloutu
+Blog pozostaje, ale schodzi z roli głównego drivera. Cel: SEO support + nurturing istniejących leadów.
 
-| Faza | Języki | Czas | Notatki |
-|------|--------|------|---------|
-| MVP | PL | 0 | Native, pełen content |
-| v2 (3-4 mc) | EN | +2 mc | Tłumaczenie + lokalizacja CTA |
-| v2 (5-6 mc) | DE | +2 mc | Native speaker review (DACH ważne) |
-| v3 (7-9 mc) | NL | +2 mc | Pod NL/BE expansion |
-| v3 (10-12 mc) | FR, IT, ES | +3 mc | Profesjonalne tłumaczenie + kontener cultural review |
+### 13.1 Cadence i scope
 
-### 13.2 Implementacja techniczna
+- MVP launch: **3 posty** (zamiast 5 z v1)
+- Po starcie: **1 post / miesiąc** (zamiast 2)
+- Każdy post musi **zwiększać konwersję** (nie być thought leadership)
 
-- Routing: `/[locale]/...` (PL bez prefiksu lub z `/pl/...` — decyzja: **bez prefiksu**, bo PL primary)
-- next-intl (preferowane) lub next-i18next
-- Tłumaczenia w Sanity (multi-locale fields) lub w plikach JSON w repo
-- hreflang tags automatyczne
-- Locale switcher w nawigacji + footer
-- Detect locale po Accept-Language + IP geolocation, ale nie wymuszać (zawsze respect user choice cookie)
-- Format dat, walut, liczb przez `Intl` API per locale
+### 13.2 Tematy zostają z poprzedniej wersji
 
-### 13.3 Co NIE jest po prostu tłumaczone
+Klastry: operacje stajni, finanse, dyscypliny, regulacje (KSeF/ViDA).
 
-- **CTA copy** — "Zaloz konto" ≠ "Sign up". Każdy język ma swoje wzorce CTA, dostosować native speaker.
-- **Pricing** — różne waluty (PLN/EUR), różne pakiety per kraj jeśli różne realia (np. KSeF tylko w PL planie)
-- **Comparison pages** — `/vs/horstable` tylko po polsku (Horstable to lokalna marka). DE ma `/vs/equicty` itd.
-- **Blog content** — nie tłumaczymy automatycznie, piszemy native dla każdego rynku
-- **Legal pages** — adaptowane do prawa lokalnego (GDPR jest pan-EU, ale ToS różnice)
+Główna zmiana: **każdy post ma in-content product screenshots** pokazujące jak Hovera obsługuje opisywany problem. To zamienia blog post w mini-product showcase.
+
+### 13.3 Zamiast lead magnetów
+
+W v1 było 4 lead magnety (PDF, kalkulator, webinar, mini-przewodnik). Teraz redukujemy do **2**:
+
+- **Kalkulator ROI** (interactive) — bezpośrednio na cenniku, nie email-gated
+- **Webinar "KSeF dla stajni 2026"** — email-gated, ale z natychmiastowym dostępem do nagrania (nie poczekaj-na-email)
+
+PDF-y skreślam — odprowadzają od produktu. Niech ludzie patrzą na produkt, nie czytają nasze ebooki.
 
 ---
 
-## 14. Compliance i prawo
+## 14. SEO — strategia (drobne zmiany)
 
-### 14.1 RODO
+Strategia techniczna z poprzedniej wersji w pełni aktualna. Słowa kluczowe te same.
 
-- Cookie banner z granular consent (functional / analytics / marketing)
-- Privacy policy szczegółowa, generowana z template (Iubenda lub własna)
-- Prawo dostępu / prawo bycia zapomnianym — formularz na `/rodo`
-- Newsletter consent: double opt-in
-- Form data: minimalne pole zbierane (email + nazwa stajni wystarczy, nie zbieramy NIP-u na lead capture)
-- DPA (Data Processing Agreement) dla klientów → na osobnej stronie / generowany w aplikacji
+### 14.1 Co dochodzi w wersji product-led
 
-### 14.2 Cookies
+- **Każda strona /produkt/{feature}** to nowa landing pod konkretne keyword:
+  - `/produkt/kalendarz` → "kalendarz dla stajni jeździeckiej"
+  - `/produkt/karnety` → "karnety stajnia online"
+  - `/produkt/finanse-ksef` → "KSeF stajnia faktura"
+- **Każdy entry w `/co-nowego`** to indexowalna mini-strona
+- **Każda strona /dla/{use-case}** target konkretny pod-segment
 
-- Striktnie funkcjonalne by default
-- Analytics tylko po consent
-- Marketing pixele (Facebook, LinkedIn) tylko po consent
-- Cookie banner zgodny z TTDSG (DE), CNIL (FR), ePrivacy (PL/UE)
+### 14.2 Structured data dodatkowe
 
-### 14.3 European Accessibility Act (EAA) 2025
-
-- WCAG 2.1 AA wymóg prawny dla SaaS B2B w UE od 28 czerwca 2025
-- Coroczny audyt accessibility
-- Strona accessibility statement (`/dostepnosc`)
-
-### 14.4 Inne
-
-- Impressum / dane firmy w stopce (wymóg DE/AT)
-- Numer NIP/VAT widoczny
-- Regulamin świadczenia usług (PL: ustawa o świadczeniu usług drogą elektroniczną)
-- Polityka zwrotów (gdy płatne)
+- `SoftwareApplication` z aggregateRating na home + cenniku (gdy mamy reviews)
+- `FAQPage` na każdej stronie use case
+- `Article` na każdym blog poście i changelog entry
+- `Product` z offerings na cenniku
 
 ---
 
-## 15. Analityka i tracking
+## 15. Design system (drobne dodatki vs v1)
 
-### 15.1 Eventy do trackowania
+Paleta, typografia, spacing — bez zmian (zobacz v1 sekcja 10).
 
-**Engagement:**
-- `page_view`
-- `scroll_depth_25/50/75/100`
-- `time_on_page_30s/60s/180s`
-- `external_link_click`
+### 15.1 Co dochodzi dla product-led
 
-**Konwersja:**
-- `cta_clicked` (z metadanymi: ktora strona, ktora pozycja, copy)
-- `lead_magnet_download` (który + email)
-- `newsletter_signup`
-- `demo_booking_started`
-- `demo_booking_completed`
-- `trial_signup_started`
-- `trial_signup_completed` (z atrybucją źródła)
+**Komponenty product showcase:**
 
-**Content:**
-- `blog_post_read_25/50/75/100`
-- `comparison_table_viewed`
-- `pricing_toggle_changed` (monthly ↔ yearly)
-- `faq_expanded` (które pytanie)
+- `<HoveraProductFrame>` — ramka z subtle shadow obejmująca product mockup, z toggle desktop/mobile
+- `<HoveraFeatureScroll>` — sticky-text + scrolling product visual (jak Linear `/method`)
+- `<HoveraAnimatedCallout>` — wskaźniki "tu kliknij" / "to się dzieje" na statycznym screenie
+- `<HoveraSplitView>` — side-by-side (np. Horstable vs Hovera screens)
+- `<HoveraChangelogEntry>` — entry na changelog
+- `<HoveraPriceCard>` — z direct paid + trial alt CTA
+- `<HoveraQRBadge>` — dla mobile download
 
-### 15.2 Atrybucja
+**Asset library:**
 
-- UTM parameters na każdym kanale paid
-- Last-click attribution domyślnie
-- Multi-touch attribution dla większych cykli (gdy tracking dojrzały)
-- `source` parameter do app signup żeby sprzedaż wiedziała skąd przyszedł lead
+- Library prawdziwych screenshotów (anonimizowanych) — minimum 30 screenów do MVP
+- Library Lottie animations — minimum 5 do MVP, 15 do v2
+- Mockup frames: laptop (MacBook) + phone (iPhone + Pixel) — Figma library
 
-### 15.3 Dashboard (cotygodniowy review)
+### 15.2 Wizualny rytm strony
 
-Najważniejsze metryki na jednym ekranie (Plausible + custom dashboard):
-
-- Visitors (week-over-week)
-- Top pages
-- Top referrers
-- Conversion rate per page
-- Funnel: home → pricing → trial
-- Top blog posts
-- Bounce rate per landing source
+- 4-5 product showcase blocks per long page
+- Każdy block min. 60vh wysoki
+- Whitespace 96px między blocks na desktop, 64px na mobile
+- Text + visual jako stacked na mobile, side-by-side na desktop
 
 ---
 
-## 16. Roadmapa wdrożenia
+## 16. Stack technologiczny — dodatki dla product-led
 
-### 16.1 Sprint 0 — Fundamenty (tydzień 1-2)
+Bazowy stack z v1 (Next.js 15 + Sanity + Tailwind + shadcn) bez zmian.
 
-- [ ] Setup repo Next.js 15 + TS + Tailwind + shadcn/ui
-- [ ] Setup Sanity CMS z schema dla blog/case-study
-- [ ] Setup Vercel/Cloudflare Pages deploy
-- [ ] DNS + Cloudflare zabezpieczenia
-- [ ] Wireframes wszystkich stron MVP w Figma
-- [ ] Design system w Figma (zsynchronizowany z aplikacją SaaS)
+### 16.1 Nowe biblioteki dla product showcase
 
-### 16.2 Sprint 1-2 — Core strony (tydzień 3-6)
+| Biblioteka | Zastosowanie |
+|------------|--------------|
+| **Framer Motion** | Animacje scroll-triggered, hover effects |
+| **Lottie React** | Embedding Lottie animations z After Effects |
+| **react-player** | Embed video (YouTube / własny self-hosted) |
+| **@react-three/fiber** (opcjonalnie) | 3D mockupy phone/laptop dla hero — tylko jeśli rzeczywiście potrzebne |
+| **Mux Player** lub **Cloudflare Stream** | Self-hosted video z adaptive bitrate (lepsze niż YT embed) |
 
-- [ ] Home page (8 sekcji)
-- [ ] Cennik
-- [ ] 4 use cases (szkółka, livery, sport, hodowla)
-- [ ] Funkcje (overview + 5 podstron)
-- [ ] FAQ + pomoc
-- [ ] Footer + nawigacja + cookie banner
-- [ ] Legal pages (regulamin, RODO, polityka, cookies)
+### 16.2 Hosting video i ciężkich assetów
 
-### 16.3 Sprint 3 — SEO i content (tydzień 7-8)
+- Hero video (3-min product tour): **Mux** lub **Cloudflare Stream** — adaptive bitrate, własna kontrola
+- Krótkie GIF/MP4 loops: konwersja do MP4 + AVIF, hostowane na Cloudflare R2
+- Lottie JSON: bundled z webem (małe, kilka KB)
 
-- [ ] Sitemap + robots + structured data
-- [ ] 5 pierwszych blog postów
-- [ ] /vs/horstable i /vs/excel
-- [ ] /o-nas + /kontakt + /integracje
-- [ ] Newsletter signup + lead magnet (1 PDF)
+### 16.3 Interactive sandbox (od v2)
 
-### 16.4 Sprint 4 — Polish + launch (tydzień 9-10)
+Dwie opcje techniczne:
 
-- [ ] Lighthouse 90+ na wszystkich
-- [ ] Cross-browser testing (Chrome, Safari, Firefox, Edge)
-- [ ] Mobile testing realnie na 3 urządzeniach
-- [ ] Accessibility audit (WAVE + manual screen reader)
-- [ ] Analytics + tracking konfiguracja
-- [ ] Press release + launch announcement
+- **iframe z aktualną aplikacją** — z guest tenant z fake data, JWT bez autoryzacji
+- **Wbudowany re-render kluczowych komponentów** — kopia komponentów z aplikacji, bez backendu, mock store
 
-### 16.5 Po MVP (kwartalnie)
-
-- Q+1: EN + DE wersja, kalkulator, więcej blog postów (10+)
-- Q+2: NL wersja, programmatic SEO, 3 case studies
-- Q+3: FR/IT/ES, marketplace landing, akademia
-- Q+4: A/B testing intensywny, redesign jeśli dane sugerują
+Rekomendacja: iframe (mniej duplikacji kodu, więcej realizmu).
 
 ---
 
-## 17. Decyzje do podjęcia
+## 17. Internacjonalizacja, compliance, analityka
 
-Lista do ustalenia przed startem zespołu:
+Bez zmian względem v1 (sekcje 13-15 z poprzedniej wersji). Wszystko pozostaje aktualne.
 
-1. **CMS: Sanity czy MDX-in-repo?**
-   - Sanity = łatwiejsze dla content writera (non-tech)
-   - MDX = trzymamy wszystko w git, prostsze devopsowo
-2. **Hosting: Vercel czy Cloudflare Pages?**
-   - Vercel: najlepsze DX dla Next.js, ale drogie przy skali ($20/mc Pro + bandwidth costs)
-   - Cloudflare: tańsze, świetna pan-EU latency, ale niektóre Next.js features mniej sprawne
-3. **Analytics: Plausible czy GA4 czy oba?**
-   - Plausible = RODO without consent, prosty
-   - GA4 = standard branżowy, więcej featurów
-   - Rekomendacja: **oba** — Plausible always-on dla podstaw, GA4 po consent dla głębi
-4. **Locale strategy: subfolder vs subdomain?**
-   - Subfolder (`hovera.app/de/...`): SEO juice się dzieli mniej, prostsze
-   - Subdomain (`de.hovera.app`): osobne brandy per kraj, łatwiej dla SEO lokalnego
-   - Rekomendacja: **subfolder** (SEO experts są zgodni że dla SaaS B2B to lepiej)
-5. **Cookie banner: Cookiebot ($) czy własny?**
-   - Cookiebot = compliance gwarantowany ale 12-50 EUR/mc
-   - Własny = darmowy ale wymaga utrzymania
-6. **Domain primary: hovera.app czy hovera.io czy hovera.eu?**
-   - `.app` = nowoczesne, automatic HTTPS
-   - `.io` = developer-friendly (może mylić)
-   - `.eu` = mocniej europejskie ale słabsze rozpoznanie poza EU
-   - Rekomendacja: **`.app` jako primary, `.eu` jako redirect z power lokalizacyjną**
-7. **Custom illustrations: zewnętrzny designer czy wewnątrz?**
-   - Zewnętrzny = ~3-5k PLN, profesjonalny output
-   - Wewnątrz (np. Ty + AI) = darmowe, ale czasochłonne i niespójne
-8. **Dark mode: w MVP czy v2?**
-   - Rekomendacja: **v2** — robić go dobrze wymaga 2x designu
-9. **Newsletter: w MVP czy v2?**
-   - Loops.so basic plan free do 1k subscribers — opłaca się włączyć od MVP
-10. **Forum / community: czy w ogóle?**
-    - Rekomendacja: **NIE w pierwszym roku** — community wymaga moderacji, my mamy app do zbudowania
+Jedna uwaga dla product-led: **changelog jest pisany tylko po polsku w MVP, tłumaczony do EN/DE w v2**. Tłumaczenie 1-2 entry tygodniowo to taniej niż się wydaje (~50 zł/tłumaczenie).
 
 ---
 
-## 18. Anti-pattern — czego NIE robimy
+## 18. Roadmapa wdrożenia (zaktualizowana)
 
-- ❌ Nie kopiujemy Horstable estetycznie. Oni robią warm, ciepły, klasyczny. My — minimalistyczny, edytorski, lekki.
-- ❌ Nie używamy stockowych zdjęć szczęśliwych jeźdźców na białym tle. Każdy taki obraz = -1 punkt brand.
-- ❌ Nie robimy "live chat" w prawym dolnym rogu z agresywnym pop-upem po 10 sekundach. Może być, ale subtelny i opt-in.
-- ❌ Nie umieszczamy "WIDEO POWITALNE" w hero z autoplay. Stage 2010 era.
-- ❌ Nie piszemy długich akapitów. Każdy paragraf maksimum 3 zdania. Każde zdanie maksimum 25 słów.
-- ❌ Nie używamy "kliknij tutaj" jako copy linku.
-- ❌ Nie pisujemy CTA "Zarejestruj się teraz!". Piszemy "Załóż konto za 0 zł".
-- ❌ Nie kopiujemy konkurencji testimonialami w stylu "Niesamowita aplikacja, polecam!". Konkretne liczby albo nic.
-- ❌ Nie ukrywamy cen za "Skontaktuj się z nami". Tylko Enterprise jest "od X / na zapytanie".
-- ❌ Nie blokujemy prawego klika (sic — niektórzy konkurenci to robią; absurdalne).
+### 18.1 Sprint 0 — Fundamenty (tydzień 1-2)
+
+Standard z v1 + extra:
+
+- [ ] Setup Mux/Cloudflare Stream do video
+- [ ] Library mockupów Figma (laptop, phone)
+- [ ] First screencasts kluczowych flow w aplikacji (tylko jeśli MVP aplikacji jest gotowy enough)
+- [ ] Decision: Lottie czy MP4 dla hero animations
+
+### 18.2 Sprint 1-2 — Core product showcase (tydzień 3-6)
+
+- [ ] Home page z animowanym hero + 5 product sections
+- [ ] `/produkt/kalendarz`, `/produkt/karnety`, `/produkt/finanse-ksef`, `/produkt/zapisy-online` (P0 deep-dives)
+- [ ] `/cennik` z checkout flow (Stripe)
+- [ ] `/aplikacja-mobilna` (z deep linkami App Store/Play kiedy gotowe)
+- [ ] 4 strony `/dla/*` (use cases)
+
+### 18.3 Sprint 3 — Wsparcie konwersji (tydzień 7-8)
+
+- [ ] `/co-nowego` (changelog) + 5-10 pierwszych entries (z release notes z dev)
+- [ ] `/vs/horstable`, `/vs/excel`
+- [ ] `/demo` z video + Calendly
+- [ ] `/integracje` (KSeF, Stripe, ...)
+- [ ] 3 pierwsze blog posty
+- [ ] Newsletter + 1 webinar landing
+
+### 18.4 Sprint 4 — Polish + launch (tydzień 9-10)
+
+- [ ] Lighthouse 90+
+- [ ] All animations Loom-quality minimum
+- [ ] Analytics + A/B test framework
+- [ ] Soft launch z 5-10 early access klientami
+- [ ] Press release
+
+### 18.5 Po MVP (kwartalnie)
+
+- **Q+1**: Replace top-3 animacji na Lottie, EN wersja, ROI calculator interactive, sandbox started
+- **Q+2**: Sandbox live, DE wersja, 3 case studies, `/produkt/dziennik-konia`, `/produkt/aplikacja-mobilna` deep-dive
+- **Q+3**: NL wersja, `/produkt/livery`, `/produkt/ai-copilot` (jeśli AI wydane), templates page
+- **Q+4**: FR/IT/ES, marketplace landing, dev portal `/api`
 
 ---
 
-## 19. Załączniki — co dostarczam później
+## 19. Decyzje do podjęcia (zaktualizowane)
 
-- `02-website-wireframes.md` — wireframes wszystkich stron MVP (Figma export)
-- `03-content-blueprint.md` — szczegółowy outline dla 5 pierwszych blog postów + 4 stron use case
-- `04-seo-keyword-map.md` — pełna mapa słów kluczowych z volumes (Ahrefs/Semrush data)
-- `05-design-tokens.md` — tokeny designu w formacie Style Dictionary (eksport do code)
-- `06-launch-plan.md` — plan launchu (PR, ads, partnerstwa, soft launch z early access)
-- `07-paid-marketing.md` — strategia płatna (Google Ads, Meta, LinkedIn) — gdy i co
-- `08-conversion-rate-optimization.md` — A/B test backlog + framework do przeprowadzania
+Lista zmian względem v1:
+
+1. **Animacje: Lottie czy MP4 czy interactive React?**
+   - Lottie = czysto wektorowe, lekkie, ale wymagają designera w After Effects
+   - MP4 = najprostsze, ciężkie, gorszy SEO ale gotowe szybko
+   - Interactive React = najwyższa jakość ale duża inwestycja
+   - Rekomendacja: **MP4 dla MVP, Lottie dla 3 najważniejszych w v2, Interactive dla home hero v3**
+2. **Sandbox dla `/demo`: w MVP, v2 czy v3?**
+   - Najsilniejsze conversion tool jakie istnieje, ale wymaga aplikacji w stanie publicznie pokazywalnym
+   - Rekomendacja: **v2** — najpierw video tour, potem sandbox
+3. **Direct paid checkout: Stripe Checkout (hosted) czy embedded?**
+   - Hosted = szybkie, mniej kodu
+   - Embedded = lepsze UX, brand consistency
+   - Rekomendacja: **Embedded od MVP** — to jest sales page, brand matters
+4. **Money-back guarantee: 30 czy 60 dni?**
+   - 30 = standard
+   - 60 = wyróżnia, ale ryzyko churn early
+   - Rekomendacja: **30 dni** + jasna komunikacja
+5. **Pricing currency: tylko PLN w MVP czy multi-currency?**
+   - Multi-currency = więcej work, ale gotowość na EU
+   - Rekomendacja: **PLN w MVP, EUR + CZK w v2** (po wejściu na EN/DE)
+6. **Trial bez karty czy z kartą?**
+   - Bez karty = większy top-of-funnel ale niższy trial-to-paid (~20%)
+   - Z kartą = mniejszy top-of-funnel, ale ~50% trial-to-paid
+   - Rekomendacja: **bez karty** (zgodnie z Horstable, większy reach na początek)
+7. **Hosting video: Mux czy Cloudflare Stream czy YouTube?**
+   - Mux: enterprise-grade, drogie ($1/1000 minutes streaming + storage)
+   - Cloudflare Stream: tanie, dobra integracja CF stack ($1/1000 minutes + $5/1000 minutes uploaded)
+   - YouTube: free, ale brand się rozmywa, ads możliwe
+   - Rekomendacja: **Cloudflare Stream** — best price/performance dla SaaS skali
+8. **Changelog cadence: 1/tydz, 2/tydz, dynamicznie?**
+   - Linear robi 1-2/tydzień
+   - Vercel robi 1/dziennie ale to inna skala
+   - Rekomendacja: **1/tydzień start, 2/tydz po 3 miesiącach gdy product velocity rośnie**
+9. **A/B testing: PostHog czy Vercel Edge Config?**
+   - PostHog: pełen produkt analytics + A/B + session replay
+   - Vercel Edge: tylko A/B, ale bardzo szybkie
+   - Rekomendacja: **PostHog cloud** od v2 (zbyt drogie dla MVP, robimy bez na start)
+10. **Wideo lektor: Ty, profesjonalny lektor czy AI?**
+    - Ty = autentyczność, bardzo dobre dla "founder-led marketing"
+    - Profesjonalny = jakość +, ale brak personality
+    - AI (ElevenLabs) = perfekcyjne ale wkrótce wszyscy poznają
+    - Rekomendacja: **Ty** dla pierwszych 3-5 video, potem decyzja po feedbacku
+
+---
+
+## 20. Anti-patterns (zachowane z v1 + nowe)
+
+Zachowane wszystkie z v1 (stocki, agresywne pop-upy, ukryte ceny, korpo-mowa, blokowanie prawego klika).
+
+### 20.1 Nowe — specyficzne dla product-led website
+
+- ❌ Nie pokazujemy product mockupów które wyglądają lepiej niż produkt. Każdy screen to **prawdziwy** screen lub realistic mock.
+- ❌ Nie używamy nigdy "Coming soon" / "Wkrótce" — tylko features które działają. Roadmap idzie do `/co-nowego/roadmap` jako osobna sekcja, nie na home.
+- ❌ Nie ukrywamy ograniczeń produktu. Jeśli czegoś nie ma, mówimy: "Hodowla jest w przygotowaniu, dostępna w Q3 2026".
+- ❌ Nie używamy fake testimonials. Każdy cytat ma osobę + stajnię + (gdy się zgadzają) zdjęcie.
+- ❌ Nie kopiujemy linear.app/notion.so 1:1 wizualnie. Czerpiemy z **filozofii product-led**, nie z aesthetic.
+- ❌ Nie robimy "scrolljacking" (force scroll). Trends 2018, irytujące.
+- ❌ Nie autoplay video z dźwiękiem.
+
+---
+
+## 21. Załączniki — dostarczam później
+
+- `02-product-screenshots-library.md` — checklist 30 screenów do zrobienia w aplikacji
+- `03-animations-spec.md` — szczegółowe spec każdej animacji (storyboard, długość, format)
+- `04-pricing-page-wireframe.md` — wireframe + checkout flow + edge cases
+- `05-changelog-style-guide.md` — jak pisać entries w changelog (przykłady, dont's)
+- `06-comparison-pages-content.md` — copy + screenshots dla `/vs/horstable` i `/vs/excel`
+- `07-product-deep-dive-blueprint.md` — szczegółowa struktura `/produkt/{feature}` na przykładzie kalendarza
+- `08-design-tokens.md` — tokeny designu (synced z aplikacją)
+- `09-launch-plan.md` — plan launchu (PR, partnerstwa, soft launch z early access)
+- `10-conversion-rate-optimization.md` — A/B test backlog
 
 ---
 
@@ -917,7 +832,8 @@ Lista do ustalenia przed startem zespołu:
 
 **Owner:** Przemek
 **Last updated:** 2026-05-06
-**Następny review:** po decyzjach z sekcji 17 + po Sprint 0
+**Wersja:** 2.0 (product-led pivot z v1)
+**Następny review:** po decyzjach z sekcji 19 + po Sprint 0
 
-> Dokument jest **żywy**. Zmiany messagingu, struktury IA, copy → update tutaj + changelog.
-> Spójność z `hovera-spec.md` i designem aplikacji SaaS jest absolutnym priorytetem — strona i produkt to jeden brand experience.
+> Dokument jest **żywy**. Każda zmiana messagingu, IA, ścieżek konwersji → update tutaj + changelog.
+> Spójność z `hovera-spec.md` (aplikacja) i designem produktu jest absolutnym priorytetem — strona i produkt to **jeden brand experience**.
