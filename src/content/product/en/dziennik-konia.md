@@ -21,8 +21,8 @@ subFeatures:
     body: "System knows tetanus expires in 14 days — you get a notification. Vet has their own account and logs the protocol after the visit. Note, prescription, exam result — all in the horse's record."
   - title: "Owner / instructor change"
     body: "Halina moves to another stable. Export full history as PDF for the new owner. The data stays with you — you share only what you choose."
-  - title: "Photos from your phone in seconds"
-    body: "Take a photo of an injury in the mobile app — system assigns it to the horse automatically. Geo-tag, timestamp, caption. No cables, no 'email it to me'."
+  - title: "Photos directly in the horse record"
+    body: "Upload an injury photo to the horse's record. Timestamp, caption, category. No 'email it to me', no random desktop folders."
 integrations:
   - "FEI Database (show entries export)"
   - "National federations"

@@ -20,8 +20,8 @@ features:
   - "Online booking + client portal"
   - "Time-based and count-based passes"
   - "Invoicing + e-invoicing"
-  - "Mobile app with offline mode"
-  - "SMS / push notifications"
+  - "Email / SMS notifications"
+  - "Bookkeeping export"
 quote:
   text: "Two weeks into Hovera I cancelled the second phone. Clients book themselves, the system tracks passes, and I can finally focus on the horses."
   name: "Anna Kowalska"

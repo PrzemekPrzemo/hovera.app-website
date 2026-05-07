@@ -10,7 +10,7 @@ scenarios:
   - title: "Multi-location dashboard"
     body: "Zarządzasz 4 stajniami w różnych miastach. Skonsolidowany dashboard pokazuje przychód, wykorzystanie koni, klientów top-spending dla każdej lokalizacji. Drill-down do poziomu pojedynczej jazdy."
   - title: "White-label dla Twojej marki"
-    body: "Aplikacja webowa i mobilna z Twoim logo, kolorami, domeną. Klient nie wie, że to Hovera — widzi 'Twoja Stajnia App'. Push z Twojego brandu."
+    body: "Aplikacja webowa z Twoim logo, kolorami, domeną. Klient nie wie, że to Hovera — widzi 'Twoja Stajnia App'. Wiadomości email również brandowane."
   - title: "SSO i kontrola dostępu"
     body: "Logowanie przez Twojego identity providera (Azure AD, Google Workspace, Okta). Role: regional manager, manager lokalny, instruktor, klient. Dane segregowane per lokalizacja."
   - title: "Custom SLA i dedicated support"
