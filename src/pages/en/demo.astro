@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import InteractiveProductTour from '../../components/InteractiveProductTour.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 import { localizePath } from '../../i18n/utils';
 const locale = 'en' as const;
@@ -12,13 +11,29 @@ const lp = (p: string) => localizePath(p, locale);
   <PageHero
     eyebrow="Demo"
     title="See Hovera in action"
-    subtitle="9 scenes showing a typical day at the stable — from morning to the evening report. Click whenever, or let it play."
+    subtitle="Three paths: an interactive tour with real app screens, a live demo with our team, or a voice-over video (coming soon)."
   />
 
-  <section class="container-x pb-12">
-    <div data-reveal>
-      <InteractiveProductTour locale={locale} />
-    </div>
+  <section class="container-x pb-8">
+    <a href={lp('/demo/jak-to-dziala')} class="tour-cta" data-reveal>
+      <div class="tour-cta__visual" aria-hidden="true">
+        <div class="tour-frame">
+          <div class="tour-dots"><span></span><span></span><span></span></div>
+          <div class="tour-bars">
+            <div class="tour-bar tour-bar--w70"></div>
+            <div class="tour-bar tour-bar--w50"></div>
+            <div class="tour-bar tour-bar--w85"></div>
+            <div class="tour-bar tour-bar--w40"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tour-cta__content">
+        <span class="eyebrow">Interactive tour</span>
+        <h2 class="display-3 mt-2">See how Hovera works in practice</h2>
+        <p class="muted mt-3">9 scenes with real screens: dashboard, calendar, booking conflicts, BLIK payments, horse owner portal, evening report. No login, no forms.</p>
+        <span class="btn btn-primary mt-6">Open the tour →</span>
+      </div>
+    </a>
   </section>
 
   <section class="container-x py-16">

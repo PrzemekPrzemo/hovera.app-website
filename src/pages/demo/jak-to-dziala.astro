@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import InteractiveProductTour from '../../components/InteractiveProductTour.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { localizePath } from '../../i18n/utils';
+const locale = 'pl' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base
+  title="Jak działa Hovera — interaktywny tour"
+  description="Zobacz Hoverę w akcji. 9 scen pokazujących typowy dzień w stajni — od porannego dashboardu po raport wieczorny."
+>
+  <PageHero
+    eyebrow="Tour po produkcie"
+    title="Jak to działa w praktyce"
+    subtitle="9 scen z prawdziwymi ekranami aplikacji. Dashboard, kalendarz, konflikty, płatności BLIK, panel właściciela konia, raport wieczorny. Klikaj kropki albo daj się prowadzić."
+  />
+
+  <section class="container-x pb-16">
+    <div data-reveal>
+      <InteractiveProductTour locale={locale} />
+    </div>
+  </section>
+
+  <section class="container-x py-12">
+    <div class="back-row" data-reveal>
+      <a href={lp('/demo')} class="btn btn-secondary">← Wróć do strony demo</a>
+      <a href={lp('/kontakt')} class="btn btn-primary">Umów demo na żywo</a>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .back-row {
+    max-width: 56rem;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+</style>
