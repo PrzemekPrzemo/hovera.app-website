@@ -13,7 +13,7 @@ bullets:
   - "Widoki: dzień, tydzień, miesiąc, koń, instruktor, klient"
   - "Powtarzające się rezerwacje z elastycznymi wyjątkami"
   - "Eksport do Google Calendar / iCal / Apple Calendar"
-  - "Powiadomienia SMS / push 24h przed zajęciami"
+  - "Powiadomienia email / SMS 24h przed zajęciami"
 subFeatures:
   - title: "Brak konfliktów. Nigdy."
     body: "System pilnuje, żeby ten sam koń nie pracował dwa razy w tej samej godzinie i żeby instruktor nie był na dwóch jazdach naraz. Konflikt podświetla się na czerwono — z propozycją rozwiązania."

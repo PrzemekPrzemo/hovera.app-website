@@ -22,13 +22,14 @@ In 2026 mandatory e-invoicing rolls out across the EU. Without compliance certif
 
 Every SaaS has a "data ownership" section in the terms. Read it. Your data (clients, horses, transactions) must be **yours** — with the right to machine-readable export (JSON, CSV) on demand.
 
-## 4. Mobile and offline
+## 4. Localization and currency
 
-A stable isn't an office. You work in the stall, the paddock, the woods. A SaaS that only works on desktop is half-broken. Check:
+A Polish stable with Polish clients needs a Polish UI, Polish bookkeeping integrations and local payment rails. A SaaS translated by Google Translate with English-only support is a bad investment. Check:
 
-- Native iOS and Android (not just "responsive web")
-- Full offline mode (not just read-only)
-- Push notifications
+- Full PL localization (not auto-translation)
+- Bookkeeping export (PL JPK files for accountants)
+- Polish payment rails (BLIK, Przelewy24)
+- EUR billing option for cross-border clients
 
 ## 5. How fast does support reply
 

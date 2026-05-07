@@ -9,7 +9,6 @@ export const ui = {
     'nav.product.passes': 'Karnety',
     'nav.product.horse-journal': 'Dziennik konia',
     'nav.product.finance': 'Finanse i KSeF',
-    'nav.product.mobile': 'Aplikacja mobilna',
     'nav.product.online-booking': 'Zapisy online',
     'nav.product.ai': 'AI Copilot',
     'nav.for': 'Dla kogo',
@@ -28,7 +27,7 @@ export const ui = {
     'hero.title.line1': 'Stajnia działa.',
     'hero.title.line2': 'Ty oddychasz.',
     'hero.subtitle':
-      'Grafik, karnety, finanse i opieka nad końmi w jednym narzędziu. Działa na komputerze, telefonie, w stajni bez wifi.',
+      'Grafik, karnety, finanse i opieka nad końmi w jednym narzędziu. Wszystko, czego potrzebuje Twoja stajnia, w jednym ekranie.',
     'hero.cta.primary': 'Wypróbuj za 0 zł',
     'hero.cta.secondary': 'Zobacz demo (3 min)',
     'hero.note': '14 dni za darmo • Bez karty • Bez instalacji',
@@ -79,7 +78,6 @@ export const ui = {
     'nav.product.passes': 'Passes',
     'nav.product.horse-journal': 'Horse journal',
     'nav.product.finance': 'Finance & e-invoicing',
-    'nav.product.mobile': 'Mobile app',
     'nav.product.online-booking': 'Online booking',
     'nav.product.ai': 'AI Copilot',
     'nav.for': 'Solutions',
@@ -98,7 +96,7 @@ export const ui = {
     'hero.title.line1': 'Your stable runs.',
     'hero.title.line2': 'You breathe.',
     'hero.subtitle':
-      'Schedule, packages, finance and horse care in one tool. Works on desktop, phone, and in the barn without wifi.',
+      'Schedule, packages, finance and horse care in one tool. Everything your stable needs, on a single screen.',
     'hero.cta.primary': 'Try for free',
     'hero.cta.secondary': 'Watch demo (3 min)',
     'hero.note': '14 days free • No card • No install',

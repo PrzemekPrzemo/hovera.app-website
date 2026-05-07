@@ -21,8 +21,8 @@ subFeatures:
     body: "System wie, że tężec wygasa za 14 dni — dostaniesz powiadomienie. Wet ma własne konto i sam wpisuje protokół po wizycie. Notatka, recepta, wynik badań — wszystko w karcie konia."
   - title: "Zmiana właściciela / instruktora"
     body: "Halina przechodzi do innej stajni. Eksportujesz pełną historię w PDF dla nowego właściciela. Dane zostają Twoje — udostępniasz tylko to, co chcesz."
-  - title: "Zdjęcia z telefonu w sekundę"
-    body: "Robisz zdjęcie kontuzji w aplikacji mobilnej, system przypisuje do konia automatycznie. Geo-tag, znacznik czasu, podpis. Bez kabli, bez 'wyślij mi to mejlem'."
+  - title: "Zdjęcia bezpośrednio w karcie konia"
+    body: "Wgrywasz zdjęcie kontuzji do karty konia. Znacznik czasu, podpis, kategoria. Bez 'wyślij mi to mejlem' i niekontrolowanych folderów na pulpicie."
 integrations:
   - "FEI Database (eksport startów)"
   - "PZJ — polski rejestr"

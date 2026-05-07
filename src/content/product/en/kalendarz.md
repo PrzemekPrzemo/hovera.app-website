@@ -13,7 +13,7 @@ bullets:
   - "Views: day, week, month, by horse, by instructor, by client"
   - "Recurring bookings with flexible exceptions"
   - "Export to Google Calendar / iCal / Apple Calendar"
-  - "SMS / push notifications 24h before lessons"
+  - "Email / SMS reminders 24h before lessons"
 subFeatures:
   - title: "Zero conflicts. Ever."
     body: "The system makes sure the same horse isn't worked twice in the same hour and the instructor isn't on two rides at once. Conflicts highlight in red — with a suggested resolution."

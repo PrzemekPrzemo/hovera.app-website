@@ -21,9 +21,6 @@ table:
   - feature: "Hodowla i paszporty"
     hovera: "✓ pełna"
     them: "✗ brak"
-  - feature: "Aplikacja mobilna offline"
-    hovera: "✓ pełen offline"
-    them: "△ tylko read"
   - feature: "Public booking page"
     hovera: "✓ pod własną domeną"
     them: "✓ subdomena"
@@ -39,7 +36,7 @@ table:
 chooseHovera:
   - "Potrzebujesz KSeF od pierwszego dnia"
   - "Masz hodowlę i potrzebujesz paszportów / drzewa genealogicznego"
-  - "Pracujesz w stajni bez wifi i potrzebujesz pełnego offline mode"
+  - "Eksport do biura rachunkowego jest standardem"
   - "Wolisz self-serve od płatnego wdrożenia"
   - "Skalujesz się — chcesz API i webhooks"
   - "Eksport do Comarch / iFirma / Wfirma jest standardem"

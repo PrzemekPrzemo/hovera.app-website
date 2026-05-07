@@ -12,7 +12,7 @@ scenarios:
   - title: "Karnety się rozliczają"
     body: "Klient kupił karnet 12 jazd. System sam odlicza po każdej jeździe. Gdy zostanie 1 wejście, klient dostaje przypomnienie. Faktura wystawia się automatycznie po opłacie."
   - title: "Instruktor pisze dziennik z konia"
-    body: "Po zajęciach Marek wyjmuje telefon, dodaje notatkę 'Halina dziś rano kulała na lewej', załącza zdjęcie. Wszystko w karcie konia, dostępne dla weta i właściciela."
+    body: "Po zajęciach Marek wpisuje notatkę: 'Halina dziś rano kulała na lewej', załącza zdjęcie. Wszystko w karcie konia, dostępne dla weta i właściciela."
   - title: "Manager widzi wszystko"
     body: "Dashboard z dziennym widokiem: ile jazd, ile zarobione, ile karnetów aktywnych, kto z klientów nie był od miesiąca. Decyzje na podstawie danych, nie 'wydaje mi się'."
 features:
@@ -20,8 +20,8 @@ features:
   - "Booking online + portal klienta"
   - "Karnety czasowe i ilościowe"
   - "Faktury + KSeF"
-  - "Aplikacja mobilna z trybem offline"
-  - "Powiadomienia SMS / push"
+  - "Powiadomienia email / SMS"
+  - "Eksport rozliczeń do biura"
 quote:
   text: "Po dwóch tygodniach z Hoverą oddałam telefon dyżurny. Klienci sami się zapisują, system pilnuje karnetów, a ja mogę wreszcie skupić się na koniach."
   name: "Anna Kowalska"

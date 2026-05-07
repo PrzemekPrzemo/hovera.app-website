@@ -3,7 +3,7 @@ locale: en
 slug: horstable
 competitor: Horstable
 title: "Hovera vs Horstable — which stable SaaS to pick"
-description: "Honest comparison of Hovera and Horstable. Features, pricing, e-invoicing, breeding, mobile. We help you choose."
+description: "Honest comparison of Hovera and Horstable. Features, pricing, e-invoicing, breeding. We help you choose."
 tldr: "Horstable is solid for a small school that wants 1:1 onboarding. Hovera is a product-led SaaS for stables of every size — from school through livery to breeding and networks. Same category, different philosophy."
 table:
   - feature: "Multi-resource calendar"
@@ -21,9 +21,6 @@ table:
   - feature: "Breeding & passports"
     hovera: "Full"
     them: "Not available"
-  - feature: "Offline mobile"
-    hovera: "Full offline"
-    them: "Read-only"
   - feature: "Public booking page"
     hovera: "Custom domain"
     them: "Subdomain"
@@ -39,7 +36,7 @@ table:
 chooseHovera:
   - "You need e-invoicing from day one"
   - "You run breeding and need passports / pedigree"
-  - "You work in the barn without wifi and need real offline mode"
+  - "Bookkeeping export is standard"
   - "You prefer self-serve over paid rollout"
   - "You scale — you need API and webhooks"
   - "ERP exports are standard for your accountant"

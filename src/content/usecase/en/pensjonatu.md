@@ -18,7 +18,7 @@ scenarios:
 features:
   - "Multi-stall management"
   - "Recurring billing (subscriptions)"
-  - "Owner portal (web + mobile)"
+  - "Owner portal"
   - "Care calendar: feeding, paddock, mucking"
   - "Farrier and vet in the stable calendar"
   - "Owner messaging"

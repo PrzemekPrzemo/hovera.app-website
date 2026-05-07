@@ -10,7 +10,7 @@ scenarios:
   - title: "Multi-location dashboard"
     body: "You manage 4 stables across cities. The consolidated dashboard shows revenue, horse utilization and top-spending clients per location. Drill-down to a single ride."
   - title: "White-label for your brand"
-    body: "Web and mobile app with your logo, colors and domain. Clients don't see Hovera — they see 'Your Stable App'. Push from your brand."
+    body: "Web app with your logo, colors and domain. Clients don't see Hovera — they see 'Your Stable App'. Branded emails too."
   - title: "SSO and access control"
     body: "Sign-in via your identity provider (Azure AD, Google Workspace, Okta). Roles: regional manager, local manager, instructor, client. Data segregated per location."
   - title: "Custom SLA and dedicated support"

@@ -22,13 +22,14 @@ W 2026 KSeF jest obowiązkowy. Bez certyfikatu Type 2 — nie wystawisz faktury 
 
 Każdy SaaS ma w regulaminie sekcję "własność danych". Sprawdź. Twoje dane (klienci, konie, transakcje) muszą być **Twoje** — z prawem do eksportu w formacie maszynowym (JSON, CSV) na żądanie.
 
-## 4. Mobile i offline
+## 4. Lokalizacja i waluta
 
-Stajnia to nie biuro. Pracujesz w boksie, na padoku, w lesie. SaaS, który działa tylko na desktopie, jest na pół zjedzony. Sprawdź:
+Polska stajnia z polskimi klientami potrzebuje polskiego interfejsu, polskiego biura rachunkowego i polskich integracji. SaaS przetłumaczony Google Translate i z pomocą tylko po angielsku to zła inwestycja. Sprawdź:
 
-- Aplikacja natywna iOS i Android (nie tylko "responsive web")
-- Pełen tryb offline (nie tylko read-only)
-- Push notifications
+- Pełna lokalizacja PL (nie auto-tłumaczenie)
+- Wsparcie biura rachunkowego (eksporty, JPK)
+- Polskie integracje płatności (BLIK, Przelewy24)
+- Możliwość rozliczeń w EUR dla klientów zagranicznych
 
 ## 5. Jak długo trwa odpowiedź wsparcia
 
