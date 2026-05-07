@@ -66,7 +66,7 @@ export const ui = {
     'footer.for': 'Dla kogo',
     'footer.resources': 'Zasoby',
     'footer.company': 'Firma',
-    'footer.copyright': '© 2026 Hovera Sp. z o.o. Wszystkie prawa zastrzeżone.',
+    'footer.copyright': '© 2026 Sendormeco Holding sp. z o.o. Wszystkie prawa zastrzeżone.',
     'footer.tagline': 'Stajnia działa. Ty oddychasz.',
 
     'lang.switch': 'EN',
@@ -136,7 +136,7 @@ export const ui = {
     'footer.for': 'Solutions',
     'footer.resources': 'Resources',
     'footer.company': 'Company',
-    'footer.copyright': '© 2026 Hovera Ltd. All rights reserved.',
+    'footer.copyright': '© 2026 Sendormeco Holding sp. z o.o. All rights reserved.',
     'footer.tagline': 'Lift the weight off your stable.',
 
     'lang.switch': 'PL',
