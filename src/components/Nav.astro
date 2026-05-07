@@ -182,15 +182,25 @@ const forItems = [
     opacity: 0;
     pointer-events: none;
     transition:
-      opacity 0.25s var(--ease-out-expo),
-      transform 0.25s var(--ease-out-expo);
+      opacity 0.2s var(--ease-out-expo),
+      transform 0.2s var(--ease-out-expo);
+    transition-delay: 0.18s;
     z-index: 60;
+  }
+  .dropdown-panel::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 0;
+    right: 0;
+    height: 14px;
   }
   .hovera-dropdown:hover .dropdown-panel,
   .hovera-dropdown:focus-within .dropdown-panel {
     opacity: 1;
     pointer-events: auto;
     transform: translateX(-50%) translateY(0);
+    transition-delay: 0s;
   }
   .dropdown-item {
     display: block;
