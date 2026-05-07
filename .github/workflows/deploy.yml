@@ -27,13 +27,6 @@ jobs:
       - name: Build static site
         run: npm run build
 
-      - name: Copy PHP API into dist
-        run: |
-          if [ -d "public/api" ]; then
-            mkdir -p dist/api
-            cp -r public/api/. dist/api/
-          fi
-
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
@@ -47,8 +40,8 @@ jobs:
       - name: Deploy with rsync
         run: |
           rsync -avz --delete \
-            --exclude='/api/.env' \
             --exclude='/admin/' \
+            --exclude='/api' \
             -e "ssh -p ${{ secrets.PLESK_SSH_PORT || '22' }}" \
             ./dist/ \
             ${{ secrets.PLESK_USER }}@${{ secrets.PLESK_HOST }}:${{ secrets.PLESK_PATH }}/

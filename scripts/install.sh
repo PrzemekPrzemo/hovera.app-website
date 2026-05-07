@@ -69,39 +69,9 @@ if [[ -z "$DOCROOT" ]]; then
 fi
 ok "Katalog domeny: $DOCROOT"
 
-# ─── 3. zapytaj o adres email do formularza ───
-echo
-read -rp "  Email, na który mają iść zapytania z formularza kontaktowego [hello@${DOMAIN}]: " MAIL_TO
-MAIL_TO="${MAIL_TO:-hello@${DOMAIN}}"
-read -rp "  Email-nadawca (zwykle ten sam) [${MAIL_TO}]: " MAIL_FROM
-MAIL_FROM="${MAIL_FROM:-$MAIL_TO}"
-ok "Email docelowy: $MAIL_TO"
-ok "Email-nadawca: $MAIL_FROM"
-
-# ─── 3b. opcjonalnie SMTP (Google Workspace, SendGrid, Postmark itd.) ───
-echo
-echo "  Konfiguracja SMTP (np. Google Workspace dla hello@${DOMAIN})"
-echo "  Pomiń (Enter) jeśli wystarcza Ci lokalny mail() z Plesku — wiadomości"
-echo "  częściej trafią do spamu, ale zero konfiguracji."
-echo
-read -rp "  SMTP host (np. smtp.gmail.com) [pomiń]: " SMTP_HOST
-SMTP_PORT=""
-SMTP_USER=""
-SMTP_PASS=""
-SMTP_SEC=""
-if [[ -n "$SMTP_HOST" ]]; then
-  read -rp "  SMTP port [587]: " SMTP_PORT
-  SMTP_PORT="${SMTP_PORT:-587}"
-  read -rp "  SMTP username [${MAIL_FROM}]: " SMTP_USER
-  SMTP_USER="${SMTP_USER:-$MAIL_FROM}"
-  read -rsp "  SMTP password (App Password dla Google): " SMTP_PASS
-  echo
-  read -rp "  Security [starttls / ssl] [starttls]: " SMTP_SEC
-  SMTP_SEC="${SMTP_SEC:-starttls}"
-  ok "SMTP skonfigurowany: $SMTP_HOST:$SMTP_PORT ($SMTP_SEC)"
-else
-  warn "SMTP pominięty — używam lokalnego mail() (Postfix Plesku)"
-fi
+# Strona kontaktowa to teraz prosty mailto, więc PHP API ani SMTP nie są
+# już potrzebne. Stara konfiguracja (jeśli była) zostaje na serwerze do
+# ręcznego usunięcia.
 
 # ─── 4. node 22 (przez nvm) ───
 say "Sprawdzam Node.js..."
@@ -161,41 +131,11 @@ if [[ -n "$(ls -A "$DOCROOT" 2>/dev/null | grep -v "^\.\." | grep -v "^\.$" || t
 fi
 
 say "Wgrywam stronę do $DOCROOT..."
-# rsync zachowa pliki spoza dist (np. .well-known dla Let's Encrypt)
+# rsync zachowa pliki spoza dist (np. .well-known dla Let's Encrypt + stare /api jeśli zostało)
 rsync -a --delete \
   --exclude='/.well-known' \
-  --exclude='/api/.env' \
+  --exclude='/api' \
   "$WORK_DIR/dist/" "$DOCROOT/"
-
-# PHP API
-mkdir -p "$DOCROOT/api"
-cp "$WORK_DIR/public/api/contact.php" "$DOCROOT/api/contact.php"
-
-# konfig email + SMTP (czytany przez contact.php)
-{
-  echo "HOVERA_MAIL_TO=$MAIL_TO"
-  echo "HOVERA_MAIL_FROM=$MAIL_FROM"
-  echo "HOVERA_MAIL_FROM_NAME=Hovera"
-  if [[ -n "$SMTP_HOST" ]]; then
-    echo "SMTP_HOST=$SMTP_HOST"
-    echo "SMTP_PORT=$SMTP_PORT"
-    echo "SMTP_USERNAME=$SMTP_USER"
-    echo "SMTP_PASSWORD=$SMTP_PASS"
-    echo "SMTP_SECURITY=$SMTP_SEC"
-  fi
-} > "$DOCROOT/api/.env"
-chmod 600 "$DOCROOT/api/.env"
-
-# .htaccess — blokuje dostęp HTTP do .env, ustawia env vars dla PHP
-cat > "$DOCROOT/api/.htaccess" <<'EOF'
-# Block HTTP access to .env file
-<Files ".env">
-  Require all denied
-</Files>
-<Files ".env.example">
-  Require all denied
-</Files>
-EOF
 
 ok "Strona wgrana do $DOCROOT"
 

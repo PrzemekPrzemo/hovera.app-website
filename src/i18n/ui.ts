@@ -59,8 +59,8 @@ export const ui = {
     'pricing.popular': 'Najczęściej wybierany',
 
     'final.title': 'Zacznij dziś. Bez instalacji, bez wdrożenia.',
-    'final.subtitle': 'Wypełnij formularz — odpowiemy w 24h i przeprowadzimy Cię przez setup.',
-    'final.cta': 'Wyślij zapytanie',
+    'final.subtitle': 'Napisz do nas — odpiszemy w 24h, osobiście, bez formularzy ani chatbotów.',
+    'final.cta': 'Napisz do nas',
 
     'footer.product': 'Produkt',
     'footer.for': 'Dla kogo',
@@ -129,8 +129,8 @@ export const ui = {
     'pricing.popular': 'Most popular',
 
     'final.title': 'Start today. No install, no rollout.',
-    'final.subtitle': 'Send us a note — we reply within 24h and walk you through setup.',
-    'final.cta': 'Send inquiry',
+    'final.subtitle': 'Drop us an email — we reply within 24h, personally. No forms, no chatbots.',
+    'final.cta': 'Email us',
 
     'footer.product': 'Product',
     'footer.for': 'Solutions',
