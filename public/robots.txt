@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow internal admin and noindex pages
+Disallow: /admin/
+Disallow: /dziekujemy
+Disallow: /en/dziekujemy
+
+Sitemap: https://hovera.app/sitemap-index.xml
