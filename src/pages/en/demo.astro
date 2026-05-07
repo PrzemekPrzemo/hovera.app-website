@@ -1,31 +1,28 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import InteractiveProductTour from '../../components/InteractiveProductTour.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 import { localizePath } from '../../i18n/utils';
 const locale = 'en' as const;
 const lp = (p: string) => localizePath(p, locale);
 ---
 
-<Base title="Demo — Hovera" description="See Hovera in action. Self-serve video tour or live demo tailored to your stable.">
-  <PageHero eyebrow="Demo" title="See Hovera in action" subtitle="Pick what fits you. Watch a video on your own, or have a 30-minute call with our CSM." />
+<Base title="Demo — Hovera" description="See Hovera in action. Interactive product tour or 1-on-1 call with our team.">
+  <PageHero
+    eyebrow="Demo"
+    title="See Hovera in action"
+    subtitle="9 scenes showing a typical day at the stable — from morning to the evening report. Click whenever, or let it play."
+  />
+
+  <section class="container-x pb-12">
+    <div data-reveal>
+      <InteractiveProductTour locale={locale} />
+    </div>
+  </section>
 
   <section class="container-x py-16">
     <div class="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-      <article class="demo-card" data-reveal>
-        <div class="demo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg></div>
-        <h3 class="display-3 mt-4">Self-serve video tour</h3>
-        <p class="muted mt-3">5-7 minutes through the most important Hovera screens with voice-over. No login, no form.</p>
-        <ul class="demo-list mt-6">
-          <li>A stable's hero (Anna and Halicz)</li>
-          <li>Add a horse and the first ride</li>
-          <li>Client buys a pass online</li>
-          <li>Issue an e-invoice</li>
-          <li>Send the invoice to the client</li>
-        </ul>
-        <button class="btn btn-primary mt-6" disabled>Play video (coming soon)</button>
-      </article>
-
       <article class="demo-card" data-reveal>
         <div class="demo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h18v14H3z" stroke-linejoin="round"/><path d="M3 5l9 7 9-7" stroke-linejoin="round"/></svg></div>
         <h3 class="display-3 mt-4">Live demo for your stable</h3>
@@ -38,6 +35,19 @@ const lp = (p: string) => localizePath(p, locale);
           <li>Plan recommendation</li>
         </ul>
         <a href={lp('/kontakt')} class="btn btn-primary mt-6">Book a demo</a>
+      </article>
+
+      <article class="demo-card" data-reveal>
+        <div class="demo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg></div>
+        <h3 class="display-3 mt-4">Product video (coming soon)</h3>
+        <p class="muted mt-3">5-minute screen recording of the real app with voice-over. No login, no form. Coming once the app is ready for public preview.</p>
+        <ul class="demo-list mt-6">
+          <li>New customer onboarding</li>
+          <li>Setting up first horses and instructors</li>
+          <li>Configuring passes</li>
+          <li>Issuing the first invoice</li>
+        </ul>
+        <button class="btn btn-secondary mt-6" disabled>Coming soon</button>
       </article>
     </div>
   </section>
