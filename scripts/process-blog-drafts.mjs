@@ -26,11 +26,31 @@ const SRC = '_blog-artykuly/do-przerobienia';
 const DEST = 'src/content/blog/pl';
 const STAGE = '_blog-artykuly/gotowe-do-cms';
 
-// Skip files (mobile-related, content strategy, readme)
+// Skip files (already-published articles, content strategy, readme, mobile)
 const SKIP = new Set([
   '00-content-strategy.md',
   'PRZECZYTAJ.md',
   '09-aplikacja-mobilna-stajnia.md', // mobile content currently hidden
+  // Batch 1 already published — skip in subsequent runs
+  '01-grafik-szkolki-jezdzieckiej.md',
+  '02-karnety-w-stajni.md',
+  '03-ksef-dla-stajni-2026.md',
+  '04-excel-czy-system-stajnia.md',
+  '05-jak-przejsc-z-excela-na-system.md',
+  '06-dziennik-konia.md',
+  '07-stawki-jazda-konna-polska-2026.md',
+  '08-pensjonat-vs-szkolka.md',
+  '10-porownanie-systemow-zarzadzania-stajnia.md',
+  '27-marketing-stajnia.md',
+  '28-otwieranie-szkolki.md',
+  '29-pasza-dla-koni-koszty.md',
+  '30-transport-koni.md',
+  '31-sprzedaz-konia-dokumentacja.md',
+  '32-bhp-stajnia.md',
+  '33-ubezpieczenia-stajnia.md',
+  '34-praca-z-dziecmi-szkolka.md',
+  '35-integracja-z-ksiegowoscia.md',
+  '36-kolonie-konne-organizacja.md',
 ]);
 
 // Tags inferred from primary keyword + cluster
@@ -50,6 +70,12 @@ function inferTags(slug, keyword, hpw) {
   if (/transport/.test(text)) tags.add('Logistyka');
   if (/bhp|wypadek/.test(text)) tags.add('BHP i bezpieczeństwo');
   if (/sprzedaz|sprzedaż|pasza/.test(text)) tags.add('Operacje');
+  if (/kpi|metryk|wskazn/.test(text)) tags.add('Operacje');
+  if (/cennik|psychologi|lojalno|programy/.test(text)) tags.add('Marketing');
+  if (/event|imprez|sklep|tack/.test(text)) tags.add('Marketing');
+  if (/ekolog|esg|zielon/.test(text)) tags.add('Compliance');
+  if (/zrebak|zrebięt|trening/.test(text)) tags.add('Konie i opieka');
+  if (/sukcesj|rozbudow|miast/.test(text)) tags.add('Operacje');
   if (tags.size === 0) tags.add('Operacje');
   return [...tags].slice(0, 4);
 }
@@ -117,9 +143,9 @@ async function main() {
   const files = (await readdir(SRC)).filter(f => f.endsWith('.md') && !SKIP.has(f));
   files.sort();
 
-  // Distribute publication dates: 2 articles/week, starting Tue/Thu, Mon Apr 6 2026 onwards
-  // (i.e. 4 weeks before launch — gives blog history at launch)
-  const startDate = new Date('2026-04-07'); // Tuesday
+  // Distribute publication dates: 2 articles/week, starting Tue/Thu.
+  // Batch 1 covered 2026-04-07 to 2026-06-09 — batch 2 starts after.
+  const startDate = new Date('2026-06-16'); // Tuesday after batch 1
   const slotPattern = [0, 2]; // Tue, Thu
   const dates = [];
   for (let week = 0; dates.length < files.length; week++) {
