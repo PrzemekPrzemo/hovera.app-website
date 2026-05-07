@@ -10,26 +10,30 @@ type Scene = {
   active: 'dashboard' | 'calendar' | 'clients' | 'horses' | 'passes' | 'invoices' | 'reports';
   eyebrow: string;
   caption: string;
-  visual: 'dashboard' | 'calendar' | 'conflict' | 'checkout' | 'pass' | 'invoices' | 'owner' | 'vet' | 'report';
+  visual: 'dashboard' | 'calendar' | 'conflict' | 'checkout' | 'pass' | 'invoices' | 'owner' | 'vet' | 'report' | 'feed' | 'reminder';
 };
 
 const scenes: Scene[] = locale === 'pl' ? [
+  { id: 'feed',      url: 'app.hovera.app/karmienia',     active: 'horses',    eyebrow: '06:30 · Poranne karmienie',            caption: 'Wchodzisz do stajni z telefonem. Hovera pokazuje listę 24 koni — dieta, dawka, suplementy. Odhaczasz po kolei, wszystko ląduje w dzienniku konia.', visual: 'feed' },
   { id: 'dashboard', url: 'app.hovera.app/dashboard',     active: 'dashboard', eyebrow: '07:00 · Poranek',                    caption: 'Otwierasz Hoverę. Widzisz dziś 18 jazd, 2 odwołania, 1 nowy klient. Wszystko w jednym ekranie — bez logowania do trzech systemów.', visual: 'dashboard' },
   { id: 'calendar',  url: 'app.hovera.app/kalendarz',     active: 'calendar',  eyebrow: '08:30 · Telefon',                     caption: 'Klient pyta o piątek 17:00. System pokazuje wolne sloty pasujące do jej poziomu. Bookingujesz w 5 sekund — nie trzeba sprawdzać 3 zeszytów.', visual: 'calendar' },
   { id: 'conflict',  url: 'app.hovera.app/kalendarz',     active: 'calendar',  eyebrow: '10:15 · Wykryty konflikt',             caption: 'Próbujesz dać Halince drugą jazdę o 11:00 — system blokuje, koń już zajęty. Zero pomyłek, zero "ojej, znowu".', visual: 'conflict' },
   { id: 'checkout',  url: 'stajnia-halicz.hovera.app',    active: 'clients',   eyebrow: '12:00 · Klient kupuje online',         caption: 'Anna wchodzi na publiczną stronę Twojej stajni. Wybiera karnet, płaci BLIKiem, dostaje fakturę. Zero Twojego udziału.', visual: 'checkout' },
   { id: 'pass',      url: 'app.hovera.app/karnety',       active: 'passes',    eyebrow: '14:00 · Karnet rozlicza się',          caption: 'Po jeździe karnet sam ubywa o 1. Anna widzi swoje saldo w portalu klienta. Bez SMS-a "ile mi zostało?".', visual: 'pass' },
   { id: 'invoices',  url: 'app.hovera.app/faktury',       active: 'invoices',  eyebrow: '16:30 · Faktury cykliczne',            caption: 'Pensjonat: 30 faktur 1. dnia miesiąca. Każda do KSeF, każda do biura rachunkowego. Twój udział: 0 minut.', visual: 'invoices' },
+  { id: 'reminder',  url: 'app.hovera.app/automatyzacje', active: 'clients',   eyebrow: '17:00 · Przypomnienia idą same',       caption: 'Hovera wysyła SMS-y i maile z jutrzejszymi jazdami do 14 klientów. Mniej "no-show", zero Twojego pisania, jeden klik na zmianę szablonu.', visual: 'reminder' },
   { id: 'owner',     url: 'app.hovera.app — portal klienta', active: 'horses',  eyebrow: '18:00 · Właściciel sprawdza konia',    caption: 'Marek loguje się z telefonu. Widzi: dziś jazda 16:00, wczoraj kowal, przedwczoraj weterynarz. Bez SMS-a do Ciebie.', visual: 'owner' },
   { id: 'vet',       url: 'app.hovera.app/konie/halina',  active: 'horses',    eyebrow: '19:30 · Weterynarz online',            caption: 'Halinka kuleje. Wysyłasz dr Nowakowi link do pełnego dziennika konia. 247 wpisów chronologicznie — bez paczek PDF.', visual: 'vet' },
   { id: 'report',    url: 'app.hovera.app/raporty',       active: 'reports',   eyebrow: '21:00 · Koniec dnia',                  caption: 'Hovera pokazuje raport: 18 jazd, 2 400 zł, 1 koń przeciążony. Idziesz spać spokojna. Klienci zarezerwują jutrzejsze jazdy sami.', visual: 'report' },
 ] : [
+  { id: 'feed',      url: 'app.hovera.app/feeding',       active: 'horses',    eyebrow: '6:30 · Morning feed',      caption: 'You walk into the barn with your phone. Hovera shows 24 horses — diet, portion, supplements. You tick them off one by one; everything lands in each horse journal.', visual: 'feed' },
   { id: 'dashboard', url: 'app.hovera.app/dashboard',     active: 'dashboard', eyebrow: '7:00 · Morning',           caption: 'You open Hovera. Today: 18 rides, 2 cancellations, 1 new client. All in one screen — no logging into three systems.',             visual: 'dashboard' },
   { id: 'calendar',  url: 'app.hovera.app/calendar',      active: 'calendar',  eyebrow: '8:30 · Phone rings',       caption: 'Client asks about Friday 5pm. System shows free slots matching her level. You book in 5 seconds — no checking 3 notebooks.', visual: 'calendar' },
   { id: 'conflict',  url: 'app.hovera.app/calendar',      active: 'calendar',  eyebrow: '10:15 · Conflict caught',  caption: "You try to give Halina a second ride at 11am — system blocks it, horse is already busy. Zero mistakes, zero 'oh no, again'.", visual: 'conflict' },
   { id: 'checkout',  url: 'halicz-stables.hovera.app',    active: 'clients',   eyebrow: '12:00 · Client buys online', caption: 'Anna lands on your stable\'s public page. Picks a pass, pays instantly, gets an invoice. Zero input from you.',             visual: 'checkout' },
   { id: 'pass',      url: 'app.hovera.app/passes',        active: 'passes',    eyebrow: '14:00 · Pass settles itself', caption: "After the ride the pass auto-deducts. Anna sees her balance in the client portal. No SMS asking 'how many left?'.",        visual: 'pass' },
   { id: 'invoices',  url: 'app.hovera.app/invoices',      active: 'invoices',  eyebrow: '16:30 · Recurring invoices', caption: 'Boarding: 30 invoices on the 1st, each to e-invoicing, each to the accountant. Your time: 0 minutes.',                       visual: 'invoices' },
+  { id: 'reminder',  url: 'app.hovera.app/automations',   active: 'clients',   eyebrow: '17:00 · Reminders go out',   caption: 'Hovera fires SMS and email reminders for tomorrow\'s rides to 14 clients. Fewer no-shows, no typing on your end, one click to tweak the template.', visual: 'reminder' },
   { id: 'owner',     url: 'app.hovera.app — owner portal', active: 'horses',   eyebrow: '18:00 · Owner checks horse', caption: "Marek logs in from his phone. Sees: today's ride at 4pm, farrier yesterday, vet the day before. No SMS to you.",          visual: 'owner' },
   { id: 'vet',       url: 'app.hovera.app/horses/halina', active: 'horses',    eyebrow: '19:30 · Vet online',         caption: 'Halina is lame. You send Dr Nowak a link to the full horse journal. 247 entries chronologically — no PDF packs.',            visual: 'vet' },
   { id: 'report',    url: 'app.hovera.app/reports',       active: 'reports',   eyebrow: '21:00 · End of day',         caption: 'Hovera shows the report: 18 rides, €600, 1 overworked horse. You sleep easy. Clients book tomorrow themselves.',         visual: 'report' },
@@ -502,6 +506,76 @@ const navLabels = locale === 'pl'
                     </div>
                   )}
 
+                  {/* SCENE: Morning feed checklist */}
+                  {scene.visual === 'feed' && (
+                    <div class="feed-scene">
+                      <div class="cal-toolbar">
+                        <span class="cal-week">{t('Karmienia · 6:30 · 24 konie', 'Feeding · 6:30 · 24 horses')}</span>
+                        <span class="cal-pill is-active">{t('17 z 24 zrobione', '17 of 24 done')}</span>
+                      </div>
+                      <ul class="feed-list">
+                        {[
+                          { name: 'Halina', diet: t('owies 2 kg + siano + suplement stawów', 'oats 2 kg + hay + joint supplement'), done: true },
+                          { name: 'Atos',   diet: t('musli 1.5 kg + siano + olej lniany', 'muesli 1.5 kg + hay + linseed oil'), done: true },
+                          { name: 'Bonita', diet: t('owies 1.8 kg + siano · LOW SUGAR', 'oats 1.8 kg + hay · LOW SUGAR'), done: true },
+                          { name: 'Niko',   diet: t('musli 2 kg + siano + elektrolity', 'muesli 2 kg + hay + electrolytes'), done: false, current: true },
+                          { name: 'Riko',   diet: t('owies 1.5 kg + siano', 'oats 1.5 kg + hay'), done: false },
+                          { name: 'Misia',  diet: t('musli 1.2 kg + siano + zioła', 'muesli 1.2 kg + hay + herbs'), done: false },
+                        ].map((row, i) => (
+                          <li class={`feed-row ${row.done ? 'is-done' : ''} ${row.current ? 'is-current' : ''}`} style={`--delay: ${i * 0.08}s`}>
+                            <span class={`feed-check ${row.done ? 'is-checked' : ''}`}>
+                              {row.done && <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5l2.5 2.5L9.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>}
+                            </span>
+                            <span class="feed-name">{row.name}</span>
+                            <span class="feed-diet muted text-sm">{row.diet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div class="feed-summary">
+                        {t('Każda dawka trafia automatycznie do dziennika konia. Zmiana diety? Edytujesz raz, system pamięta.', 'Every portion auto-logs to the horse journal. Change a diet? Edit once, system remembers.')}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SCENE: Auto reminders */}
+                  {scene.visual === 'reminder' && (
+                    <div class="rem-scene">
+                      <div class="cal-toolbar">
+                        <span class="cal-week">{t('Automatyzacje · jutro', 'Automations · tomorrow')}</span>
+                        <span class="cal-pill is-active">{t('14 wiadomości · wysyłka 17:00', '14 messages · sending 5pm')}</span>
+                      </div>
+                      <div class="rem-grid">
+                        <div class="rem-card">
+                          <div class="rem-card-head">
+                            <span class="rem-icon rem-icon--sms">SMS</span>
+                            <strong>{t('Przypomnienie o jutrzejszej jeździe', 'Tomorrow\'s ride reminder')}</strong>
+                          </div>
+                          <div class="rem-bubble">{t('Cześć Anna! Przypominamy: jutro 10:00, koń Bystry. Stajnia Halicz. Do zobaczenia!', 'Hi Anna! Reminder: tomorrow 10am, horse Bystry. Halicz Stable. See you!')}</div>
+                          <div class="rem-meta muted text-xs">{t('Szablon · 14 odbiorców · ostatnie wysłane przed sekundą ✓', 'Template · 14 recipients · last sent a second ago ✓')}</div>
+                        </div>
+                        <ul class="rem-feed">
+                          {[
+                            { who: 'Anna K.', what: t('SMS · jutro 10:00, Bystry', 'SMS · tomorrow 10am, Bystry') },
+                            { who: 'Marek W.', what: t('Mail · jutro 11:00, Halina', 'Email · tomorrow 11am, Halina') },
+                            { who: 'Tomek S.', what: t('SMS · jutro 14:00, Atos', 'SMS · tomorrow 2pm, Atos') },
+                            { who: 'Karolina L.', what: t('Mail · jutro 16:00, Bonita', 'Email · tomorrow 4pm, Bonita') },
+                            { who: 'Stefan G.', what: t('SMS · jutro 17:00, Niko', 'SMS · tomorrow 5pm, Niko') },
+                          ].map((r, i) => (
+                            <li class="rem-line" style={`--delay: ${0.3 + i * 0.18}s`}>
+                              <span class="rem-line-dot"></span>
+                              <span class="rem-line-who">{r.who}</span>
+                              <span class="rem-line-what muted text-sm">{r.what}</span>
+                              <span class="rem-line-tick">✓</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div class="feed-summary">
+                        {t('Mniej "no-show" o ~30%. Edytujesz szablon raz, działa wszędzie. Możesz dodać kolejną automatyzację: urodziny, faktura przeterminowana, niski stan karnetu.', 'About 30% fewer no-shows. Edit the template once, it works everywhere. Add more automations any time: birthdays, overdue invoices, low pass balance.')}
+                      </div>
+                    </div>
+                  )}
+
                   {/* SCENE 9: Report */}
                   {scene.visual === 'report' && (
                     <div class="rep-scene">
@@ -942,6 +1016,36 @@ const navLabels = locale === 'pl'
   .rep-actions { margin-top: 16px; }
   .rep-action { display: inline-block; padding: 10px 16px; background: rgba(111,182,122,0.16); color: #2c5530; border-radius: 8px; font-size: 12px; font-weight: 500; animation: fadeUp 0.5s var(--ease-out-expo) 0.8s backwards; }
 
+  /* ─────── Feed scene ─────── */
+  .feed-scene { padding: 18px 22px; }
+  .feed-list { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 6px; max-height: 340px; overflow: hidden; }
+  .feed-row { display: grid; grid-template-columns: 26px 88px 1fr; align-items: center; gap: 12px; padding: 10px 12px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 10px; opacity: 0; transform: translateY(6px); animation: fadeUp 0.4s var(--ease-out-expo) var(--delay, 0s) forwards; }
+  .feed-row.is-done { background: rgba(111,182,122,0.08); }
+  .feed-row.is-current { box-shadow: 0 0 0 2px var(--color-ochre); animation-name: fadeUp, pulse-current; animation-duration: 0.4s, 1.6s; animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.4s); animation-iteration-count: 1, infinite; }
+  @keyframes pulse-current { 0%,100% { box-shadow: 0 0 0 2px var(--color-ochre); } 50% { box-shadow: 0 0 0 4px rgba(168,149,107,0.35); } }
+  .feed-check { width: 22px; height: 22px; border-radius: 999px; border: 1.5px solid var(--color-border); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .feed-check.is-checked { background: #6FB67A; border-color: #6FB67A; color: white; }
+  .feed-name { font-weight: 600; font-size: 0.95rem; }
+  .feed-diet { line-height: 1.35; }
+  .feed-summary { margin-top: 14px; padding: 10px 14px; background: var(--color-sand-light); color: var(--color-fg-muted); border-radius: 8px; font-size: 12px; text-align: center; }
+
+  /* ─────── Reminder scene ─────── */
+  .rem-scene { padding: 18px 22px; }
+  .rem-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 14px; margin-top: 14px; }
+  @media (max-width: 700px) { .rem-grid { grid-template-columns: 1fr; } }
+  .rem-card { padding: 14px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 12px; box-shadow: var(--shadow-warm); }
+  .rem-card-head { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .rem-icon { display: inline-block; padding: 3px 9px; border-radius: 6px; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; }
+  .rem-icon--sms { background: var(--color-bark); color: var(--color-cream); }
+  .rem-bubble { padding: 12px 14px; background: var(--color-sand-light); border-radius: 10px 10px 10px 2px; font-size: 0.88rem; line-height: 1.45; animation: fadeUp 0.4s var(--ease-out-expo) 0.2s backwards; }
+  .rem-meta { margin-top: 10px; }
+  .rem-feed { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow: hidden; }
+  .rem-line { display: grid; grid-template-columns: 10px 90px 1fr 18px; align-items: center; gap: 10px; padding: 8px 10px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 8px; opacity: 0; transform: translateX(-6px); animation: slide-rem 0.4s var(--ease-out-expo) var(--delay, 0s) forwards; }
+  @keyframes slide-rem { to { opacity: 1; transform: translateX(0); } }
+  .rem-line-dot { width: 8px; height: 8px; border-radius: 999px; background: #6FB67A; }
+  .rem-line-who { font-weight: 500; font-size: 0.85rem; }
+  .rem-line-tick { font-size: 12px; color: #2c5530; font-weight: 700; }
+
   /* ─────── Caption + Dots ─────── */
   .ipt-caption { text-align: center; padding: 0 1rem; }
   .ipt-caption-text { margin-top: 0.5rem; font-size: clamp(1rem, 1.6vw, 1.15rem); line-height: 1.4; color: var(--color-fg); font-weight: 500; }
@@ -976,7 +1080,7 @@ const navLabels = locale === 'pl'
     let current = 0;
     let isPlaying = true;
     let sceneStartedAt = 0;
-    const SCENE_DURATION = 7000;
+    const SCENE_DURATION = 11000;
 
     function animateCounters() {
       const activeScene = sceneEls[current];
