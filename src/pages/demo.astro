@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import InteractiveProductTour from '../components/InteractiveProductTour.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 import { localizePath } from '../i18n/utils';
 const locale = 'pl' as const;
@@ -12,13 +11,29 @@ const lp = (p: string) => localizePath(p, locale);
   <PageHero
     eyebrow="Demo"
     title="Zobacz Hoverę w akcji"
-    subtitle="9 scen pokazujących typowy dzień w stajni — od rana do raportu wieczornego. Klikaj, kiedy chcesz, albo daj się prowadzić."
+    subtitle="Trzy ścieżki: interaktywny tour po prawdziwych ekranach aplikacji, live demo z naszym zespołem albo film z lektorem (wkrótce)."
   />
 
-  <section class="container-x pb-12">
-    <div data-reveal>
-      <InteractiveProductTour locale={locale} />
-    </div>
+  <section class="container-x pb-8">
+    <a href={lp('/demo/jak-to-dziala')} class="tour-cta" data-reveal>
+      <div class="tour-cta__visual" aria-hidden="true">
+        <div class="tour-frame">
+          <div class="tour-dots"><span></span><span></span><span></span></div>
+          <div class="tour-bars">
+            <div class="tour-bar tour-bar--w70"></div>
+            <div class="tour-bar tour-bar--w50"></div>
+            <div class="tour-bar tour-bar--w85"></div>
+            <div class="tour-bar tour-bar--w40"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tour-cta__content">
+        <span class="eyebrow">Interaktywny tour</span>
+        <h2 class="display-3 mt-2">Zobacz, jak działa Hovera w praktyce</h2>
+        <p class="muted mt-3">9 scen z prawdziwymi ekranami: dashboard, kalendarz, konflikty rezerwacji, płatności BLIK, panel właściciela konia i raport wieczorny. Bez logowania, bez formularzy.</p>
+        <span class="btn btn-primary mt-6">Otwórz tour →</span>
+      </div>
+    </a>
   </section>
 
   <section class="container-x py-16">
@@ -90,6 +105,48 @@ const lp = (p: string) => localizePath(p, locale);
 </Base>
 
 <style>
+  .tour-cta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-sand-light) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-warm);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+  }
+  .tour-cta:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(61,46,34,0.18); }
+  @media (min-width: 800px) { .tour-cta { grid-template-columns: 1fr 1.2fr; align-items: center; } }
+  .tour-cta__visual { display: flex; justify-content: center; }
+  .tour-frame {
+    width: 100%;
+    max-width: 22rem;
+    aspect-ratio: 16 / 10;
+    background: var(--color-bark);
+    border-radius: 14px;
+    padding: 0.6rem;
+    box-shadow: 0 12px 30px -8px rgba(61,46,34,0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .tour-dots { display: flex; gap: 0.4rem; }
+  .tour-dots span { width: 10px; height: 10px; border-radius: 999px; background: var(--color-sand-light); opacity: 0.55; }
+  .tour-dots span:nth-child(1) { background: #E2725B; opacity: 0.9; }
+  .tour-dots span:nth-child(2) { background: var(--color-ochre); opacity: 0.9; }
+  .tour-dots span:nth-child(3) { background: #6B8E5A; opacity: 0.9; }
+  .tour-bars { flex: 1; background: var(--color-cream); border-radius: 8px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .tour-bar { height: 0.65rem; border-radius: 999px; background: var(--color-sand-light); }
+  .tour-bar--w70 { width: 70%; background: var(--color-ochre); opacity: 0.7; }
+  .tour-bar--w50 { width: 50%; }
+  .tour-bar--w85 { width: 85%; }
+  .tour-bar--w40 { width: 40%; background: var(--color-bark); opacity: 0.35; }
+
   .demo-card {
     padding: 2.5rem;
     background: var(--color-cream);

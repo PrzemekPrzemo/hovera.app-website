@@ -6,59 +6,55 @@ const t = (pl: string, en: string) => (locale === 'pl' ? pl : en);
 
 type Scene = {
   id: string;
+  url: string;
+  active: 'dashboard' | 'calendar' | 'clients' | 'horses' | 'passes' | 'invoices' | 'reports';
   eyebrow: string;
   caption: string;
   visual: 'dashboard' | 'calendar' | 'conflict' | 'checkout' | 'pass' | 'invoices' | 'owner' | 'vet' | 'report';
 };
 
 const scenes: Scene[] = locale === 'pl' ? [
-  { id: 'morning', eyebrow: '07:00 · Poranek', caption: 'Otwierasz Hoverę. Widzisz dziś 18 jazd, 2 odwołania, 1 nowy klient.', visual: 'dashboard' },
-  { id: 'booking', eyebrow: '08:30 · Telefon', caption: 'Klient pyta o piątek 17:00. System pokazuje sloty pasujące do jego poziomu.', visual: 'calendar' },
-  { id: 'conflict', eyebrow: '10:15 · Wykryty konflikt', caption: 'Próbujesz dać Halince drugą jazdę o 11:00 — system blokuje, koń już zajęty.', visual: 'conflict' },
-  { id: 'checkout', eyebrow: '12:00 · Klient kupuje online', caption: 'Anna kupuje karnet 12-jazd przez stronę stajni. BLIK, faktura, gotowe — bez Ciebie.', visual: 'checkout' },
-  { id: 'pass', eyebrow: '14:00 · Karnet rozlicza się', caption: 'Po jeździe karnet sam ubywa o 1. Anna widzi swoje saldo w aplikacji.', visual: 'pass' },
-  { id: 'invoices', eyebrow: '16:30 · Faktury cykliczne', caption: 'Pensjonat: 30 faktur za 1. dnia miesiąca, każda do KSeF, każda do biura. Sam.', visual: 'invoices' },
-  { id: 'owner', eyebrow: '18:00 · Właściciel sprawdza konia', caption: 'Marek loguje się. Widzi: dziś jazda 16:00, wczoraj kowal, przedwczoraj weterynarz. Bez SMS-a do Ciebie.', visual: 'owner' },
-  { id: 'vet', eyebrow: '19:30 · Weterynarz online', caption: 'Halinka kuleje. Wysyłasz dr Nowakowi link do dziennika konia. Pełna historia w 5 sekund.', visual: 'vet' },
-  { id: 'report', eyebrow: '21:00 · Koniec dnia', caption: 'Hovera pokazuje raport: 18 jazd, 2 400 zł, 1 koń przeciążony. Idziesz spać spokojna.', visual: 'report' },
+  { id: 'dashboard', url: 'app.hovera.app/dashboard',     active: 'dashboard', eyebrow: '07:00 · Poranek',                    caption: 'Otwierasz Hoverę. Widzisz dziś 18 jazd, 2 odwołania, 1 nowy klient. Wszystko w jednym ekranie — bez logowania do trzech systemów.', visual: 'dashboard' },
+  { id: 'calendar',  url: 'app.hovera.app/kalendarz',     active: 'calendar',  eyebrow: '08:30 · Telefon',                     caption: 'Klient pyta o piątek 17:00. System pokazuje wolne sloty pasujące do jej poziomu. Bookingujesz w 5 sekund — nie trzeba sprawdzać 3 zeszytów.', visual: 'calendar' },
+  { id: 'conflict',  url: 'app.hovera.app/kalendarz',     active: 'calendar',  eyebrow: '10:15 · Wykryty konflikt',             caption: 'Próbujesz dać Halince drugą jazdę o 11:00 — system blokuje, koń już zajęty. Zero pomyłek, zero "ojej, znowu".', visual: 'conflict' },
+  { id: 'checkout',  url: 'stajnia-halicz.hovera.app',    active: 'clients',   eyebrow: '12:00 · Klient kupuje online',         caption: 'Anna wchodzi na publiczną stronę Twojej stajni. Wybiera karnet, płaci BLIKiem, dostaje fakturę. Zero Twojego udziału.', visual: 'checkout' },
+  { id: 'pass',      url: 'app.hovera.app/karnety',       active: 'passes',    eyebrow: '14:00 · Karnet rozlicza się',          caption: 'Po jeździe karnet sam ubywa o 1. Anna widzi swoje saldo w portalu klienta. Bez SMS-a "ile mi zostało?".', visual: 'pass' },
+  { id: 'invoices',  url: 'app.hovera.app/faktury',       active: 'invoices',  eyebrow: '16:30 · Faktury cykliczne',            caption: 'Pensjonat: 30 faktur 1. dnia miesiąca. Każda do KSeF, każda do biura rachunkowego. Twój udział: 0 minut.', visual: 'invoices' },
+  { id: 'owner',     url: 'app.hovera.app — portal klienta', active: 'horses',  eyebrow: '18:00 · Właściciel sprawdza konia',    caption: 'Marek loguje się z telefonu. Widzi: dziś jazda 16:00, wczoraj kowal, przedwczoraj weterynarz. Bez SMS-a do Ciebie.', visual: 'owner' },
+  { id: 'vet',       url: 'app.hovera.app/konie/halina',  active: 'horses',    eyebrow: '19:30 · Weterynarz online',            caption: 'Halinka kuleje. Wysyłasz dr Nowakowi link do pełnego dziennika konia. 247 wpisów chronologicznie — bez paczek PDF.', visual: 'vet' },
+  { id: 'report',    url: 'app.hovera.app/raporty',       active: 'reports',   eyebrow: '21:00 · Koniec dnia',                  caption: 'Hovera pokazuje raport: 18 jazd, 2 400 zł, 1 koń przeciążony. Idziesz spać spokojna. Klienci zarezerwują jutrzejsze jazdy sami.', visual: 'report' },
 ] : [
-  { id: 'morning', eyebrow: '7:00 · Morning', caption: 'You open Hovera. Today: 18 rides, 2 cancellations, 1 new client.', visual: 'dashboard' },
-  { id: 'booking', eyebrow: '8:30 · Phone rings', caption: 'Client asks about Friday 5pm. System shows slots matching their level.', visual: 'calendar' },
-  { id: 'conflict', eyebrow: '10:15 · Conflict caught', caption: 'You try to give Halina a second ride at 11am — system blocks it, horse is already booked.', visual: 'conflict' },
-  { id: 'checkout', eyebrow: '12:00 · Client buys online', caption: 'Anna buys a 12-ride pass on your stable page. Instant payment, instant invoice — no input from you.', visual: 'checkout' },
-  { id: 'pass', eyebrow: '14:00 · Pass settles itself', caption: 'After the ride the pass auto-deducts. Anna sees her balance in the app.', visual: 'pass' },
-  { id: 'invoices', eyebrow: '16:30 · Recurring invoices', caption: 'Boarding: 30 invoices on the 1st, each through e-invoicing, each to the accountant. Itself.', visual: 'invoices' },
-  { id: 'owner', eyebrow: '18:00 · Owner checks the horse', caption: "Marek logs in. Sees: today's ride at 4pm, farrier yesterday, vet the day before. Zero SMS to you.", visual: 'owner' },
-  { id: 'vet', eyebrow: '19:30 · Vet online', caption: 'Halina is lame. You send Dr Nowak a link to the horse journal. Full history in 5 seconds.', visual: 'vet' },
-  { id: 'report', eyebrow: '21:00 · End of day', caption: 'Hovera shows the report: 18 rides, €600, 1 overworked horse. You sleep easy.', visual: 'report' },
+  { id: 'dashboard', url: 'app.hovera.app/dashboard',     active: 'dashboard', eyebrow: '7:00 · Morning',           caption: 'You open Hovera. Today: 18 rides, 2 cancellations, 1 new client. All in one screen — no logging into three systems.',             visual: 'dashboard' },
+  { id: 'calendar',  url: 'app.hovera.app/calendar',      active: 'calendar',  eyebrow: '8:30 · Phone rings',       caption: 'Client asks about Friday 5pm. System shows free slots matching her level. You book in 5 seconds — no checking 3 notebooks.', visual: 'calendar' },
+  { id: 'conflict',  url: 'app.hovera.app/calendar',      active: 'calendar',  eyebrow: '10:15 · Conflict caught',  caption: "You try to give Halina a second ride at 11am — system blocks it, horse is already busy. Zero mistakes, zero 'oh no, again'.", visual: 'conflict' },
+  { id: 'checkout',  url: 'halicz-stables.hovera.app',    active: 'clients',   eyebrow: '12:00 · Client buys online', caption: 'Anna lands on your stable\'s public page. Picks a pass, pays instantly, gets an invoice. Zero input from you.',             visual: 'checkout' },
+  { id: 'pass',      url: 'app.hovera.app/passes',        active: 'passes',    eyebrow: '14:00 · Pass settles itself', caption: "After the ride the pass auto-deducts. Anna sees her balance in the client portal. No SMS asking 'how many left?'.",        visual: 'pass' },
+  { id: 'invoices',  url: 'app.hovera.app/invoices',      active: 'invoices',  eyebrow: '16:30 · Recurring invoices', caption: 'Boarding: 30 invoices on the 1st, each to e-invoicing, each to the accountant. Your time: 0 minutes.',                       visual: 'invoices' },
+  { id: 'owner',     url: 'app.hovera.app — owner portal', active: 'horses',   eyebrow: '18:00 · Owner checks horse', caption: "Marek logs in from his phone. Sees: today's ride at 4pm, farrier yesterday, vet the day before. No SMS to you.",          visual: 'owner' },
+  { id: 'vet',       url: 'app.hovera.app/horses/halina', active: 'horses',    eyebrow: '19:30 · Vet online',         caption: 'Halina is lame. You send Dr Nowak a link to the full horse journal. 247 entries chronologically — no PDF packs.',            visual: 'vet' },
+  { id: 'report',    url: 'app.hovera.app/reports',       active: 'reports',   eyebrow: '21:00 · End of day',         caption: 'Hovera shows the report: 18 rides, €600, 1 overworked horse. You sleep easy. Clients book tomorrow themselves.',         visual: 'report' },
 ];
 
-const labels = {
-  play: t('Odtwórz', 'Play'),
-  pause: t('Pauza', 'Pause'),
-  prev: t('Poprzednia', 'Previous'),
-  next: t('Następna', 'Next'),
-  restart: t('Od początku', 'Restart'),
-  step: t('Krok', 'Step'),
-  of: t('z', 'of'),
-};
+const navLabels = locale === 'pl'
+  ? { dashboard: 'Dashboard', calendar: 'Kalendarz', clients: 'Klienci', horses: 'Konie', passes: 'Karnety', invoices: 'Faktury', reports: 'Raporty' }
+  : { dashboard: 'Dashboard', calendar: 'Calendar', clients: 'Clients', horses: 'Horses', passes: 'Passes', invoices: 'Invoices', reports: 'Reports' };
 ---
 
 <div class="ipt" data-ipt data-total={scenes.length}>
-  <!-- Header: progress + controls -->
+  <!-- Header bar: progress + controls -->
   <div class="ipt-header">
     <div class="ipt-progress">
       <div class="ipt-progress-bar" data-progress-bar></div>
     </div>
     <div class="ipt-controls">
-      <button type="button" class="ipt-btn" data-prev aria-label={labels.prev}>
+      <button type="button" class="ipt-btn" data-prev aria-label={t('Poprzednia', 'Previous')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11l-4-4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button type="button" class="ipt-btn ipt-btn-play" data-play aria-label={labels.pause}>
+      <button type="button" class="ipt-btn ipt-btn-play" data-play aria-label={t('Pauza', 'Pause')}>
         <svg class="play-icon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor" style="display:none;"><path d="M3 2l8 5-8 5V2z"/></svg>
         <svg class="pause-icon" width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M4 2h2v10H4zM8 2h2v10H8z"/></svg>
       </button>
-      <button type="button" class="ipt-btn" data-next aria-label={labels.next}>
+      <button type="button" class="ipt-btn" data-next aria-label={t('Następna', 'Next')}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 11l4-4-4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <span class="ipt-counter">
@@ -68,257 +64,479 @@ const labels = {
     </div>
   </div>
 
-  <!-- Stage -->
+  <!-- Stage with browser frame -->
   <div class="ipt-stage">
     {scenes.map((scene, i) => (
       <article
-        class={`ipt-scene ipt-scene-${scene.visual} ${i === 0 ? 'is-active' : ''}`}
+        class={`ipt-scene ${i === 0 ? 'is-active' : ''}`}
         data-scene
         data-index={i}
       >
-        <div class="ipt-canvas">
-          {/* SCENE 1: Dashboard */}
-          {scene.visual === 'dashboard' && (
-            <div class="dash">
-              <div class="dash-greeting">{t('Cześć, Anna 👋', 'Hi, Anna 👋')}</div>
-              <div class="dash-grid">
-                <div class="dash-stat" style="--d: 0s;">
-                  <div class="dash-stat-num" data-count="18">0</div>
-                  <div class="dash-stat-label">{t('jazd dzisiaj', 'rides today')}</div>
-                </div>
-                <div class="dash-stat" style="--d: 0.2s;">
-                  <div class="dash-stat-num" data-count="2">0</div>
-                  <div class="dash-stat-label">{t('odwołania', 'cancellations')}</div>
-                </div>
-                <div class="dash-stat" style="--d: 0.4s;">
-                  <div class="dash-stat-num" data-count="1">0</div>
-                  <div class="dash-stat-label">{t('nowy klient', 'new client')}</div>
-                </div>
-                <div class="dash-stat" style="--d: 0.6s;">
-                  <div class="dash-stat-num">2 400 <span class="text-base">zł</span></div>
-                  <div class="dash-stat-label">{t('wczorajszy obrót', 'yesterday revenue')}</div>
-                </div>
-              </div>
+        <!-- Browser chrome -->
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="browser-dots"><span></span><span></span><span></span></div>
+            <div class="browser-url">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="5" width="8" height="6" rx="1"/>
+                <path d="M4 5V3.5a2 2 0 014 0V5"/>
+              </svg>
+              <span>{scene.url}</span>
             </div>
-          )}
+          </div>
 
-          {/* SCENE 2: Calendar with available slots */}
-          {scene.visual === 'calendar' && (
-            <div class="cal-stage">
-              <div class="cal-phone-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1 1 0 00-1.02.24l-2.2 2.2a15.07 15.07 0 01-6.59-6.59l2.2-2.2a1 1 0 00.24-1.02A11.5 11.5 0 018.5 4 1 1 0 007.5 3H4a1 1 0 00-1 1 17 17 0 0017 17 1 1 0 001-1v-3.5a1 1 0 00-1-1z"/></svg>
-                <span>{t('Klient dzwoni…', 'Client calling…')}</span>
-              </div>
-              <div class="cal-grid">
-                {[0,1,2,3,4,5,6].map((d) => (
-                  <div class="cal-day">
-                    <div class="cal-day-name">{['Pn','Wt','Śr','Cz','Pt','Sb','Nd'][d]}</div>
-                    <div class="cal-slots">
-                      {[0,1,2,3,4].map((s) => {
-                        const free = (d === 4 && s === 2) || (d === 4 && s === 3) || (d === 1 && s === 1) || (d === 5 && s === 0);
-                        const busy = !free && Math.abs(d - s) % 2 === 0;
-                        return <div class={`cal-slot ${free ? 'is-free' : ''} ${busy ? 'is-busy' : ''}`}></div>;
-                      })}
+          <!-- App shell: sidebar + main -->
+          {scene.visual === 'owner' || scene.visual === 'checkout' ? (
+            <!-- Special layouts (no full app shell) -->
+            <div class="app-special">
+              {scene.visual === 'checkout' && (
+                <div class="checkout-page">
+                  <div class="checkout-header">
+                    <div class="checkout-stable-name">Stajnia Halicz</div>
+                    <div class="checkout-stable-meta">{t('Karnety · Booking online · Konie szkółkowe', 'Passes · Online booking · School horses')}</div>
+                  </div>
+                  <div class="checkout-products">
+                    <div class="checkout-product checkout-product-active">
+                      <div class="checkout-product-info">
+                        <div class="checkout-product-name">{t('Karnet 12 jazd', '12-ride pass')}</div>
+                        <div class="checkout-product-desc muted">{t('Ważny 3 miesiące · Wszystkie konie szkółkowe', 'Valid 3 months · All school horses')}</div>
+                      </div>
+                      <div class="checkout-product-price">580 zł</div>
+                    </div>
+                    <div class="checkout-product">
+                      <div class="checkout-product-info">
+                        <div class="checkout-product-name">{t('Karnet 4 jazdy', '4-ride pass')}</div>
+                        <div class="checkout-product-desc muted">{t('Ważny 30 dni', 'Valid 30 days')}</div>
+                      </div>
+                      <div class="checkout-product-price">220 zł</div>
                     </div>
                   </div>
-                ))}
-              </div>
-              <div class="cal-callout">{t('✓ Wolne: Pt 17:00 — Halina', '✓ Free: Fri 5pm — Halina')}</div>
-            </div>
-          )}
-
-          {/* SCENE 3: Conflict */}
-          {scene.visual === 'conflict' && (
-            <div class="conf">
-              <div class="conf-grid">
-                <div class="conf-row">
-                  <span class="conf-time">10:00</span>
-                  <div class="conf-event conf-existing"><b>Halina</b> · Anna K.</div>
-                </div>
-                <div class="conf-row">
-                  <span class="conf-time">11:00</span>
-                  <div class="conf-event conf-dragging">
-                    <b>Halina</b> · Marek W.
-                    <span class="conf-warning">⚠ {t('Konflikt — koń zajęty', 'Conflict — horse busy')}</span>
-                  </div>
-                </div>
-                <div class="conf-row">
-                  <span class="conf-time">12:00</span>
-                  <div class="conf-event conf-empty">{t('— wolne —', '— free —')}</div>
-                </div>
-              </div>
-              <div class="conf-suggest">
-                💡 {t('Spróbuj: Atos 11:00 (wolny)', 'Try: Atos 11am (free)')}
-              </div>
-            </div>
-          )}
-
-          {/* SCENE 4: Online checkout */}
-          {scene.visual === 'checkout' && (
-            <div class="checkout">
-              <div class="checkout-card">
-                <div class="checkout-head">
-                  <span class="checkout-stable">stajnia-halicz.hovera.app</span>
-                </div>
-                <div class="checkout-product">
-                  <div class="checkout-name">{t('Karnet 12 jazd', '12-ride pass')}</div>
-                  <div class="checkout-price">580 zł</div>
-                </div>
-                <div class="checkout-method">
-                  <div class="checkout-blik">BLIK</div>
-                  <div class="checkout-blik-code">2&nbsp;5&nbsp;3&nbsp;0&nbsp;9&nbsp;7</div>
-                </div>
-                <div class="checkout-success">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  {t('Płatność OK · Faktura wysłana', 'Payment OK · Invoice sent')}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* SCENE 5: Pass auto-deduct */}
-          {scene.visual === 'pass' && (
-            <div class="passwrap">
-              <div class="passwrap-card">
-                <div class="passwrap-header">
-                  <span>Anna Kowalska</span>
-                  <span class="passwrap-pill" data-pass-counter><span data-pass-num>11</span>/12</span>
-                </div>
-                <div class="passwrap-meter"><div class="passwrap-meter-fill" style="--target: 92%"></div></div>
-                <div class="passwrap-foot muted">
-                  {t('Karnet 12 jazd · ważny do 30.06', '12-ride pass · valid until 30/06')}
-                </div>
-              </div>
-              <div class="passwrap-event">
-                <span class="passwrap-event-dot"></span>
-                {t('Wt 14:00 · Halina · Anna · -1 jazda', 'Tue 2pm · Halina · Anna · -1 ride')}
-              </div>
-            </div>
-          )}
-
-          {/* SCENE 6: Recurring invoices */}
-          {scene.visual === 'invoices' && (
-            <div class="invs">
-              <div class="invs-stack">
-                {Array.from({length: 6}).map((_, i) => (
-                  <div class="invs-card" style={`--i: ${i}; --delay: ${i * 0.12}s;`}>
-                    <div class="invs-num">FV/2026/{(i + 41).toString().padStart(3, '0')}</div>
-                    <div class="invs-row">
-                      <span>{['Halina', 'Atos', 'Bonita', 'Niko', 'Riko', 'Misia'][i]}</span>
-                      <span>1 200 zł</span>
+                  <div class="checkout-payment">
+                    <div class="checkout-blik-row">
+                      <div class="checkout-blik-badge">BLIK</div>
+                      <div class="checkout-blik-code">2<span>5</span>3<span>0</span>9<span>7</span></div>
                     </div>
-                    <div class="invs-stamp">KSeF ✓</div>
-                  </div>
-                ))}
-              </div>
-              <div class="invs-meta">
-                {t('30 faktur · 0 minut Twojej pracy', '30 invoices · 0 minutes of your work')}
-              </div>
-            </div>
-          )}
-
-          {/* SCENE 7: Owner checks the horse */}
-          {scene.visual === 'owner' && (
-            <div class="ownerwrap">
-              <div class="owner-phone">
-                <div class="owner-screen">
-                  <div class="owner-status">
-                    <span>9:41</span>
-                    <span>📶 100%</span>
-                  </div>
-                  <div class="owner-greeting">
-                    {t('Cześć Marek', 'Hi Marek')}
-                  </div>
-                  <div class="owner-horse">
-                    <div class="owner-horse-avatar">H</div>
-                    <div>
-                      <div class="owner-horse-name">Halinka</div>
-                      <div class="owner-horse-sub">{t('Twój koń', 'Your horse')}</div>
-                    </div>
-                  </div>
-                  <div class="owner-section-label">{t('Dzisiaj', 'Today')}</div>
-                  <div class="owner-event owner-event-1">
-                    <span class="owner-event-dot d-train"></span>
-                    <div>
-                      <div class="owner-event-title">{t('Jazda 16:00 · Anna K.', 'Ride 4pm · Anna K.')}</div>
-                      <div class="owner-event-sub muted">{t('hala kryta · 60 min', 'indoor arena · 60 min')}</div>
-                    </div>
-                  </div>
-                  <div class="owner-section-label">{t('Wczoraj', 'Yesterday')}</div>
-                  <div class="owner-event owner-event-2">
-                    <span class="owner-event-dot d-shoe"></span>
-                    <div>
-                      <div class="owner-event-title">{t('Kowal · pełne podk.', 'Farrier · full set')}</div>
-                      <div class="owner-event-sub muted">{t('Jan Kowalski · 13:00', 'Jan Kowalski · 1pm')}</div>
-                    </div>
-                  </div>
-                  <div class="owner-section-label">{t('Przedwczoraj', '2 days ago')}</div>
-                  <div class="owner-event owner-event-3">
-                    <span class="owner-event-dot d-vet"></span>
-                    <div>
-                      <div class="owner-event-title">{t('Weterynarz · szczepienie', 'Vet · vaccination')}</div>
-                      <div class="owner-event-sub muted">{t('dr Nowak · grypa+tężec', 'Dr Nowak · flu + tetanus')}</div>
+                    <div class="checkout-success-banner">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#6FB67A"/><path d="M5 8l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      <div>
+                        <div><strong>{t('Płatność potwierdzona', 'Payment confirmed')}</strong></div>
+                        <div class="text-xs muted">{t('Faktura wysłana na anna@example.com', 'Invoice sent to anna@example.com')}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="owner-callout">
-                💡 {t('Bez SMS-a do Ciebie. Marek wie wszystko sam.', 'Zero SMS to you. Marek knows everything himself.')}
-              </div>
-            </div>
-          )}
+              )}
 
-          {/* SCENE 8: Vet link */}
-          {scene.visual === 'vet' && (
-            <div class="vetwrap">
-              <div class="vet-journal">
-                <div class="vet-journal-head">
-                  <div class="vet-avatar">H</div>
-                  <div>
-                    <div class="font-medium">Halina · KWPN, 2018</div>
-                    <div class="text-xs muted">{t('Pełna historia · 247 wpisów', 'Full history · 247 entries')}</div>
+              {scene.visual === 'owner' && (
+                <div class="owner-portal">
+                  <div class="owner-phone-frame">
+                    <div class="owner-phone-screen">
+                      <div class="owner-phone-status">
+                        <span>9:41</span>
+                        <span>📶 100%</span>
+                      </div>
+                      <div class="owner-portal-greeting">
+                        <div class="owner-portal-hi">{t('Cześć Marek', 'Hi Marek')} 👋</div>
+                        <div class="owner-portal-sub muted">{t('Twoja Halinka czeka na zalogowanie', 'Your Halinka is waiting')}</div>
+                      </div>
+                      <div class="owner-horse-card">
+                        <div class="owner-horse-avatar">H</div>
+                        <div class="owner-horse-info">
+                          <div class="owner-horse-name">Halinka</div>
+                          <div class="owner-horse-status muted">{t('KWPN · 7 lat · Pensjonat boks #4', 'KWPN · 7 years · Boarding box #4')}</div>
+                        </div>
+                        <div class="owner-horse-pulse">
+                          <span class="owner-pulse-dot"></span>
+                        </div>
+                      </div>
+
+                      <div class="owner-section-title">{t('Dziś', 'Today')}</div>
+                      <div class="owner-event">
+                        <span class="owner-event-time">16:00</span>
+                        <div class="owner-event-content">
+                          <div class="owner-event-name">{t('Jazda — Anna K.', 'Ride — Anna K.')}</div>
+                          <div class="owner-event-meta muted">{t('Hala kryta · 60 min', 'Indoor · 60 min')}</div>
+                        </div>
+                        <span class="owner-event-dot d-train"></span>
+                      </div>
+
+                      <div class="owner-section-title">{t('Wczoraj', 'Yesterday')}</div>
+                      <div class="owner-event">
+                        <span class="owner-event-time">13:00</span>
+                        <div class="owner-event-content">
+                          <div class="owner-event-name">{t('Kowal — pełne podk.', 'Farrier — full set')}</div>
+                          <div class="owner-event-meta muted">{t('Jan Kowalski · 280 zł', 'Jan Kowalski · €65')}</div>
+                        </div>
+                        <span class="owner-event-dot d-shoe"></span>
+                      </div>
+
+                      <div class="owner-section-title">{t('Przedwczoraj', '2 days ago')}</div>
+                      <div class="owner-event">
+                        <span class="owner-event-time">09:30</span>
+                        <div class="owner-event-content">
+                          <div class="owner-event-name">{t('Wet — szczepienie', 'Vet — vaccination')}</div>
+                          <div class="owner-event-meta muted">{t('dr Nowak · grypa+tężec', 'Dr Nowak · flu+tetanus')}</div>
+                        </div>
+                        <span class="owner-event-dot d-vet"></span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <ul class="vet-timeline">
-                  <li><span class="dot d-vet"></span><b>{t('Szczepienie', 'Vaccination')}</b><small>· 12.03</small></li>
-                  <li><span class="dot d-train"></span><b>{t('Trening skok', 'Jumping')}</b><small>· 15.03</small></li>
-                  <li><span class="dot d-shoe"></span><b>{t('Kowal', 'Farrier')}</b><small>· 20.03</small></li>
-                  <li><span class="dot d-note"></span><b>{t('Notatka — kulawizna', 'Note — lameness')}</b><small>· 22.03</small></li>
-                  <li class="vet-timeline-new"><span class="dot d-vet"></span><b>{t('Wysłano do wet.', 'Sent to vet')}</b><small>· 22.03</small></li>
-                </ul>
-              </div>
-              <div class="vet-link-toast">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a5 5 0 007 0l4-4a5 5 0 00-7-7l-1 1M14 10a5 5 0 00-7 0l-4 4a5 5 0 007 7l1-1"/></svg>
-                {t('Link wysłany do dr Nowak', 'Link sent to Dr Nowak')}
-              </div>
+              )}
             </div>
-          )}
+          ) : (
+            <!-- Standard app shell -->
+            <div class="app-shell">
+              <!-- Sidebar -->
+              <aside class="app-sidebar">
+                <div class="app-brand">
+                  <span class="app-brand-mark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                      <path d="M5 16 C 5 9, 8 5, 12 5 C 16 5, 19 9, 19 16"/>
+                      <path d="M5 16 C 5 18.5, 6.5 19.5, 8 19.5"/>
+                      <path d="M19 16 C 19 18.5, 17.5 19.5, 16 19.5"/>
+                    </svg>
+                  </span>
+                  <span class="app-brand-name">hovera</span>
+                </div>
+                <nav class="app-nav">
+                  <a class={`app-nav-item ${scene.active === 'dashboard' ? 'is-active' : ''}`}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="4" height="4" rx="1"/><rect x="8" y="2" width="4" height="4" rx="1"/><rect x="2" y="8" width="4" height="4" rx="1"/><rect x="8" y="8" width="4" height="4" rx="1"/></svg>
+                    {navLabels.dashboard}
+                  </a>
+                  <a class={`app-nav-item ${scene.active === 'calendar' ? 'is-active' : ''}`}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="10" height="9" rx="1"/><path d="M2 5h10M5 2v2M9 2v2"/></svg>
+                    {navLabels.calendar}
+                  </a>
+                  <a class={`app-nav-item ${scene.active === 'clients' ? 'is-active' : ''}`}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="5" r="2.2"/><path d="M3 12c0-2.5 1.8-4 4-4s4 1.5 4 4"/></svg>
+                    {navLabels.clients}
+                  </a>
+                  <a class={`app-nav-item ${scene.active === 'horses' ? 'is-active' : ''}`}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11V8c0-2 1.5-4 4-4s4 2 4 4v3M5 11v-2M9 11v-2"/></svg>
+                    {navLabels.horses}
+                  </a>
+                  <a class={`app-nav-item ${scene.active === 'passes' ? 'is-active' : ''}`}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="10" height="8" rx="1"/><path d="M2 6h10"/></svg>
+                    {navLabels.passes}
+                  </a>
+                  <a class={`app-nav-item ${scene.active === 'invoices' ? 'is-active' : ''}`}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 1.5h6l3 3v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-10a1 1 0 011-1zM5 7h4M5 9h4"/></svg>
+                    {navLabels.invoices}
+                  </a>
+                  <a class={`app-nav-item ${scene.active === 'reports' ? 'is-active' : ''}`}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h10M4 12V8M7 12V5M10 12V9"/></svg>
+                    {navLabels.reports}
+                  </a>
+                </nav>
+                <div class="app-user">
+                  <div class="app-user-avatar">A</div>
+                  <div class="app-user-info">
+                    <div class="app-user-name">Anna</div>
+                    <div class="app-user-role muted">Stajnia Halicz</div>
+                  </div>
+                </div>
+              </aside>
 
-          {/* SCENE 9: End of day report */}
-          {scene.visual === 'report' && (
-            <div class="rep">
-              <div class="rep-head">{t('Raport dnia · 6 maja 2026', 'Daily report · 6 May 2026')}</div>
-              <div class="rep-grid">
-                <div class="rep-stat">
-                  <div class="rep-stat-num" data-count="18">0</div>
-                  <div class="rep-stat-label">{t('zaplanowane jazdy', 'planned rides')}</div>
+              <!-- Main content area -->
+              <main class="app-main">
+                <header class="app-topbar">
+                  <div class="app-search">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="5" r="3"/><path d="M7.5 7.5L10 10"/></svg>
+                    <span class="muted">{t('Szukaj klienta, konia, faktury...', 'Search client, horse, invoice...')}</span>
+                  </div>
+                  <div class="app-topbar-actions">
+                    <span class="app-bell">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M11 9.5c-.5-.5-1-1.5-1-3 0-2-1-3.5-3-3.5s-3 1.5-3 3.5c0 1.5-.5 2.5-1 3M3 9.5h8M5.5 11.5a1.5 1.5 0 003 0"/></svg>
+                      <span class="app-bell-dot"></span>
+                    </span>
+                  </div>
+                </header>
+
+                <div class="app-content">
+                  {/* SCENE 1: Dashboard */}
+                  {scene.visual === 'dashboard' && (
+                    <div class="dash">
+                      <div class="dash-greet">
+                        <div class="dash-greet-text">{t('Cześć, Anna 👋', 'Hi, Anna 👋')}</div>
+                        <div class="dash-greet-sub muted">{t('06.05.2026 · 18 jazd · 2 odwołania', '6 May 2026 · 18 rides · 2 cancellations')}</div>
+                      </div>
+                      <div class="dash-grid">
+                        <div class="dash-card" style="--d: 0s">
+                          <div class="dash-card-label muted">{t('Jazdy dziś', 'Rides today')}</div>
+                          <div class="dash-card-num" data-count="18">0</div>
+                          <div class="dash-card-foot text-green">↑ 12% {t('vs śr. tygodnia', 'vs week avg')}</div>
+                        </div>
+                        <div class="dash-card" style="--d: 0.15s">
+                          <div class="dash-card-label muted">{t('Aktywne karnety', 'Active passes')}</div>
+                          <div class="dash-card-num" data-count="84">0</div>
+                          <div class="dash-card-foot muted">{t('12 kończy się w tym tyg.', '12 expire this week')}</div>
+                        </div>
+                        <div class="dash-card" style="--d: 0.3s">
+                          <div class="dash-card-label muted">{t('Obrót dzisiejszy', 'Today revenue')}</div>
+                          <div class="dash-card-num">2&nbsp;400 <span class="text-base">zł</span></div>
+                          <div class="dash-card-foot text-green">↑ 8% {t('vs wczoraj', 'vs yesterday')}</div>
+                        </div>
+                        <div class="dash-card" style="--d: 0.45s">
+                          <div class="dash-card-label muted">{t('Nowy klient', 'New client')}</div>
+                          <div class="dash-card-num">+1</div>
+                          <div class="dash-card-foot muted">Marta K. · {t('zapisała się', 'signed up')}</div>
+                        </div>
+                      </div>
+
+                      <div class="dash-section">
+                        <div class="dash-section-head">
+                          <h3>{t('Najbliższe jazdy', 'Upcoming rides')}</h3>
+                          <span class="muted text-xs">{t('następne 3h', 'next 3h')}</span>
+                        </div>
+                        <div class="dash-list">
+                          <div class="dash-row">
+                            <span class="dash-row-time">16:00</span>
+                            <span class="dash-row-name">Anna K.</span>
+                            <span class="dash-row-horse">Halina</span>
+                            <span class="dash-row-instr muted">{t('inst. Marek', 'Marek')}</span>
+                          </div>
+                          <div class="dash-row">
+                            <span class="dash-row-time">17:00</span>
+                            <span class="dash-row-name">Karolina W.</span>
+                            <span class="dash-row-horse">Bonita</span>
+                            <span class="dash-row-instr muted">{t('inst. Anna', 'Anna')}</span>
+                          </div>
+                          <div class="dash-row">
+                            <span class="dash-row-time">17:30</span>
+                            <span class="dash-row-name">Tomek P.</span>
+                            <span class="dash-row-horse">Atos</span>
+                            <span class="dash-row-instr muted">{t('inst. Marek', 'Marek')}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SCENE 2: Calendar */}
+                  {scene.visual === 'calendar' && (
+                    <div class="cal">
+                      <div class="cal-toolbar">
+                        <div class="cal-toolbar-left">
+                          <span class="cal-week">{t('Tydzień 5–11 maja 2026', 'Week 5–11 May 2026')}</span>
+                          <span class="cal-call-pulse">📞 {t('Klient czeka na termin', 'Client on the line')}</span>
+                        </div>
+                        <div class="cal-toolbar-right">
+                          <span class="cal-pill">{t('Tydzień', 'Week')}</span>
+                          <span class="cal-pill is-active">{t('Dziś', 'Today')}</span>
+                        </div>
+                      </div>
+                      <div class="cal-table">
+                        <div class="cal-head-row">
+                          <span></span>
+                          {['Pn 5','Wt 6','Śr 7','Cz 8','Pt 9','Sb 10','Nd 11'].map((d) => <span class="cal-head-cell">{d}</span>)}
+                        </div>
+                        {[16,17,18,19].map((hour) => (
+                          <div class="cal-time-row">
+                            <span class="cal-time">{hour}:00</span>
+                            {[0,1,2,3,4,5,6].map((day) => {
+                              const free = (day === 4 && hour === 17);
+                              const busy = (day + hour) % 3 === 0;
+                              return (
+                                <span class={`cal-cell ${free ? 'is-free' : ''} ${busy ? 'is-busy' : ''}`}>
+                                  {busy && <span class="cal-cell-event">·</span>}
+                                  {free && <span class="cal-cell-free">✓ {t('wolne', 'free')}</span>}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                      <div class="cal-suggestion">
+                        💡 {t('Pasuje: Pt 9 maja, 17:00 — Halina z instruktorem Markiem', 'Match: Fri 9 May, 5pm — Halina with instructor Marek')}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SCENE 3: Conflict */}
+                  {scene.visual === 'conflict' && (
+                    <div class="conf-scene">
+                      <div class="cal-toolbar">
+                        <span class="cal-week">{t('Środa 7 maja 2026', 'Wednesday 7 May 2026')}</span>
+                      </div>
+                      <div class="conf-grid">
+                        <div class="conf-row">
+                          <span class="conf-time">10:00</span>
+                          <div class="conf-event conf-existing">
+                            <div><strong>Halina</strong> · Anna K.</div>
+                            <div class="text-xs muted">{t('Hala · ujeżdż.', 'Indoor · dressage')}</div>
+                          </div>
+                        </div>
+                        <div class="conf-row">
+                          <span class="conf-time">11:00</span>
+                          <div class="conf-event conf-dragging">
+                            <div><strong>Halina</strong> · Marek W.</div>
+                            <div class="conf-warning">⚠ {t('Konflikt: koń zajęty 10:00–11:00', 'Conflict: horse busy 10–11am')}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="conf-modal">
+                        <div class="conf-modal-icon">⚠</div>
+                        <div class="conf-modal-content">
+                          <div class="conf-modal-title">{t('Halina nie może mieć dwóch jazd o tej samej godzinie', "Halina can't have two rides at the same hour")}</div>
+                          <div class="conf-modal-sub muted">{t('Sugestia: Atos (wolny) lub przesuń jazdę Marka na 12:00', 'Suggestion: Atos (free) or move Marek\'s ride to 12:00')}</div>
+                          <div class="conf-modal-actions">
+                            <span class="conf-modal-btn">{t('Zmień konia: Atos', 'Switch horse: Atos')}</span>
+                            <span class="conf-modal-btn-secondary">{t('Przesuń na 12:00', 'Move to 12:00')}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SCENE 5: Pass auto-deduct */}
+                  {scene.visual === 'pass' && (
+                    <div class="pass-scene">
+                      <div class="pass-toolbar">
+                        <span class="cal-week">{t('Aktywne karnety · 84', 'Active passes · 84')}</span>
+                        <span class="pass-filter">{t('Filtr: Anna Kowalska', 'Filter: Anna Kowalska')}</span>
+                      </div>
+                      <div class="pass-card-big">
+                        <div class="pass-card-head">
+                          <div class="pass-card-name">Anna Kowalska</div>
+                          <div class="pass-card-status">
+                            <span class="pass-pill" data-pass-display>11/12</span>
+                          </div>
+                        </div>
+                        <div class="pass-card-meter"><div class="pass-card-meter-fill" style="--target: 92%"></div></div>
+                        <div class="pass-card-info">
+                          <div class="pass-card-info-row">
+                            <span class="muted">{t('Karnet 12 jazd', '12-ride pass')}</span>
+                            <span>580 zł</span>
+                          </div>
+                          <div class="pass-card-info-row">
+                            <span class="muted">{t('Ważny do', 'Valid until')}</span>
+                            <span>30.06.2026</span>
+                          </div>
+                          <div class="pass-card-info-row">
+                            <span class="muted">{t('Faktura', 'Invoice')}</span>
+                            <span>FV/2026/041 ✓</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="pass-history">
+                        <div class="pass-history-head">{t('Ostatnie aktywności', 'Recent activity')}</div>
+                        <div class="pass-history-row pass-history-new">
+                          <span class="pass-history-time">14:00</span>
+                          <span class="pass-history-action">{t('Jazda zrealizowana — Halina', 'Ride completed — Halina')}</span>
+                          <span class="pass-history-delta text-red">-1</span>
+                        </div>
+                        <div class="pass-history-row">
+                          <span class="pass-history-time">02.05</span>
+                          <span class="pass-history-action">{t('Jazda zrealizowana — Atos', 'Ride completed — Atos')}</span>
+                          <span class="pass-history-delta text-red">-1</span>
+                        </div>
+                        <div class="pass-history-row">
+                          <span class="pass-history-time">28.04</span>
+                          <span class="pass-history-action">{t('Karnet zakupiony', 'Pass purchased')}</span>
+                          <span class="pass-history-delta text-green">+12</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SCENE 6: Invoices */}
+                  {scene.visual === 'invoices' && (
+                    <div class="inv-scene">
+                      <div class="cal-toolbar">
+                        <span class="cal-week">{t('Faktury · maj 2026', 'Invoices · May 2026')}</span>
+                        <span class="cal-pill is-active">{t('Auto-cykliczne', 'Auto-recurring')}</span>
+                      </div>
+                      <div class="inv-table">
+                        <div class="inv-head-row">
+                          <span>{t('Numer', 'Number')}</span>
+                          <span>{t('Klient', 'Client')}</span>
+                          <span>{t('Koń', 'Horse')}</span>
+                          <span>{t('Kwota', 'Amount')}</span>
+                          <span>{t('Status', 'Status')}</span>
+                        </div>
+                        {['041 · Halina · Marek W.', '042 · Atos · Tomek S.', '043 · Bonita · Karolina L.', '044 · Niko · Stefan G.', '045 · Riko · Asia D.', '046 · Misia · Wojtek B.'].map((line, i) => {
+                          const [num, horse, client] = line.split(' · ');
+                          return (
+                            <div class="inv-row" style={`--delay: ${i * 0.12}s`}>
+                              <span class="inv-num">FV/2026/{num}</span>
+                              <span>{client}</span>
+                              <span>{horse}</span>
+                              <span><strong>1 200 zł</strong></span>
+                              <span class="inv-status">
+                                <span class="inv-status-dot"></span>
+                                KSeF ✓
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div class="inv-summary">
+                        {t('30 faktur · 36 000 zł · wszystkie wysłane do KSeF · czas Twojej pracy: 0 min', '30 invoices · €8 600 · all sent to e-invoicing · your time: 0 min')}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SCENE 8: Vet timeline */}
+                  {scene.visual === 'vet' && (
+                    <div class="vet-scene">
+                      <div class="vet-horse-head">
+                        <div class="vet-horse-avatar">H</div>
+                        <div class="vet-horse-info">
+                          <h3>Halina · KWPN, 2018</h3>
+                          <div class="muted text-xs">{t('Pensjonat boks #4 · właściciel: Marek W. · 247 wpisów', 'Boarding box #4 · owner: Marek W. · 247 entries')}</div>
+                        </div>
+                        <button class="vet-share-btn">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="3" cy="7" r="1.5"/><circle cx="11" cy="3" r="1.5"/><circle cx="11" cy="11" r="1.5"/><path d="M4.5 6L9.5 3.5M4.5 8l5 2.5"/></svg>
+                          {t('Wyślij wet.', 'Share with vet')}
+                        </button>
+                      </div>
+                      <ul class="vet-timeline-big">
+                        <li><span class="vet-dot d-vet"></span><div><strong>{t('Szczepienie · grypa+tężec', 'Vaccination · flu+tetanus')}</strong><div class="muted text-xs">12.03.2026 · dr Nowak · partia G42-2026</div></div></li>
+                        <li><span class="vet-dot d-train"></span><div><strong>{t('Trening skok · 95cm', 'Jumping · 95cm')}</strong><div class="muted text-xs">15.03.2026 · 12 skoków · ok</div></div></li>
+                        <li><span class="vet-dot d-shoe"></span><div><strong>{t('Kowal · pełne podk.', 'Farrier · full set')}</strong><div class="muted text-xs">20.03.2026 · Jan Kowalski · 280 zł</div></div></li>
+                        <li><span class="vet-dot d-note"></span><div><strong>{t('Notatka — kulawizna prawy przedni', 'Note — lameness right front')}</strong><div class="muted text-xs">22.03.2026 · stopień 1/5 · obserwacja</div></div></li>
+                        <li class="vet-new"><span class="vet-dot d-vet"></span><div><strong>{t('🔗 Link wysłany do dr Nowak', '🔗 Link sent to Dr Nowak')}</strong><div class="muted text-xs">{t('Pełen dziennik · ważny 7 dni', 'Full journal · valid 7 days')}</div></div></li>
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* SCENE 9: Report */}
+                  {scene.visual === 'report' && (
+                    <div class="rep-scene">
+                      <div class="rep-head">
+                        <h3>{t('Raport dnia · 6 maja 2026', 'Daily report · 6 May 2026')}</h3>
+                        <div class="muted text-xs">{t('Generowany automatycznie · 21:00', 'Auto-generated · 9pm')}</div>
+                      </div>
+                      <div class="rep-grid">
+                        <div class="rep-stat">
+                          <div class="rep-stat-label muted">{t('Zaplanowane', 'Scheduled')}</div>
+                          <div class="rep-stat-num" data-count="18">0</div>
+                        </div>
+                        <div class="rep-stat">
+                          <div class="rep-stat-label muted">{t('Zrealizowane', 'Completed')}</div>
+                          <div class="rep-stat-num" data-count="16">0</div>
+                          <div class="text-green text-xs mt-1">89% {t('frekwencji', 'attendance')}</div>
+                        </div>
+                        <div class="rep-stat">
+                          <div class="rep-stat-label muted">{t('Przychód', 'Revenue')}</div>
+                          <div class="rep-stat-num">2 400 <span class="text-base">zł</span></div>
+                          <div class="text-green text-xs mt-1">↑ 8% {t('vs śr.', 'vs avg')}</div>
+                        </div>
+                        <div class="rep-stat rep-stat-warn">
+                          <div class="rep-stat-label muted">{t('Konie przeciążone', 'Overworked horses')}</div>
+                          <div class="rep-stat-num">1</div>
+                          <div class="text-red text-xs mt-1">Halina · 6h</div>
+                        </div>
+                      </div>
+                      <div class="rep-actions">
+                        <span class="rep-action">{t('💤 Idź spać. Klienci sami zarezerwują jutro.', '💤 Go to sleep. Clients book tomorrow themselves.')}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div class="rep-stat">
-                  <div class="rep-stat-num" data-count="16">0</div>
-                  <div class="rep-stat-label">{t('zrealizowane', 'completed')}</div>
-                </div>
-                <div class="rep-stat">
-                  <div class="rep-stat-num">2 400 <span class="text-base">zł</span></div>
-                  <div class="rep-stat-label">{t('przychód', 'revenue')}</div>
-                </div>
-                <div class="rep-stat rep-stat-warn">
-                  <div class="rep-stat-num">1</div>
-                  <div class="rep-stat-label">{t('koń przeciążony', 'overworked horse')}</div>
-                </div>
-              </div>
-              <div class="rep-note">
-                {t('💤 Idź spać spokojna. Klienci zarezerwują jutrzejsze jazdy sami.', "💤 Sleep easy. Clients book tomorrow's rides themselves.")}
-              </div>
+              </main>
             </div>
           )}
         </div>
@@ -333,8 +551,8 @@ const labels = {
 
   <!-- Dots -->
   <div class="ipt-dots">
-    {scenes.map((_, i) => (
-      <button type="button" class={`ipt-dot ${i === 0 ? 'is-active' : ''}`} data-dot data-index={i} aria-label={`${labels.step} ${i + 1}`}></button>
+    {scenes.map((scene, i) => (
+      <button type="button" class={`ipt-dot ${i === 0 ? 'is-active' : ''}`} data-dot data-index={i} aria-label={scene.eyebrow}></button>
     ))}
   </div>
 </div>
@@ -342,431 +560,401 @@ const labels = {
 <style>
   .ipt {
     width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    background: linear-gradient(180deg, var(--color-cream) 0%, var(--color-sand-light) 100%);
+    background: var(--color-cream);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-warm);
     overflow: hidden;
-    position: relative;
   }
 
-  .ipt-header {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--color-border);
-    background: rgba(255, 255, 255, 0.5);
-  }
-  .ipt-progress {
-    flex: 1;
-    height: 3px;
-    background: var(--color-sand-dark);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .ipt-progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--color-ochre) 0%, var(--color-ochre-dark) 100%);
-    border-radius: 999px;
-    transition: width 0.1s linear;
-  }
+  /* Header */
+  .ipt-header { display: flex; align-items: center; gap: 1.5rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--color-border); background: var(--color-sand-light); }
+  .ipt-progress { flex: 1; height: 3px; background: var(--color-sand-dark); border-radius: 999px; overflow: hidden; }
+  .ipt-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--color-ochre) 0%, var(--color-ochre-dark) 100%); border-radius: 999px; transition: width 0.1s linear; }
   .ipt-controls { display: flex; align-items: center; gap: 0.4rem; }
-  .ipt-btn {
-    width: 32px; height: 32px;
-    border-radius: 999px;
-    background: var(--color-cream);
-    border: 1px solid var(--color-border);
-    color: var(--color-fg);
-    display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-  }
+  .ipt-btn { width: 32px; height: 32px; border-radius: 999px; background: var(--color-cream); border: 1px solid var(--color-border); color: var(--color-fg); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
   .ipt-btn:hover { background: var(--color-bark); color: var(--color-cream); border-color: var(--color-bark); }
   .ipt-btn-play { background: var(--color-bark); color: var(--color-cream); border-color: var(--color-bark); }
   .ipt-btn-play:hover { background: var(--color-bark-700); }
   .ipt-counter { font-size: 12px; font-family: var(--font-mono); color: var(--color-fg-muted); margin-left: 0.4rem; }
   .ipt-counter [data-current] { color: var(--color-fg); font-weight: 600; }
 
-  .ipt-stage {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    background: var(--color-cream);
-  }
-  @media (max-width: 700px) { .ipt-stage { aspect-ratio: 4 / 5; } }
+  /* Stage */
+  .ipt-stage { position: relative; aspect-ratio: 16/10; background: var(--color-sand-light); }
+  @media (max-width: 800px) { .ipt-stage { aspect-ratio: 4/5; } }
 
   .ipt-scene {
-    position: absolute;
-    inset: 0;
-    padding: 2rem;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    gap: 1.25rem;
-    opacity: 0;
-    transform: translateX(20px);
+    position: absolute; inset: 1.5rem;
+    display: grid; grid-template-rows: 1fr auto; gap: 1rem;
+    opacity: 0; transform: translateX(20px);
     transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
     pointer-events: none;
   }
-  .ipt-scene.is-active {
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-  }
+  .ipt-scene.is-active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  @media (max-width: 800px) { .ipt-scene { inset: 0.75rem; } }
 
-  .ipt-canvas {
-    position: relative;
-    border-radius: var(--radius-xl);
+  /* Browser frame */
+  .browser {
     background: white;
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-    padding: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ipt-caption {
-    text-align: center;
-    padding: 0 1rem;
-  }
-  .ipt-caption-text {
-    margin-top: 0.5rem;
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    line-height: 1.4;
-    color: var(--color-fg);
-    font-weight: 500;
-  }
-
-  .ipt-dots {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    padding: 1rem;
-    border-top: 1px solid var(--color-border);
-    background: rgba(255, 255, 255, 0.5);
-  }
-  .ipt-dot {
-    width: 8px; height: 8px;
-    border-radius: 999px;
-    background: var(--color-sand-dark);
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s, width 0.2s;
-    padding: 0;
-  }
-  .ipt-dot:hover { background: var(--color-ochre); }
-  .ipt-dot.is-active { background: var(--color-bark); width: 24px; border-radius: 4px; }
-
-  /* ─────────────────────────── SCENE: Dashboard ─────────────────────────── */
-  .dash { width: 100%; max-width: 600px; }
-  .dash-greeting {
-    font-size: 1.5rem; font-weight: 500; letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-  }
-  .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-  .dash-stat {
-    padding: 1.25rem;
-    background: var(--color-sand-light);
     border-radius: 12px;
-    animation: dashFade 0.6s var(--ease-out-expo) both;
-    animation-delay: var(--d);
+    box-shadow: 0 12px 32px -8px rgba(61,46,34,0.18), 0 4px 8px rgba(61,46,34,0.06);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--color-border);
   }
-  .ipt-scene.is-active .dash-stat { animation-name: dashFade; }
-  .dash-stat-num { font-size: 2rem; font-weight: 500; letter-spacing: -0.04em; line-height: 1; }
-  .dash-stat-label { font-size: 0.8rem; color: var(--color-fg-muted); margin-top: 0.4rem; }
-  @keyframes dashFade {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+  .browser-bar { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #f5efe5; border-bottom: 1px solid var(--color-border); }
+  .browser-dots { display: inline-flex; gap: 6px; }
+  .browser-dots span { width: 10px; height: 10px; border-radius: 999px; background: #d6c9b6; }
+  .browser-dots span:first-child { background: #E07A6A; }
+  .browser-dots span:nth-child(2) { background: #E2C56B; }
+  .browser-dots span:last-child { background: #6FB67A; }
+  .browser-url { flex: 1; display: inline-flex; align-items: center; gap: 6px; background: var(--color-cream); padding: 4px 12px; border-radius: 999px; font-family: var(--font-mono); font-size: 11px; color: var(--color-fg-muted); }
+
+  /* App shell */
+  .app-shell {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    flex: 1;
+    min-height: 0;
+  }
+  @media (max-width: 800px) {
+    .app-shell { grid-template-columns: 60px 1fr; }
   }
 
-  /* ─────────────────────────── SCENE: Calendar ─────────────────────────── */
-  .cal-stage { width: 100%; position: relative; }
-  .cal-phone-icon {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 6px 12px; background: rgba(168,149,107,0.18); border-radius: 999px;
-    font-size: 0.85rem; color: var(--color-bark);
-    margin-bottom: 1rem;
-    animation: phoneWiggle 0.4s ease-in-out;
+  .app-sidebar {
+    background: #fbf6ed;
+    border-right: 1px solid var(--color-border);
+    padding: 16px 12px;
+    display: flex; flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
   }
-  @keyframes phoneWiggle {
-    0%,100% { transform: rotate(0); }
-    25% { transform: rotate(-5deg); }
-    75% { transform: rotate(5deg); }
+  .app-brand { display: flex; align-items: center; gap: 8px; padding: 4px; }
+  .app-brand-mark {
+    width: 28px; height: 28px;
+    background: var(--color-bark); color: var(--color-cream);
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
   }
-  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-  .cal-day-name { font-size: 11px; text-align: center; color: var(--color-fg-muted); margin-bottom: 4px; font-weight: 500; }
-  .cal-slots { display: flex; flex-direction: column; gap: 4px; }
-  .cal-slot {
-    height: 14px;
+  .app-brand-mark svg { width: 18px; height: 18px; }
+  .app-brand-name { font-weight: 500; letter-spacing: -0.02em; font-size: 1.05rem; }
+  @media (max-width: 800px) { .app-brand-name { display: none; } }
+
+  .app-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; margin-top: 8px; }
+  .app-nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    cursor: default;
+    transition: background 0.15s;
+  }
+  .app-nav-item.is-active { background: var(--color-bark); color: var(--color-cream); font-weight: 500; }
+  @media (max-width: 800px) { .app-nav-item { justify-content: center; } .app-nav-item span:not(svg) { display: none; } }
+  @media (max-width: 800px) { .app-nav-item:not(.is-active) { padding: 7px 0; } .app-nav-item:has(+ svg) { padding: 7px 0; } }
+
+  .app-user { display: flex; gap: 8px; align-items: center; padding: 8px; border-top: 1px solid var(--color-border); }
+  .app-user-avatar { width: 28px; height: 28px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; }
+  .app-user-info { flex: 1; min-width: 0; }
+  .app-user-name { font-size: 12px; font-weight: 500; }
+  .app-user-role { font-size: 10px; line-height: 1.2; }
+  @media (max-width: 800px) { .app-user-info { display: none; } }
+
+  .app-main { display: flex; flex-direction: column; min-width: 0; }
+  .app-topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--color-border);
+    background: white;
+  }
+  .app-search {
+    flex: 1; display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
     background: var(--color-sand-light);
-    border-radius: 3px;
+    border-radius: 6px;
+    color: var(--color-fg-muted);
+    font-size: 12px;
   }
-  .cal-slot.is-busy { background: var(--color-sand-dark); }
-  .cal-slot.is-free {
-    background: linear-gradient(90deg, #6FB67A, #5da06a);
-    animation: slotPulse 1.2s ease-in-out infinite;
+  .app-search svg { color: var(--color-fg-muted); flex-shrink: 0; }
+  .app-bell { position: relative; cursor: default; }
+  .app-bell-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; border-radius: 999px; background: #B14848; border: 2px solid white; }
+
+  .app-content { flex: 1; padding: 18px; overflow: auto; }
+
+  /* ─────── DASHBOARD ─────── */
+  .dash-greet { margin-bottom: 16px; }
+  .dash-greet-text { font-size: 1.4rem; font-weight: 500; letter-spacing: -0.02em; }
+  .dash-greet-sub { font-size: 12px; margin-top: 2px; }
+  .dash-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 800px) { .dash-grid { grid-template-columns: repeat(2, 1fr); } }
+  .dash-card {
+    padding: 14px; background: var(--color-sand-light);
+    border: 1px solid var(--color-border); border-radius: 10px;
+    animation: fadeUp 0.5s var(--ease-out-expo) var(--d) backwards;
   }
-  @keyframes slotPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(111,182,122,0.5); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .dash-card-label { font-size: 11px; }
+  .dash-card-num { font-size: 1.6rem; font-weight: 500; letter-spacing: -0.04em; line-height: 1.1; margin-top: 4px; }
+  .dash-card-foot { font-size: 11px; margin-top: 4px; }
+
+  .dash-section { margin-top: 18px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; }
+  .dash-section-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--color-border); }
+  .dash-section h3 { font-size: 13px; font-weight: 500; }
+  .dash-list { display: flex; flex-direction: column; }
+  .dash-row { display: grid; grid-template-columns: 60px 1fr 1fr 1fr; gap: 12px; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--color-border); }
+  .dash-row:last-child { border-bottom: none; }
+  .dash-row-time { font-family: var(--font-mono); color: var(--color-fg-muted); }
+  .dash-row-name { font-weight: 500; }
+
+  /* ─────── CALENDAR / CONFLICT ─────── */
+  .cal-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 8px; flex-wrap: wrap; }
+  .cal-toolbar-left { display: inline-flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .cal-week { font-weight: 500; }
+  .cal-call-pulse {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px;
+    background: rgba(168,149,107,0.18);
+    border-radius: 999px;
+    font-size: 11px;
+    animation: callPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes callPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(168,149,107,0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(168,149,107,0); }
+  }
+  .cal-pill { padding: 4px 10px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 999px; font-size: 11px; }
+  .cal-pill.is-active { background: var(--color-bark); color: var(--color-cream); border-color: var(--color-bark); }
+
+  .cal-table {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+  }
+  .cal-head-row, .cal-time-row {
+    display: grid;
+    grid-template-columns: 50px repeat(7, 1fr);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .cal-time-row:last-child { border-bottom: none; }
+  .cal-head-cell { padding: 8px 4px; font-size: 11px; text-align: center; color: var(--color-fg-muted); background: var(--color-sand-light); }
+  .cal-head-cell:not(:last-child) { border-right: 1px solid var(--color-border); }
+  .cal-time { padding: 8px 4px; font-family: var(--font-mono); font-size: 10px; color: var(--color-fg-muted); text-align: center; background: var(--color-sand-light); border-right: 1px solid var(--color-border); }
+  .cal-cell {
+    padding: 6px 4px;
+    border-right: 1px solid var(--color-border);
+    min-height: 28px;
+    position: relative;
+  }
+  .cal-cell:last-child { border-right: none; }
+  .cal-cell.is-busy { background: var(--color-sand-light); }
+  .cal-cell.is-busy::before { content: ""; display: block; position: absolute; inset: 4px; background: var(--color-ochre); border-radius: 3px; opacity: 0.5; }
+  .cal-cell.is-free::before { content: ""; display: block; position: absolute; inset: 4px; background: rgba(111,182,122,0.5); border: 1.5px solid #6FB67A; border-radius: 3px; animation: cellPulse 1.2s ease-in-out infinite; }
+  @keyframes cellPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(111,182,122,0.5); }
     50% { box-shadow: 0 0 0 4px rgba(111,182,122,0); }
   }
-  .cal-callout {
-    margin-top: 1rem;
-    display: inline-block;
-    padding: 8px 14px;
-    background: var(--color-bark); color: var(--color-cream);
-    border-radius: 999px; font-size: 0.9rem; font-weight: 500;
-    animation: calloutIn 0.5s var(--ease-out-expo) 0.6s backwards;
-  }
-  @keyframes calloutIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* ─────────────────────────── SCENE: Conflict ─────────────────────────── */
-  .conf { width: 100%; max-width: 500px; }
-  .conf-grid { display: flex; flex-direction: column; gap: 8px; }
-  .conf-row { display: flex; gap: 12px; align-items: center; font-size: 0.9rem; }
-  .conf-time { font-family: var(--font-mono); width: 50px; color: var(--color-fg-muted); flex-shrink: 0; }
-  .conf-event { flex: 1; padding: 10px 14px; border-radius: 8px; background: var(--color-sand-light); }
-  .conf-existing { background: var(--color-ochre-light); color: var(--color-bark); }
-  .conf-dragging {
-    background: rgba(177,72,72,0.12);
-    border: 2px solid #B14848;
-    color: #B14848;
-    position: relative;
-    animation: confShake 0.5s ease-in-out 0.6s;
-  }
-  @keyframes confShake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-4px); }
-    75% { transform: translateX(4px); }
-  }
-  .conf-warning { display: block; font-size: 0.75rem; margin-top: 4px; font-weight: 500; }
-  .conf-empty { color: var(--color-fg-muted); font-style: italic; }
-  .conf-suggest {
-    margin-top: 1rem;
-    padding: 10px 14px;
+  .cal-cell-free { position: relative; z-index: 1; font-size: 9px; color: #2c5530; font-weight: 600; }
+  .cal-suggestion {
+    margin-top: 14px; padding: 10px 14px;
     background: rgba(111,182,122,0.16);
-    border-radius: 8px; font-size: 0.85rem;
-    animation: calloutIn 0.5s var(--ease-out-expo) 1s backwards;
+    border-radius: 8px; font-size: 12px;
+    animation: fadeUp 0.5s var(--ease-out-expo) 0.6s backwards;
   }
 
-  /* ─────────────────────────── SCENE: Checkout ─────────────────────────── */
-  .checkout { width: 100%; max-width: 360px; }
-  .checkout-card {
-    background: var(--color-cream); border: 1px solid var(--color-border);
-    border-radius: 14px; overflow: hidden;
-    animation: dashFade 0.6s var(--ease-out-expo) both;
-  }
-  .checkout-head { padding: 10px 16px; border-bottom: 1px solid var(--color-border); background: var(--color-sand-light); }
-  .checkout-stable { font-size: 11px; color: var(--color-fg-muted); font-family: var(--font-mono); }
-  .checkout-product { padding: 16px; display: flex; justify-content: space-between; align-items: baseline; }
-  .checkout-name { font-weight: 500; }
-  .checkout-price { font-size: 1.4rem; font-weight: 500; letter-spacing: -0.02em; }
-  .checkout-method { padding: 0 16px 16px; }
-  .checkout-blik {
-    display: inline-block; padding: 6px 12px; background: #C5286F; color: white;
-    border-radius: 6px; font-weight: 700; font-size: 11px; letter-spacing: 0.1em;
-  }
-  .checkout-blik-code {
-    display: block; margin-top: 12px; font-family: var(--font-mono); font-size: 1.25rem;
-    letter-spacing: 0.2em; padding: 12px; background: var(--color-sand-light); border-radius: 8px; text-align: center;
-    animation: blikType 1.4s steps(6) 0.4s backwards;
-  }
-  @keyframes blikType { from { opacity: 0; } to { opacity: 1; } }
-  .checkout-success {
-    padding: 12px 16px; background: rgba(111,182,122,0.16);
-    color: #2c5530; font-weight: 500; font-size: 0.9rem;
-    display: flex; align-items: center; gap: 8px;
-    animation: calloutIn 0.5s var(--ease-out-expo) 1.6s backwards;
-  }
+  /* ─────── CONFLICT ─────── */
+  .conf-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .conf-row { display: flex; gap: 12px; align-items: stretch; font-size: 12px; }
+  .conf-time { font-family: var(--font-mono); width: 50px; padding-top: 10px; color: var(--color-fg-muted); flex-shrink: 0; }
+  .conf-event { flex: 1; padding: 10px 14px; border-radius: 8px; }
+  .conf-existing { background: var(--color-ochre-light); color: var(--color-bark); }
+  .conf-dragging { background: rgba(177,72,72,0.12); border: 2px solid #B14848; color: #B14848; animation: confShake 0.5s ease-in-out 0.4s; }
+  @keyframes confShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+  .conf-warning { font-size: 10px; margin-top: 4px; font-weight: 500; }
 
-  /* ─────────────────────────── SCENE: Pass ─────────────────────────── */
-  .passwrap { width: 100%; max-width: 380px; }
-  .passwrap-card { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; padding: 18px; }
-  .passwrap-header { display: flex; justify-content: space-between; align-items: center; }
-  .passwrap-pill { padding: 4px 10px; background: var(--color-bark); color: var(--color-cream); border-radius: 999px; font-size: 0.85rem; font-weight: 500; }
-  .passwrap-meter { margin-top: 14px; height: 8px; background: var(--color-sand-light); border-radius: 999px; overflow: hidden; }
-  .passwrap-meter-fill {
-    height: 100%; width: 100%; background: linear-gradient(90deg, var(--color-ochre) 0%, var(--color-ochre-dark) 100%);
-    border-radius: 999px;
-    transition: width 1s var(--ease-out-expo);
-  }
-  .ipt-scene.is-active .passwrap-meter-fill { animation: meterShrink 1.2s var(--ease-out-expo) both; }
-  @keyframes meterShrink {
-    0% { width: 100%; }
-    100% { width: var(--target); }
-  }
-  .passwrap-foot { font-size: 0.8rem; margin-top: 10px; }
-  .passwrap-event {
-    margin-top: 16px;
-    padding: 10px 14px;
-    background: rgba(168,149,107,0.12);
-    border-radius: 8px;
-    font-size: 0.85rem;
-    display: inline-flex; align-items: center; gap: 8px;
-    animation: calloutIn 0.5s var(--ease-out-expo) 0.4s backwards;
-  }
-  .passwrap-event-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--color-ochre); }
-
-  /* ─────────────────────────── SCENE: Invoices ─────────────────────────── */
-  .invs { width: 100%; max-width: 480px; position: relative; }
-  .invs-stack { position: relative; height: 180px; }
-  .invs-card {
-    position: absolute;
-    width: 100%;
-    background: var(--color-cream);
-    border: 1px solid var(--color-border);
+  .conf-modal {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px;
+    background: white;
+    border: 2px solid #B14848;
     border-radius: 10px;
-    padding: 10px 14px;
-    box-shadow: 0 4px 8px rgba(61,46,34,0.08);
-    transform: translateY(calc(var(--i) * 6px));
-    opacity: 0;
-    animation: invsAppear 0.5s var(--ease-out-expo) var(--delay) both;
+    box-shadow: 0 8px 24px rgba(177,72,72,0.15);
+    animation: fadeUp 0.4s var(--ease-out-expo) 0.8s backwards;
   }
-  @keyframes invsAppear {
-    from { opacity: 0; transform: translateY(calc(var(--i) * 6px - 12px)); }
-    to { opacity: 1; transform: translateY(calc(var(--i) * 6px)); }
+  .conf-modal-icon { font-size: 20px; }
+  .conf-modal-content { flex: 1; }
+  .conf-modal-title { font-weight: 500; font-size: 13px; }
+  .conf-modal-sub { font-size: 11px; margin-top: 2px; }
+  .conf-modal-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .conf-modal-btn { padding: 6px 12px; background: var(--color-bark); color: var(--color-cream); border-radius: 6px; font-size: 11px; font-weight: 500; }
+  .conf-modal-btn-secondary { padding: 6px 12px; background: var(--color-cream); border: 1px solid var(--color-border); color: var(--color-fg); border-radius: 6px; font-size: 11px; }
+
+  /* ─────── CHECKOUT (public stable page) ─────── */
+  .app-special { flex: 1; padding: 20px; overflow: auto; background: var(--color-sand-light); }
+  .checkout-page { max-width: 480px; margin: 0 auto; background: white; border-radius: 12px; padding: 20px; border: 1px solid var(--color-border); }
+  .checkout-header { padding-bottom: 14px; border-bottom: 1px solid var(--color-border); }
+  .checkout-stable-name { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; }
+  .checkout-stable-meta { font-size: 11px; color: var(--color-fg-muted); margin-top: 4px; }
+  .checkout-products { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .checkout-product {
+    padding: 12px 14px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 8px;
+    display: flex; justify-content: space-between; align-items: center;
   }
-  .invs-num { font-size: 11px; color: var(--color-fg-muted); font-family: var(--font-mono); }
-  .invs-row { display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.95rem; font-weight: 500; }
-  .invs-stamp {
-    display: inline-block; margin-top: 4px; padding: 2px 8px;
-    background: var(--color-bark); color: var(--color-cream);
-    border-radius: 4px; font-size: 10px; font-weight: 600;
+  .checkout-product-active { background: var(--color-bark); color: var(--color-cream); border-color: var(--color-bark); animation: fadeUp 0.4s var(--ease-out-expo) backwards; }
+  .checkout-product-active .muted, .checkout-product-active .checkout-product-desc { color: rgba(250,248,244,0.7); }
+  .checkout-product-name { font-weight: 500; font-size: 13px; }
+  .checkout-product-desc { font-size: 11px; }
+  .checkout-product-price { font-size: 1rem; font-weight: 500; }
+
+  .checkout-payment { margin-top: 14px; }
+  .checkout-blik-row { display: flex; gap: 10px; align-items: center; padding: 12px 14px; background: var(--color-sand-light); border-radius: 8px; }
+  .checkout-blik-badge { padding: 4px 10px; background: #C5286F; color: white; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; flex-shrink: 0; }
+  .checkout-blik-code {
+    font-family: var(--font-mono); font-size: 1.1rem; letter-spacing: 0.2em;
+    flex: 1; text-align: center;
   }
-  .invs-meta {
-    text-align: center; margin-top: 200px; padding: 10px 14px;
+  .checkout-blik-code span { animation: blikDigit 1.5s ease-in-out infinite; }
+  .checkout-blik-code span:nth-child(1) { animation-delay: 0.2s; }
+  .checkout-blik-code span:nth-child(2) { animation-delay: 0.4s; }
+  .checkout-blik-code span:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes blikDigit { 0%, 100% { color: var(--color-fg); } 50% { color: var(--color-ochre-dark); } }
+  .checkout-success-banner {
+    margin-top: 12px; padding: 10px 14px;
     background: rgba(111,182,122,0.16); color: #2c5530;
-    border-radius: 999px; font-size: 0.9rem; font-weight: 500;
-    display: inline-block;
-    animation: calloutIn 0.5s var(--ease-out-expo) 1.2s backwards;
-  }
-
-  /* ─────────────────────────── SCENE: Owner portal ─────────────────────────── */
-  .ownerwrap { display: flex; align-items: center; gap: 1.5rem; }
-  .owner-phone {
-    width: 220px; aspect-ratio: 9/19;
-    background: var(--color-bark); border-radius: 26px; padding: 6px;
-    box-shadow: var(--shadow-warm);
-    flex-shrink: 0;
-  }
-  .owner-screen {
-    width: 100%; height: 100%;
-    background: var(--color-cream);
-    border-radius: 22px;
-    padding: 18px 12px;
-    overflow: hidden;
-  }
-  .owner-status { display: flex; justify-content: space-between; font-size: 9px; font-weight: 600; }
-  .owner-greeting { font-size: 1rem; font-weight: 500; margin-top: 14px; }
-  .owner-horse {
-    margin-top: 10px; padding: 10px;
-    background: var(--color-sand-light); border-radius: 10px;
+    border-radius: 8px;
     display: flex; gap: 10px; align-items: center;
+    font-size: 12px;
+    animation: fadeUp 0.5s var(--ease-out-expo) 1.4s backwards;
   }
-  .owner-horse-avatar {
-    width: 28px; height: 28px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream);
-    display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 0.8rem;
-  }
-  .owner-horse-name { font-weight: 500; font-size: 0.85rem; }
-  .owner-horse-sub { font-size: 0.65rem; color: var(--color-fg-muted); }
 
-  .owner-section-label {
-    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.18em;
-    color: var(--color-fg-muted); margin-top: 12px; margin-bottom: 4px; font-weight: 500;
+  /* ─────── PASS scene ─────── */
+  .pass-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .pass-filter { font-size: 11px; padding: 4px 10px; background: var(--color-sand-light); border-radius: 999px; color: var(--color-fg-muted); }
+  .pass-card-big { padding: 18px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 10px; }
+  .pass-card-head { display: flex; justify-content: space-between; align-items: center; }
+  .pass-card-name { font-weight: 500; font-size: 14px; }
+  .pass-pill { padding: 4px 10px; background: var(--color-bark); color: var(--color-cream); border-radius: 999px; font-size: 11px; font-weight: 500; }
+  .pass-card-meter { margin-top: 12px; height: 6px; background: var(--color-sand-light); border-radius: 999px; overflow: hidden; }
+  .pass-card-meter-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--color-ochre) 0%, var(--color-ochre-dark) 100%); border-radius: 999px; }
+  .ipt-scene.is-active .pass-card-meter-fill { animation: meterShrink 1.2s var(--ease-out-expo) both; }
+  @keyframes meterShrink { 0% { width: 100%; } 100% { width: var(--target); } }
+  .pass-card-info { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .pass-card-info-row { display: flex; justify-content: space-between; font-size: 12px; }
+
+  .pass-history { margin-top: 14px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; }
+  .pass-history-head { padding: 10px 14px; font-size: 11px; font-weight: 500; color: var(--color-fg-muted); border-bottom: 1px solid var(--color-border); }
+  .pass-history-row { display: grid; grid-template-columns: 60px 1fr auto; gap: 12px; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--color-border); align-items: center; }
+  .pass-history-row:last-child { border-bottom: none; }
+  .pass-history-time { font-family: var(--font-mono); font-size: 11px; color: var(--color-fg-muted); }
+  .pass-history-delta { font-weight: 600; }
+  .pass-history-new { background: rgba(168,149,107,0.08); animation: fadeUp 0.5s var(--ease-out-expo) 0.4s backwards; }
+  .text-red { color: #B14848; }
+  .text-green { color: #2c5530; }
+
+  /* ─────── INVOICES ─────── */
+  .inv-table { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; }
+  .inv-head-row { display: grid; grid-template-columns: 1.4fr 1.4fr 1fr 1fr 1fr; padding: 10px 14px; background: var(--color-sand-light); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-fg-muted); font-weight: 500; }
+  .inv-row {
+    display: grid; grid-template-columns: 1.4fr 1.4fr 1fr 1fr 1fr;
+    padding: 10px 14px;
+    font-size: 12px;
+    border-top: 1px solid var(--color-border);
+    align-items: center;
+    animation: invSlide 0.4s var(--ease-out-expo) var(--delay) backwards;
   }
-  .owner-event {
-    display: flex; gap: 8px; align-items: flex-start;
-    padding: 6px 8px;
-    background: white; border-radius: 8px;
-    border: 1px solid var(--color-border);
-    animation: ownerSlide 0.4s var(--ease-out-expo) both;
+  @keyframes invSlide { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+  .inv-num { font-family: var(--font-mono); font-size: 10px; color: var(--color-fg-muted); }
+  .inv-status { display: inline-flex; gap: 4px; align-items: center; font-size: 11px; color: #2c5530; }
+  .inv-status-dot { width: 6px; height: 6px; border-radius: 999px; background: #6FB67A; }
+  .inv-summary { margin-top: 14px; padding: 10px 14px; background: rgba(111,182,122,0.16); color: #2c5530; border-radius: 8px; font-size: 12px; font-weight: 500; text-align: center; }
+
+  /* ─────── OWNER PORTAL ─────── */
+  .owner-portal { display: flex; align-items: center; justify-content: center; height: 100%; }
+  .owner-phone-frame {
+    width: 280px; aspect-ratio: 9/19;
+    background: #1a1a1a; padding: 8px;
+    border-radius: 32px;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.18);
   }
-  .owner-event-1 { animation-delay: 0.4s; }
-  .owner-event-2 { animation-delay: 0.7s; }
-  .owner-event-3 { animation-delay: 1.0s; }
-  @keyframes ownerSlide {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  .owner-event-dot { width: 8px; height: 8px; border-radius: 999px; margin-top: 4px; flex-shrink: 0; }
+  .owner-phone-screen { width: 100%; height: 100%; background: var(--color-cream); border-radius: 26px; padding: 18px 14px; overflow: hidden; }
+  .owner-phone-status { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: var(--color-fg); }
+  .owner-portal-greeting { margin-top: 18px; }
+  .owner-portal-hi { font-size: 1.15rem; font-weight: 500; letter-spacing: -0.02em; }
+  .owner-portal-sub { font-size: 11px; }
+  .owner-horse-card { margin-top: 14px; padding: 12px; background: white; border-radius: 12px; display: flex; gap: 10px; align-items: center; box-shadow: 0 2px 6px rgba(61,46,34,0.08); }
+  .owner-horse-avatar { width: 36px; height: 36px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; }
+  .owner-horse-name { font-weight: 500; font-size: 14px; }
+  .owner-horse-status { font-size: 10px; line-height: 1.3; margin-top: 2px; }
+  .owner-horse-pulse { margin-left: auto; }
+  .owner-pulse-dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: #6FB67A; animation: pulseDot 2s infinite; }
+  @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(111,182,122,0.6); } 100% { box-shadow: 0 0 0 6px rgba(111,182,122,0); } }
+
+  .owner-section-title { margin-top: 12px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--color-fg-muted); font-weight: 500; }
+  .owner-event { margin-top: 6px; padding: 9px 10px; background: white; border-radius: 8px; display: flex; gap: 8px; align-items: center; box-shadow: 0 1px 3px rgba(61,46,34,0.06); animation: ownerSlide 0.4s var(--ease-out-expo) both; }
+  .ipt-scene.is-active .owner-event:nth-of-type(1) { animation-delay: 0.4s; }
+  .ipt-scene.is-active .owner-event:nth-of-type(2) { animation-delay: 0.6s; }
+  .ipt-scene.is-active .owner-event:nth-of-type(3) { animation-delay: 0.8s; }
+  @keyframes ownerSlide { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+  .owner-event-time { font-family: var(--font-mono); font-size: 9px; color: var(--color-fg-muted); flex-shrink: 0; min-width: 32px; }
+  .owner-event-content { flex: 1; min-width: 0; }
+  .owner-event-name { font-size: 11px; font-weight: 500; line-height: 1.2; }
+  .owner-event-meta { font-size: 9px; line-height: 1.3; margin-top: 1px; }
+  .owner-event-dot { width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; }
   .owner-event-dot.d-train { background: var(--color-ochre); }
   .owner-event-dot.d-shoe { background: var(--color-bark); }
   .owner-event-dot.d-vet { background: #6FB67A; }
-  .owner-event-title { font-size: 0.7rem; font-weight: 500; line-height: 1.2; }
-  .owner-event-sub { font-size: 0.6rem; line-height: 1.3; margin-top: 2px; }
 
-  .owner-callout {
-    flex: 1;
-    padding: 14px 18px;
-    background: rgba(111,182,122,0.16);
-    border-radius: 12px;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    animation: calloutIn 0.5s var(--ease-out-expo) 1.4s backwards;
-    max-width: 280px;
-  }
-  @media (max-width: 700px) {
-    .ownerwrap { flex-direction: column; }
-    .owner-phone { width: 180px; }
-    .owner-callout { font-size: 0.85rem; }
-  }
+  /* ─────── VET ─────── */
+  .vet-horse-head { display: flex; gap: 12px; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--color-border); margin-bottom: 14px; }
+  .vet-horse-avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; }
+  .vet-horse-info { flex: 1; }
+  .vet-horse-info h3 { font-size: 14px; font-weight: 500; }
+  .vet-share-btn { display: inline-flex; gap: 6px; align-items: center; padding: 6px 12px; background: var(--color-bark); color: var(--color-cream); border: none; border-radius: 6px; font-size: 11px; font-weight: 500; cursor: default; }
 
-  /* ─────────────────────────── SCENE: Vet ─────────────────────────── */
-  .vetwrap { display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 520px; }
-  .vet-journal { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; padding: 18px; width: 100%; }
-  .vet-journal-head { display: flex; gap: 10px; align-items: center; }
-  .vet-avatar { width: 36px; height: 36px; border-radius: 999px; background: var(--color-ochre); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; }
-  .vet-timeline { list-style: none; padding: 12px 0 0 24px; margin: 0; position: relative; display: flex; flex-direction: column; gap: 10px; }
-  .vet-timeline::before { content: ""; position: absolute; left: 8px; top: 16px; bottom: 4px; width: 2px; background: var(--color-border); }
-  .vet-timeline li { position: relative; display: flex; gap: 6px; align-items: baseline; font-size: 0.85rem; }
-  .vet-timeline .dot { position: absolute; left: -19px; top: 4px; width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--color-cream); }
-  .d-vet { background: #6FB67A; }
-  .d-train { background: var(--color-ochre); }
-  .d-shoe { background: var(--color-bark); }
-  .d-note { background: #B14848; }
-  .vet-timeline small { color: var(--color-fg-muted); margin-left: 4px; font-size: 0.75rem; }
-  .vet-timeline-new {
-    animation: vetGrow 0.5s var(--ease-out-expo) 0.8s backwards;
-  }
-  .vet-timeline-new b { color: var(--color-ochre-dark); }
+  .vet-timeline-big { list-style: none; padding: 0 0 0 24px; margin: 0; position: relative; display: flex; flex-direction: column; gap: 14px; }
+  .vet-timeline-big::before { content: ""; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--color-border); }
+  .vet-timeline-big li { position: relative; }
+  .vet-timeline-big .vet-dot { position: absolute; left: -19px; top: 4px; width: 12px; height: 12px; border-radius: 999px; border: 2px solid var(--color-cream); }
+  .vet-timeline-big .d-vet { background: #6FB67A; }
+  .vet-timeline-big .d-train { background: var(--color-ochre); }
+  .vet-timeline-big .d-shoe { background: var(--color-bark); }
+  .vet-timeline-big .d-note { background: #B14848; }
+  .vet-new { animation: vetGrow 0.5s var(--ease-out-expo) 0.6s backwards; }
+  .vet-new strong { color: var(--color-ochre-dark); }
   @keyframes vetGrow { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
-  .vet-link-toast {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 16px;
-    background: var(--color-bark); color: var(--color-cream);
-    border-radius: 999px;
-    font-size: 0.9rem; font-weight: 500;
-    animation: calloutIn 0.5s var(--ease-out-expo) 1.4s backwards;
-  }
 
-  /* ─────────────────────────── SCENE: Report ─────────────────────────── */
-  .rep { width: 100%; max-width: 520px; text-align: center; }
-  .rep-head { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.25rem; }
-  .rep-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .rep-stat {
-    padding: 1rem;
-    background: var(--color-sand-light);
-    border-radius: 12px;
-    animation: dashFade 0.5s var(--ease-out-expo) both;
-  }
-  .rep-stat:nth-child(1) { animation-delay: 0s; }
-  .rep-stat:nth-child(2) { animation-delay: 0.15s; }
-  .rep-stat:nth-child(3) { animation-delay: 0.3s; }
-  .rep-stat:nth-child(4) { animation-delay: 0.45s; }
-  .rep-stat-num { font-size: 1.75rem; font-weight: 500; letter-spacing: -0.04em; line-height: 1; }
-  .rep-stat-label { font-size: 0.75rem; color: var(--color-fg-muted); margin-top: 0.4rem; }
-  .rep-stat-warn { background: rgba(177,72,72,0.12); }
+  /* ─────── REPORT ─────── */
+  .rep-head { padding-bottom: 14px; border-bottom: 1px solid var(--color-border); margin-bottom: 14px; }
+  .rep-head h3 { font-size: 1rem; font-weight: 500; }
+  .rep-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 800px) { .rep-grid { grid-template-columns: repeat(2, 1fr); } }
+  .rep-stat { padding: 14px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 10px; animation: fadeUp 0.5s var(--ease-out-expo) backwards; }
+  .ipt-scene.is-active .rep-stat:nth-child(1) { animation-delay: 0s; }
+  .ipt-scene.is-active .rep-stat:nth-child(2) { animation-delay: 0.15s; }
+  .ipt-scene.is-active .rep-stat:nth-child(3) { animation-delay: 0.3s; }
+  .ipt-scene.is-active .rep-stat:nth-child(4) { animation-delay: 0.45s; }
+  .rep-stat-label { font-size: 10px; }
+  .rep-stat-num { font-size: 1.5rem; font-weight: 500; letter-spacing: -0.04em; line-height: 1.1; margin-top: 4px; }
+  .rep-stat-warn { background: rgba(177,72,72,0.08); border-color: rgba(177,72,72,0.3); }
   .rep-stat-warn .rep-stat-num { color: #B14848; }
-  .rep-note {
-    margin-top: 1rem;
-    font-size: 0.95rem;
-    color: var(--color-fg-muted);
-    animation: calloutIn 0.5s var(--ease-out-expo) 0.8s backwards;
-  }
+  .rep-actions { margin-top: 16px; }
+  .rep-action { display: inline-block; padding: 10px 16px; background: rgba(111,182,122,0.16); color: #2c5530; border-radius: 8px; font-size: 12px; font-weight: 500; animation: fadeUp 0.5s var(--ease-out-expo) 0.8s backwards; }
+
+  /* ─────── Caption + Dots ─────── */
+  .ipt-caption { text-align: center; padding: 0 1rem; }
+  .ipt-caption-text { margin-top: 0.5rem; font-size: clamp(1rem, 1.6vw, 1.15rem); line-height: 1.4; color: var(--color-fg); font-weight: 500; }
+  .ipt-caption .eyebrow { font-size: 10px; }
+
+  .ipt-dots { display: flex; justify-content: center; gap: 6px; padding: 14px; border-top: 1px solid var(--color-border); background: var(--color-sand-light); }
+  .ipt-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--color-sand-dark); border: none; cursor: pointer; transition: all 0.2s; padding: 0; }
+  .ipt-dot:hover { background: var(--color-ochre); }
+  .ipt-dot.is-active { background: var(--color-bark); width: 24px; border-radius: 4px; }
+
+  .text-base { font-size: 1rem; font-weight: 400; }
+  .text-xs { font-size: 11px; }
+  .mt-1 { margin-top: 0.25rem; }
 </style>
 
 <script>
@@ -787,11 +975,9 @@ const labels = {
 
     let current = 0;
     let isPlaying = true;
-    let frameId: number | null = null;
     let sceneStartedAt = 0;
-    const SCENE_DURATION = 6000; // 6 seconds per scene
+    const SCENE_DURATION = 7000;
 
-    // Animate counters in the active scene
     function animateCounters() {
       const activeScene = sceneEls[current];
       if (!activeScene) return;
@@ -799,21 +985,19 @@ const labels = {
         const target = Number(el.dataset.count || 0);
         const startedAt = performance.now();
         const duration = 800;
-        const initial = 0;
         const step = (now: number) => {
           const t = Math.min(1, (now - startedAt) / duration);
           const eased = 1 - Math.pow(1 - t, 3);
-          el.textContent = Math.round(initial + (target - initial) * eased).toString();
+          el.textContent = Math.round(target * eased).toString();
           if (t < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
       });
 
-      // Pass scene: counter ticking down
-      const passNum = activeScene.querySelector<HTMLElement>('[data-pass-num]');
-      if (passNum) {
-        passNum.textContent = '12';
-        setTimeout(() => { passNum.textContent = '11'; }, 1100);
+      const passDisplay = activeScene.querySelector<HTMLElement>('[data-pass-display]');
+      if (passDisplay) {
+        passDisplay.textContent = '12/12';
+        setTimeout(() => { passDisplay.textContent = '11/12'; }, 1100);
       }
     }
 
@@ -828,7 +1012,7 @@ const labels = {
 
     function tick() {
       if (!isPlaying || !progressBar) {
-        frameId = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
         return;
       }
       const elapsed = performance.now() - sceneStartedAt;
@@ -838,7 +1022,7 @@ const labels = {
         setScene(current + 1);
         if (progressBar) progressBar.style.width = '0%';
       }
-      frameId = requestAnimationFrame(tick);
+      requestAnimationFrame(tick);
     }
 
     function play() {
@@ -863,11 +1047,6 @@ const labels = {
       });
     });
 
-    // Pause on hover, resume on leave
-    tour.addEventListener('mouseenter', () => { if (isPlaying) pause(); });
-    tour.addEventListener('mouseleave', () => { if (!isPlaying) play(); });
-
-    // Keyboard navigation
     tour.tabIndex = 0;
     tour.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') { prevBtn?.click(); e.preventDefault(); }
