@@ -215,17 +215,27 @@
       var(--color-cream);
   }
 
-  /* Reveal on scroll */
+  /* Reveal on scroll. Fallback: if JS observer doesn't fire (e.g. element
+     taller than viewport, blocked script, CSP), the keyframe animation
+     reveals content after a short delay so it's never permanently hidden. */
   [data-reveal] {
     opacity: 0;
     transform: translateY(24px);
     transition:
       opacity 0.9s var(--ease-out-expo),
       transform 0.9s var(--ease-out-expo);
+    animation: reveal-fallback 0.9s 1.2s var(--ease-out-expo) forwards;
   }
   [data-reveal].is-visible {
     opacity: 1;
     transform: translateY(0);
+    animation: none;
+  }
+  @keyframes reveal-fallback {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .marquee-track {
