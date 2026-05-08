@@ -6,6 +6,7 @@ description: "Krok po kroku jak otworzyć szkółkę jeździecką w Polsce — o
 date: "2026-05-12"
 author: "Przemek"
 tags: ["Szkółka"]
+regions: ["PL"]
 ---
 
 Otwieranie szkółki jeździeckiej to **3 razy więcej pracy** niż większość ludzi sobie wyobraża, **2 razy więcej kosztów** niż planujesz, i jeśli zrobisz dobrze — najbardziej satysfakcjonujący biznes, jaki możesz mieć. Konie to nie sklep z butami. Otoczenie, ludzie, klienci, regulacje — wszystko jest specyficzne.

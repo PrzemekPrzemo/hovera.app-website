@@ -6,6 +6,7 @@ description: "When should a stable drop Excel for a dedicated system? Concrete n
 date: "2026-04-16"
 author: "Przemek"
 tags: ["Migration"]
+regions: ["PL"]
 ---
 
 Excel is cheap, familiar and you can do almost anything in it. Many stables run their schedule, passes, finances and horse list in spreadsheets. It works — up to a point.

@@ -6,6 +6,7 @@ description: "Jak sprzedać stajnię, przekazać następcy lub zamknąć biznes 
 date: "2026-07-14"
 author: "Przemek"
 tags: ["Operacje"]
+regions: ["PL"]
 ---
 
 Średni właściciel stajni w Polsce ma dziś 48-58 lat. **Większość zaczynała w latach 90. lub wczesnych 2000.** Po 25-30 latach pracy myślą o emeryturze — ale stajnia to inny biznes niż zwykła firma. Konie, klienci, nieruchomość, marka — wszystko to **nie da się łatwo sprzedać** ani przekazać.

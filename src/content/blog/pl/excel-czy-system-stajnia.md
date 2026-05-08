@@ -6,6 +6,7 @@ description: "Kiedy stajnia powinna zrezygnować z Excela na rzecz dedykowanego 
 date: "2026-04-16"
 author: "Przemek"
 tags: ["Migracja"]
+regions: ["PL"]
 ---
 
 Excel jest tani, znany i można w nim zrobić praktycznie wszystko. Wiele stajni prowadzi grafik, karnety, finanse i listę koni właśnie w arkuszach. Działa to do pewnego momentu.

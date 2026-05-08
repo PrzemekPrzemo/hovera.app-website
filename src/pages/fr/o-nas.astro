@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import HorseshoeMark from '../../components/HorseshoeMark.astro';
+const locale = 'fr' as const;
+---
+
+<Base title="À propos — Hovera" description="Hovera est une équipe qui connaît les écuries autant par le pansage que par le code. Nous construisons le SaaS que nous voudrions utiliser nous-mêmes.">
+  <PageHero eyebrow="À propos" title="Le SaaS que nous voudrions utiliser nous-mêmes" subtitle="Hovera est né parce qu'aucun système ne correspondait à la réalité d'une écurie. Alors nous avons construit le nôtre — convaincus qu'une écurie n'est pas une multinationale, et que travailler avec des chevaux n'est pas un tableur." />
+
+  <section class="container-x py-16">
+    <div class="grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center">
+      <div data-reveal>
+        <span class="eyebrow">Notre histoire</span>
+        <h2 class="display-3 mt-3">D'un tableur à un produit</h2>
+        <p class="muted mt-4 leading-relaxed">
+          Nous avons commencé avec une écurie et un tableur. Six mois après, le tableur avait 14 onglets et personne ne savait si le forfait d'Anna était terminé. Nous avons cherché un outil prêt — Horstable, Equicty, EquineM. Chacun avec son « mais » : pas de facturation électronique, UX vieillotte, pas de mobile. Alors nous avons écrit le nôtre. Un an plus tard, 8 écuries utilisaient le code par bouche-à-oreille. Après deux ans — lancement public sous le nom Hovera.
+        </p>
+      </div>
+      <div data-reveal class="about-mark">
+        <HorseshoeMark class="h-full w-full text-[var(--color-ochre)]" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      <div class="value-card"><div class="value-num">01</div><h3 class="value-title">Produit avant marketing</h3><p class="muted mt-3">Nous préférons passer une semaine à améliorer une fonction qu'à acheter de la publicité. Les clients le sentent.</p></div>
+      <div class="value-card"><div class="value-num">02</div><h3 class="value-title">Vérité sur le produit</h3><p class="muted mt-3">Ce que nous n'avons pas, nous le disons. Roadmap publique, changelog en direct.</p></div>
+      <div class="value-card"><div class="value-num">03</div><h3 class="value-title">Made in EU</h3><p class="muted mt-3">RGPD natif, prêt pour la facturation électronique française dès le MVP. Peppol BIS Billing 3.0 inclus. Serveurs en Europe.</p></div>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .about-mark { width: 16rem; height: 16rem; margin: 0 auto; opacity: 0.7; animation: spin 30s linear infinite; }
+  @keyframes spin { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+  .value-card { padding: 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .value-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-ochre-dark); letter-spacing: 0.18em; }
+  .value-title { font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 0.6rem; }
+</style>

@@ -6,6 +6,7 @@ description: "Step-by-step on how to open a riding school in Europe — from ide
 date: "2026-05-12"
 author: "Przemek"
 tags: ["Riding school"]
+regions: ["PL"]
 ---
 
 Opening a riding school is **3× more work** than most people imagine, **2× more cost** than you plan, and if you do it right — the most fulfilling business you can run. Horses aren't a shoe shop. The setting, people, clients, regulations — everything is specific.

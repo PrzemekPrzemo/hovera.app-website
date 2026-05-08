@@ -6,6 +6,7 @@ description: "Wszystko, co właściciel stajni musi wiedzieć o KSeF od 2026. Od
 date: "2026-04-14"
 author: "Przemek"
 tags: ["Finanse", "Szkółka"]
+regions: ["PL"]
 ---
 
 Od 1 lutego 2026 polskie firmy będą wystawiać faktury w **Krajowym Systemie e-Faktur (KSeF)** — i tak, dotyczy to też stajni jeździeckich. Jeśli prowadzisz szkółkę, pensjonat, hodowlę albo jakąkolwiek działalność związaną z końmi i jesteś czynnym podatnikiem VAT, masz obowiązek wystawiania faktur w KSeF.

@@ -6,6 +6,7 @@ description: "Ile kosztuje jazda konna w Polsce w 2026? Stawki w 5 największych
 date: "2026-04-28"
 author: "Przemek"
 tags: ["Szkółka"]
+regions: ["PL"]
 ---
 
 Pytanie "ile powinnam brać za jazdę?" pada w polskich szkółkach częściej niż jakiekolwiek inne. Odpowiedź "to zależy" jest prawdziwa, ale bezużyteczna. W tym artykule pokazuję twarde dane: aktualne stawki w pięciu największych miastach Polski, czynniki, które decydują o cenie, oraz kalkulator break-even dla Twojej stajni.

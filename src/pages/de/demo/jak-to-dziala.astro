@@ -1,0 +1,39 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import InteractiveProductTour from '../../../components/InteractiveProductTour.astro';
+import FinalCTA from '../../../components/FinalCTA.astro';
+import { localizePath } from '../../../i18n/utils';
+const locale = 'de' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base
+  title="So funktioniert Hovera — interaktiver Rundgang"
+  description="Sieh Hovera in Aktion. 11 Szenen aus dem Stallalltag — vom Morgenfutter bis zum Abendreport."
+>
+  <PageHero
+    eyebrow="Produkt-Rundgang"
+    title="So funktioniert es in der Praxis"
+    subtitle="11 Szenen mit echten App-Screens. Dashboard, Kalender, Konflikte, Online-Zahlung, Pferdebesitzer-Portal, Abendreport. Punkte klicken oder einfach laufen lassen."
+  />
+
+  <section class="container-x pb-16">
+    <div data-reveal>
+      <InteractiveProductTour locale={locale} />
+    </div>
+  </section>
+
+  <section class="container-x py-12">
+    <div class="back-row" data-reveal>
+      <a href={lp('/demo')} class="btn btn-secondary">← Zurück zur Demo-Seite</a>
+      <a href={lp('/kontakt')} class="btn btn-primary">Live-Demo buchen</a>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .back-row { max-width: 56rem; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+</style>
