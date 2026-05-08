@@ -6,6 +6,7 @@ description: "How to sell a stable, hand it over to a successor, or close the bu
 date: "2026-07-14"
 author: "Przemek"
 tags: ["Operations"]
+regions: ["PL"]
 ---
 
 The average European stable owner is now 48-58 years old. **Most started in the 1990s or early 2000s.** After 25-30 years of work, retirement is on the horizon — but a stable is a different business than a typical company. Horses, clients, real estate, brand — none of these are **easy to sell or hand over**.

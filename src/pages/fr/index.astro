@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import ProductTour from '../../components/ProductTour.astro';
+import UseCases from '../../components/UseCases.astro';
+import Differentiators from '../../components/Differentiators.astro';
+import PricingTeaser from '../../components/PricingTeaser.astro';
+import TechBar from '../../components/TechBar.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const locale = 'fr' as const;
+---
+
+<Base
+  title="Hovera — L'écurie tourne. Tu respires."
+  description="SaaS opérationnel pour écuries. Planning, forfaits, finances et soins des chevaux dans un seul outil."
+>
+  <Hero locale={locale} />
+  <ProductTour locale={locale} />
+  <UseCases locale={locale} />
+  <Differentiators locale={locale} />
+  <PricingTeaser locale={locale} />
+  <TechBar locale={locale} />
+  <FinalCTA locale={locale} />
+</Base>

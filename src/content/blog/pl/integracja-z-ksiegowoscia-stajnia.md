@@ -6,6 +6,7 @@ description: "Jak połączyć system zarządzania stajnią z księgowością —
 date: "2026-06-04"
 author: "Przemek"
 tags: ["Finanse"]
+regions: ["PL"]
 ---
 
 Większość polskich stajni wystawia faktury w **dwóch systemach naraz**: jednym do zarządzania klientami i jazdami (np. Horstable), drugim do faktur (np. iFirma). To znaczy, że każdą fakturę wbijasz **dwa razy**: raz w stajennym, raz w księgowym. Plus eksporty CSV, importy XML, ręczne sprawdzanie zgodności.

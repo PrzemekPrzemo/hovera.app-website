@@ -1,8 +1,10 @@
-import { ui, defaultLocale, type Locale, type UIKey } from './ui';
+import { ui, defaultLocale, locales, type Locale, type UIKey } from './ui';
+export type { Locale } from './ui';
+export { locales, defaultLocale, localeMeta, regionMeta } from './ui';
 
 export function getLocaleFromUrl(url: URL): Locale {
   const [, segment] = url.pathname.split('/');
-  if (segment === 'en') return 'en';
+  if (segment === 'en' || segment === 'de' || segment === 'fr') return segment;
   return defaultLocale;
 }
 
@@ -15,7 +17,7 @@ export function useTranslations(locale: Locale) {
 export function localizePath(path: string, locale: Locale): string {
   const clean = path.startsWith('/') ? path : `/${path}`;
   if (locale === defaultLocale) return clean === '/' ? '/' : clean;
-  return clean === '/' ? '/en' : `/en${clean}`;
+  return clean === '/' ? `/${locale}` : `/${locale}${clean}`;
 }
 
 export function alternateLocale(locale: Locale): Locale {
@@ -24,7 +26,10 @@ export function alternateLocale(locale: Locale): Locale {
 
 /** Strips the locale prefix from a pathname. Returns the canonical PL path. */
 export function unlocalizePath(pathname: string): string {
-  if (pathname === '/en' || pathname === '/en/') return '/';
-  if (pathname.startsWith('/en/')) return pathname.slice(3);
+  for (const loc of locales) {
+    if (loc === defaultLocale) continue;
+    if (pathname === `/${loc}` || pathname === `/${loc}/`) return '/';
+    if (pathname.startsWith(`/${loc}/`)) return pathname.slice(loc.length + 1);
+  }
   return pathname;
 }

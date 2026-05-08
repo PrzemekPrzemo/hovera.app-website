@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import { localizePath, regionMeta } from '../../../i18n/utils';
+
+const posts = (await getCollection('post', (e) => e.data.locale === 'de'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const locale = 'de' as const;
+const lp = (p: string) => localizePath(p, locale);
+---
+
+<Base title="Blog — Hovera" description="Notizen aus dem Stallbetrieb. Operations, Finanzen, E-Rechnung, Werkzeuge. Kurz, konkret, ohne Corporate-Sprech.">
+  <PageHero eyebrow="Blog" title="Notizen aus dem Stallbetrieb" subtitle="Operations, Finanzen, E-Rechnung, Werkzeuge. Kein Geschwafel, keine Revolutionen. Konkrete Erfahrungen aus unserer Praxis und der unserer Kunden." />
+
+  <section class="container-x py-16">
+    <div class="grid gap-6 max-w-3xl mx-auto">
+      {posts.map((p) => (
+        <a href={lp(`/blog/${p.data.slug}`)} class="post-card" data-reveal>
+          <div class="post-meta">
+            <time datetime={p.data.date}>{new Date(p.data.date).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}</time>
+            {p.data.regions && p.data.regions.filter((r: string) => regionMeta[r]).map((r: string) => (
+              <span class="post-region">{regionMeta[r].flag} {regionMeta[r].label.de}</span>
+            ))}
+            {p.data.tags && (<span class="post-tags">{p.data.tags.map((t: string) => <span class="post-tag">{t}</span>)}</span>)}
+          </div>
+          <h2 class="post-title mt-3">{p.data.title}</h2>
+          <p class="muted mt-2">{p.data.description}</p>
+          <span class="post-read">Weiterlesen →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .post-card { display: block; padding: 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-xl); transition: all 0.4s var(--ease-out-expo); }
+  .post-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-warm); border-color: var(--color-bark-300); }
+  .post-meta { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; font-size: 0.85rem; color: var(--color-fg-muted); }
+  .post-tags { display: inline-flex; gap: 0.4rem; }
+  .post-tag { font-size: 11px; padding: 2px 8px; background: var(--color-sand-light); border-radius: 999px; }
+  .post-region { font-size: 11px; padding: 2px 8px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 999px; }
+  .post-title { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.025em; font-weight: 500; }
+  .post-read { display: inline-block; margin-top: 1rem; font-size: 0.9rem; color: var(--color-bark); font-weight: 500; }
+</style>

@@ -6,6 +6,7 @@ description: "How to connect a stable management system to accounting software (
 date: "2026-06-04"
 author: "Przemek"
 tags: ["Finance"]
+regions: ["PL"]
 ---
 
 Most stables issue invoices in **two systems at once**: one for managing clients and lessons (e.g. Horstable), one for accounting (e.g. iFirma). That means you key every invoice **twice**: once in the stable system, once in the accounting one. Plus CSV exports, XML imports, manual reconciliation.

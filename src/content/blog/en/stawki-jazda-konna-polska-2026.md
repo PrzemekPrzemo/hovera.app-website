@@ -6,6 +6,7 @@ description: "What does a riding lesson cost across Europe in 2026? Rates in maj
 date: "2026-04-28"
 author: "Przemek"
 tags: ["Riding school"]
+regions: ["PL"]
 ---
 
 The question "how much should I charge for a lesson?" comes up in stables more than any other. The answer "it depends" is true but useless. In this article: hard data on rates across European cities, what drives the price, and a break-even calculator for your stable.

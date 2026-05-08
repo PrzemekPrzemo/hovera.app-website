@@ -10,29 +10,80 @@ const lp = (p: string) => localizePath(p, locale);
 
 const t = (pl: string, en: string) => (locale === 'pl' ? pl : en);
 
-// Base monthly prices (PLN for PL, EUR for EN)
-const tiers = locale === 'pl' ? [
-  { key: 'free',   name: 'Free',   priceMonthly: 0,   horses: 5,   clients: 10,  desc: 'Hobby / start',
+// Currency-specific pricing. PLN is the original baseline; others are
+// market-positioned (NOT direct conversions) — see /docs/PRICING.md.
+const pricesByCurrency = {
+  PLN: { solo: 89,  stable: 249, pro: 499, setup: 1590 },
+  EUR: { solo: 29,  stable: 79,  pro: 159, setup: 490 },
+  GBP: { solo: 25,  stable: 69,  pro: 139, setup: 429 },
+  AUD: { solo: 49,  stable: 129, pro: 259, setup: 790 },
+  NZD: { solo: 55,  stable: 139, pro: 279, setup: 850 },
+} as const;
+type CurrencyCode = keyof typeof pricesByCurrency;
+
+const currencyMeta: Record<CurrencyCode, { symbol: string; pos: 'before' | 'after'; flag: string; label: string }> = {
+  PLN: { symbol: 'zł', pos: 'after',  flag: '🇵🇱', label: 'PLN' },
+  EUR: { symbol: '€',  pos: 'before', flag: '🇪🇺', label: 'EUR' },
+  GBP: { symbol: '£',  pos: 'before', flag: '🇬🇧', label: 'GBP' },
+  AUD: { symbol: 'A$', pos: 'before', flag: '🇦🇺', label: 'AUD' },
+  NZD: { symbol: 'NZ$', pos: 'before', flag: '🇳🇿', label: 'NZD' },
+};
+
+// Default currency per locale; UI lets the user switch later.
+const defaultCurrency: CurrencyCode =
+  locale === 'pl' ? 'PLN' :
+  locale === 'de' ? 'EUR' :
+  locale === 'fr' ? 'EUR' : 'EUR';
+
+// Currencies offered as switchable options for non-PL users.
+const switchableCurrencies: CurrencyCode[] =
+  locale === 'pl' ? ['PLN'] : ['EUR', 'GBP', 'AUD', 'NZD'];
+
+const p0 = pricesByCurrency[defaultCurrency];
+
+const baseTiers = locale === 'pl' ? [
+  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Hobby / start',
     features: ['Kalendarz', 'Dziennik konia', 'Booking online (limit)', 'Wsparcie community'] },
-  { key: 'solo',   name: 'Solo',   priceMonthly: 89,  horses: 10,  clients: 30,  desc: 'Mała szkółka, instruktor solo',
+  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Mała szkółka, instruktor solo',
     features: ['Wszystko z Free', 'Booking online', 'Powtarzające się jazdy', 'Email support'] },
-  { key: 'stable', name: 'Stable', priceMonthly: 249, horses: 30,  clients: 100, desc: 'Standardowa stajnia',
+  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Standardowa stajnia',
     features: ['Wszystko z Solo', 'Karnety + auto-rozliczenie', 'Faktury i rozliczenia', 'Eksport do biura', 'Email + chat'], popular: true },
-  { key: 'pro',    name: 'Pro',    priceMonthly: 499, horses: 100, clients: 9999, desc: 'Pensjonat / sieci stajni',
+  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Pensjonat / sieci stajni',
     features: ['Wszystko ze Stable', 'Pensjonat / livery', 'Multi-instructor + role', 'Public API + webhooks', 'Priority support'] },
+] : locale === 'de' ? [
+  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Hobby / Start',
+    features: ['Kalender', 'Pferdetagebuch', 'Online-Buchung (limitiert)', 'Community-Support'] },
+  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Kleine Schule, Solo-Trainer',
+    features: ['Alles aus Free', 'Online-Buchung', 'Wiederkehrende Termine', 'E-Mail-Support'] },
+  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Standard-Reitstall',
+    features: ['Alles aus Solo', 'Reitkarten + Auto-Abrechnung', 'Rechnungen & Buchhaltung', 'DATEV-Export', 'E-Mail + Chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Pension / Stallnetzwerke',
+    features: ['Alles aus Stable', 'Pension / Livery', 'Multi-Trainer + Rollen', 'Public API + Webhooks', 'Priority Support'] },
+] : locale === 'fr' ? [
+  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Loisir / démarrage',
+    features: ['Calendrier', 'Carnet du cheval', 'Réservation en ligne (limitée)', 'Support communauté'] },
+  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Petit centre, moniteur solo',
+    features: ['Tout de Free', 'Réservation en ligne', 'Cours récurrents', 'Support e-mail'] },
+  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Centre équestre standard',
+    features: ['Tout de Solo', 'Forfaits + auto-décompte', 'Facturation', 'Export comptable', 'E-mail + chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Pension / réseau d\'écuries',
+    features: ['Tout de Stable', 'Pension / livery', 'Multi-moniteur + rôles', 'API publique + webhooks', 'Support prioritaire'] },
 ] : [
-  { key: 'free',   name: 'Free',   priceMonthly: 0,   horses: 5,   clients: 10,  desc: 'Hobby / starter',
+  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Hobby / starter',
     features: ['Calendar', 'Horse journal', 'Online booking (limited)', 'Community support'] },
-  { key: 'solo',   name: 'Solo',   priceMonthly: 19,  horses: 10,  clients: 30,  desc: 'Small school, solo instructor',
+  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Small school, solo instructor',
     features: ['Everything in Free', 'Online booking', 'Recurring rides', 'Email support'] },
-  { key: 'stable', name: 'Stable', priceMonthly: 59,  horses: 30,  clients: 100, desc: 'Standard stable',
+  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Standard stable',
     features: ['Everything in Solo', 'Passes + auto-settlement', 'Invoicing & billing', 'Bookkeeping export', 'Email + chat'], popular: true },
-  { key: 'pro',    name: 'Pro',    priceMonthly: 119, horses: 100, clients: 9999, desc: 'Boarding / stable networks',
+  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Boarding / stable networks',
     features: ['Everything in Stable', 'Boarding / livery', 'Multi-instructor + roles', 'Public API + webhooks', 'Priority support'] },
 ];
 
-const currency = locale === 'pl' ? 'zł' : '€';
-const currencyPos: 'after' | 'before' = locale === 'pl' ? 'after' : 'before';
+const tiers = baseTiers;
+const currency = currencyMeta[defaultCurrency].symbol;
+const currencyPos: 'after' | 'before' = currencyMeta[defaultCurrency].pos;
+const pricingDataAttr = JSON.stringify(pricesByCurrency);
+const currencyMetaAttr = JSON.stringify(currencyMeta);
 
 // Period options — discount applied to base monthly price
 const periods = locale === 'pl' ? [
@@ -47,10 +98,37 @@ const periods = locale === 'pl' ? [
   { key: 'three',   label: '3 years',     discount: 0.30, months: 36,  note: '-30% ⭐' },
 ];
 
-const setupFee = locale === 'pl' ? 1590 : 390;
+const setupFee = pricesByCurrency[defaultCurrency].setup;
 ---
 
-<div class="pricing-calc" data-pricing-calc data-currency={currency} data-currency-pos={currencyPos} data-setup-fee={setupFee}>
+<div
+  class="pricing-calc"
+  data-pricing-calc
+  data-currency={currency}
+  data-currency-pos={currencyPos}
+  data-setup-fee={setupFee}
+  data-default-currency={defaultCurrency}
+  data-prices={pricingDataAttr}
+  data-currency-meta={currencyMetaAttr}
+>
+  {switchableCurrencies.length > 1 && (
+    <div class="currency-switch" role="tablist" aria-label={t('Wybierz walutę', 'Choose currency')}>
+      <span class="currency-label">{t('Waluta', 'Currency')}:</span>
+      {switchableCurrencies.map((c) => (
+        <button
+          type="button"
+          class={`currency-btn ${c === defaultCurrency ? 'is-active' : ''}`}
+          data-currency-code={c}
+          role="tab"
+          aria-selected={c === defaultCurrency ? 'true' : 'false'}
+        >
+          <span class="currency-flag" aria-hidden="true">{currencyMeta[c].flag}</span>
+          <span>{currencyMeta[c].label}</span>
+        </button>
+      ))}
+    </div>
+  )}
+
   <!-- Period toggle -->
   <div class="period-toggle" role="tablist" aria-label={t('Wybierz okres rozliczeniowy', 'Choose billing period')}>
     {periods.map((p, i) => (
@@ -70,10 +148,19 @@ const setupFee = locale === 'pl' ? 1590 : 390;
   </div>
 
   <p class="period-hint">
-    {t(
-      'Do każdego płatnego planu doliczamy jednorazową opłatę wdrożeniową 1 590 zł. Płatności roczne, 2- i 3-letnie blokują cenę na cały okres.',
-      'A one-time onboarding fee of €390 is added to every paid plan. Yearly, 2-year and 3-year plans lock the price for the full term.'
-    )}
+    <span data-period-hint-prefix>
+      {t(
+        'Do każdego płatnego planu doliczamy jednorazową opłatę wdrożeniową ',
+        'A one-time onboarding fee of '
+      )}
+    </span>
+    <strong data-setup-display>{currencyPos === 'before' ? `${currency}${setupFee}` : `${setupFee} ${currency}`}</strong>
+    <span data-period-hint-suffix>
+      {t(
+        '. Płatności roczne, 2- i 3-letnie blokują cenę na cały okres.',
+        ' is added to every paid plan. Yearly, 2-year and 3-year plans lock the price for the full term.'
+      )}
+    </span>
   </p>
 
   <!-- Tier cards -->
@@ -140,6 +227,41 @@ const setupFee = locale === 'pl' ? 1590 : 390;
 
 <style>
   .pricing-calc { width: 100%; }
+
+  .currency-switch {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    margin: 0 auto 1.25rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    width: max-content;
+    max-width: 100%;
+  }
+  .currency-label { color: var(--color-fg-muted); margin-right: 0.25rem; }
+  .currency-btn {
+    display: inline-flex; gap: 0.35rem; align-items: center;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--color-fg);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .currency-btn:hover { background: var(--color-sand-light); }
+  .currency-btn.is-active {
+    background: var(--color-bark);
+    color: var(--color-cream);
+    border-color: var(--color-bark);
+  }
+  .currency-flag { font-size: 0.95rem; line-height: 1; }
 
   .period-toggle {
     display: inline-flex;
@@ -302,29 +424,78 @@ const setupFee = locale === 'pl' ? 1590 : 390;
 
 <script>
   type Period = { key: string; discount: number; months: number };
+  type PriceSet = { solo: number; stable: number; pro: number; setup: number };
+  type CurrencyMeta = { symbol: string; pos: 'before' | 'after'; flag: string; label: string };
+
+  // Map browser country/region → currency code; used for first-visit auto-pick.
+  function detectCurrencyFromBrowser(): string | null {
+    try {
+      const lang = (navigator.language || '').toLowerCase();
+      // Region after the dash, e.g. en-GB → GB
+      const region = lang.split('-')[1];
+      const map: Record<string, string> = {
+        gb: 'GBP', uk: 'GBP',
+        au: 'AUD',
+        nz: 'NZD',
+        pl: 'PLN',
+      };
+      if (region && map[region]) return map[region];
+      // Try language-only as a fallback
+      const lang2 = lang.split('-')[0];
+      if (lang2 === 'pl') return 'PLN';
+      return null;
+    } catch { return null; }
+  }
 
   function init() {
     const calcs = document.querySelectorAll<HTMLElement>('[data-pricing-calc]');
     calcs.forEach((calc) => {
-      const currency = calc.dataset.currency || 'zł';
-      const currencyPos = calc.dataset.currencyPos || 'after';
-      const setupFee = Number(calc.dataset.setupFee || 0);
+      const setupBaseAttr = Number(calc.dataset.setupFee || 0);
+      let pricesAll: Record<string, PriceSet> = {};
+      let metaAll: Record<string, CurrencyMeta> = {};
+      try { pricesAll = JSON.parse(calc.dataset.prices || '{}'); } catch {}
+      try { metaAll = JSON.parse(calc.dataset.currencyMeta || '{}'); } catch {}
+
+      let currentCode = calc.dataset.defaultCurrency || 'PLN';
       const buttons = calc.querySelectorAll<HTMLButtonElement>('.period-btn');
+      const currencyButtons = calc.querySelectorAll<HTMLButtonElement>('.currency-btn');
       const tiers = calc.querySelectorAll<HTMLElement>('.tier[data-base-monthly]');
 
-      const isPL = currency === 'zł';
-      const tr = (pl: string, en: string) => (isPL ? pl : en);
+      const isPL = () => currentCode === 'PLN';
+      const tr = (pl: string, en: string) => (isPL() ? pl : en);
 
       const fmtPrice = (n: number) => {
+        const meta = metaAll[currentCode];
+        if (!meta) return String(n);
         const rounded = Math.round(n);
-        const formatted = isPL
+        const formatted = isPL()
           ? rounded.toLocaleString('pl-PL').replace(/,/g, ' ')
           : rounded.toLocaleString('en-GB');
-        return currencyPos === 'after' ? `${formatted} ${currency}` : `${currency}${formatted}`;
+        return meta.pos === 'after' ? `${formatted} ${meta.symbol}` : `${meta.symbol}${formatted}`;
+      };
+
+      const currentSetupFee = () => (pricesAll[currentCode]?.setup ?? setupBaseAttr);
+
+      const refreshTierBasePrices = () => {
+        const ps = pricesAll[currentCode];
+        if (!ps) return;
+        const map: Record<string, number> = {
+          solo: ps.solo, stable: ps.stable, pro: ps.pro,
+        };
+        tiers.forEach((tier) => {
+          const key = tier.dataset.tier || '';
+          if (key in map) tier.dataset.baseMonthly = String(map[key]);
+        });
+      };
+
+      const refreshSetupHint = () => {
+        const setupEl = calc.querySelector<HTMLElement>('[data-setup-display]');
+        if (setupEl) setupEl.textContent = fmtPrice(currentSetupFee());
       };
 
       const update = (period: Period) => {
         const factor = 1 - period.discount;
+        const setupFee = currentSetupFee();
         tiers.forEach((tier) => {
           const base = Number(tier.dataset.baseMonthly || 0);
           if (base === 0) return;
@@ -360,6 +531,37 @@ const setupFee = locale === 'pl' ? 1590 : 390;
         });
       };
 
+      const getActivePeriod = (): Period => {
+        const active = calc.querySelector<HTMLButtonElement>('.period-btn.is-active');
+        return {
+          key: active?.dataset.period || 'yearly',
+          discount: Number(active?.dataset.discount || 0),
+          months: Number(active?.dataset.months || 12),
+        };
+      };
+
+      const switchCurrency = (code: string) => {
+        if (!pricesAll[code]) return;
+        currentCode = code;
+        currencyButtons.forEach((b) => {
+          const isActive = b.dataset.currencyCode === code;
+          b.classList.toggle('is-active', isActive);
+          b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+        const elPriceNum = calc.querySelectorAll<HTMLElement>('.price-num');
+        // Update tier base prices in DOM, then re-render via period update
+        refreshTierBasePrices();
+        refreshSetupHint();
+        // Update Free tier "0 X" display too
+        elPriceNum.forEach((el) => {
+          if (el.textContent && /^0\s/.test(el.textContent)) {
+            el.textContent = fmtPrice(0);
+          }
+        });
+        try { localStorage.setItem('hovera-currency', code); } catch {}
+        update(getActivePeriod());
+      };
+
       buttons.forEach((btn) => {
         btn.addEventListener('click', () => {
           buttons.forEach((b) => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
@@ -373,15 +575,32 @@ const setupFee = locale === 'pl' ? 1590 : 390;
         });
       });
 
-      // Init with default-active button
-      const active = calc.querySelector<HTMLButtonElement>('.period-btn.is-active');
-      if (active) {
-        update({
-          key: active.dataset.period || 'yearly',
-          discount: Number(active.dataset.discount || 0),
-          months: Number(active.dataset.months || 12),
+      currencyButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const code = btn.dataset.currencyCode || '';
+          if (code) switchCurrency(code);
         });
-      }
+      });
+
+      // First-load: try saved choice, else auto-detect from browser locale
+      try {
+        const saved = localStorage.getItem('hovera-currency');
+        if (saved && pricesAll[saved] && currencyButtons.length > 1) {
+          if (saved !== currentCode) {
+            switchCurrency(saved);
+            return; // switchCurrency runs update()
+          }
+        } else if (currencyButtons.length > 1) {
+          const detected = detectCurrencyFromBrowser();
+          if (detected && pricesAll[detected] && detected !== currentCode) {
+            switchCurrency(detected);
+            return;
+          }
+        }
+      } catch {}
+
+      // Default render
+      update(getActivePeriod());
     });
   }
 

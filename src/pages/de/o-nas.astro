@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import HorseshoeMark from '../../components/HorseshoeMark.astro';
+const locale = 'de' as const;
+---
+
+<Base title="Über uns — Hovera" description="Hovera ist ein Team aus Menschen, die Reitställe sowohl vom Misten als auch vom Code her kennen. Wir bauen das SaaS, das wir selbst nutzen wollen.">
+  <PageHero eyebrow="Über uns" title="Das SaaS, das wir selbst nutzen wollen" subtitle="Hovera entstand, weil kein System dazu passte, wie ein Reitstall wirklich läuft. Also haben wir unseres gebaut — in der Überzeugung: ein Stall ist kein Konzern, und mit Pferden zu arbeiten ist keine Excel-Tabelle." />
+
+  <section class="container-x py-16">
+    <div class="grid gap-12 md:grid-cols-2 max-w-5xl mx-auto items-center">
+      <div data-reveal>
+        <span class="eyebrow">Unsere Geschichte</span>
+        <h2 class="display-3 mt-3">Von einer Tabelle zum Produkt</h2>
+        <p class="muted mt-4 leading-relaxed">
+          Wir begannen mit einem Stall und einer Tabelle. Nach sechs Monaten hatte die Tabelle 14 Reiter und niemand wusste, ob Annas Reitkarte schon abgelaufen war. Wir suchten ein fertiges Tool — Horstable, Equicty, EquineM. Jedes hatte sein „Aber": keine E-Rechnung, veraltete UX, keine Mobile-Version. Also schrieben wir unser eigenes. Nach einem Jahr nutzten 8 Ställe per Empfehlung den Code. Nach zwei Jahren — der öffentliche Launch als Hovera.
+        </p>
+      </div>
+      <div data-reveal class="about-mark">
+        <HorseshoeMark class="h-full w-full text-[var(--color-ochre)]" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-16" data-reveal>
+    <div class="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      <div class="value-card"><div class="value-num">01</div><h3 class="value-title">Produkt vor Marketing</h3><p class="muted mt-3">Wir verbringen lieber eine Woche damit, eine Funktion zu verbessern, als Anzeigen zu schalten. Kunden merken den Unterschied.</p></div>
+      <div class="value-card"><div class="value-num">02</div><h3 class="value-title">Ehrlichkeit zum Produkt</h3><p class="muted mt-3">Was wir nicht haben, sagen wir auch. Roadmap ist öffentlich, Changelog ist live.</p></div>
+      <div class="value-card"><div class="value-num">03</div><h3 class="value-title">Made in EU</h3><p class="muted mt-3">DSGVO-nativ, deutsche Steuer-Spezifika in Sicht. EU-Peppol seit MVP. Server in Deutschland.</p></div>
+    </div>
+  </section>
+
+  <FinalCTA locale={locale} />
+</Base>
+
+<style>
+  .about-mark { width: 16rem; height: 16rem; margin: 0 auto; opacity: 0.7; animation: spin 30s linear infinite; }
+  @keyframes spin { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+  .value-card { padding: 2rem; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: var(--radius-xl); }
+  .value-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-ochre-dark); letter-spacing: 0.18em; }
+  .value-title { font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.02em; font-weight: 500; margin-top: 0.6rem; }
+</style>

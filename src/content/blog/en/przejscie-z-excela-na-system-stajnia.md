@@ -6,6 +6,7 @@ description: "Practical step-by-step guide: how to move your stable from Excel t
 date: "2026-04-21"
 author: "Przemek"
 tags: ["Migration"]
+regions: ["PL"]
 ---
 
 The decision to switch from Excel to a dedicated stable management system is often postponed for one reason: "How am I going to move all this?". 80 horses, 200 clients, pass history, three years of invoices — it feels like weeks of work.

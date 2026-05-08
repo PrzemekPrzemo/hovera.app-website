@@ -6,6 +6,7 @@ description: "Jak prawidłowo sprzedać konia w Polsce 2026 — wycena, umowa, p
 date: "2026-05-21"
 author: "Przemek"
 tags: ["Operacje"]
+regions: ["PL"]
 ---
 
 Sprzedaż konia w Polsce to **nie jest "ja daję, on bierze, kasa"**. To transakcja regulowana prawem cywilnym, podatkowym, weterynaryjnym i hodowlanym (jeśli to koń rasowy). Brak właściwej dokumentacji = potencjalne roszczenia, kary podatkowe i utrata reputacji.

@@ -6,6 +6,7 @@ description: "How to properly sell a horse in 2026 — valuation, contract, pass
 date: "2026-05-21"
 author: "Przemek"
 tags: ["Operations"]
+regions: ["PL"]
 ---
 
 Selling a horse is **not "I give, you take, money"**. It's a transaction regulated by civil law, tax law, veterinary requirements and breeding (for pedigreed horses). Lack of proper documentation = potential claims, tax penalties and lost reputation.

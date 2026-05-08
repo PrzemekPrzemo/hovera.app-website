@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import RegionBanner from '../../components/RegionBanner.astro';
 import { localizePath } from '../../i18n/utils';
 
 export async function getStaticPaths() {
@@ -30,6 +31,12 @@ const lp = (p: string) => localizePath(p, locale);
         <h1 class="display-2 mt-4 text-balance">{d.title}</h1>
         <p class="lead mt-5">{d.description}</p>
       </header>
+
+      {d.regions && d.regions.length > 0 && (
+        <div class="mt-8" data-reveal>
+          <RegionBanner regions={d.regions} locale={locale} />
+        </div>
+      )}
 
       <div class="post-body mt-12" data-reveal>
         <Content />

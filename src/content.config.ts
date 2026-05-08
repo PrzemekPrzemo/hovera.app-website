@@ -2,11 +2,13 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const idFromPath = ({ entry }: { entry: string }) => entry.replace(/\.[^.]+$/, '');
+const localeEnum = z.enum(['pl', 'en', 'de', 'fr']);
+const regionEnum = z.enum(['PL', 'DE', 'FR', 'UK']);
 
 const product = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/product', generateId: idFromPath }),
   schema: z.object({
-    locale: z.enum(['pl', 'en']),
+    locale: localeEnum,
     slug: z.string(),
     title: z.string(),
     eyebrow: z.string(),
@@ -27,7 +29,7 @@ const product = defineCollection({
 const useCase = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/usecase', generateId: idFromPath }),
   schema: z.object({
-    locale: z.enum(['pl', 'en']),
+    locale: localeEnum,
     slug: z.string(),
     title: z.string(),
     eyebrow: z.string(),
@@ -50,7 +52,7 @@ const useCase = defineCollection({
 const versus = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/versus', generateId: idFromPath }),
   schema: z.object({
-    locale: z.enum(['pl', 'en']),
+    locale: localeEnum,
     slug: z.string(),
     competitor: z.string(),
     title: z.string(),
@@ -69,7 +71,7 @@ const versus = defineCollection({
 const changelog = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/changelog', generateId: idFromPath }),
   schema: z.object({
-    locale: z.enum(['pl', 'en']),
+    locale: localeEnum,
     date: z.string(),
     type: z.enum(['Feature', 'Improvement', 'Fix', 'Mobile', 'API', 'Integration']),
     title: z.string(),
@@ -80,13 +82,14 @@ const changelog = defineCollection({
 const post = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/blog', generateId: idFromPath }),
   schema: z.object({
-    locale: z.enum(['pl', 'en']),
+    locale: localeEnum,
     slug: z.string(),
     title: z.string(),
     description: z.string(),
     date: z.string(),
     author: z.string(),
     tags: z.array(z.string()).optional(),
+    regions: z.array(regionEnum).optional(),
   }),
 });
 

@@ -65,16 +65,19 @@ const faqs = locale === 'pl' ? [
   { q: 'Jak wygląda 30-dniowa gwarancja zwrotu?', a: 'Jeśli w ciągu pierwszych 30 dni zdecydujesz, że to nie dla Ciebie, zwracamy 100% opłaty (włącznie z opłatą wdrożeniową) bez pytań.' },
 ] : [
   { q: 'Can I change my plan at any time?', a: 'Yes. Upgrades are instant with prorated billing. Downgrades take effect at the next billing period.' },
-  { q: 'What does the €390 onboarding fee include?', a: 'A 90-minute call, data import, calendar and passes setup, public stable page configuration, notifications, and team training for up to 5 people. Full list above.' },
-  { q: 'Is the onboarding fee one-time?', a: 'Yes — €390 once, regardless of plan or billing period. Added to your first invoice.' },
+  { q: 'What does the onboarding fee include?', a: 'A 90-minute call, data import, calendar and passes setup, public stable page configuration, notifications, and team training for up to 5 people. Full list above.' },
+  { q: 'Is the onboarding fee one-time?', a: 'Yes — once, regardless of plan or billing period. Added to your first invoice.' },
   { q: 'What does "price lock" mean?', a: "If we raise list prices next year, your rate stays the same. Price lock applies on every yearly, 2- and 3-year contract for the full term." },
-  { q: 'How much do I save on a multi-year contract?', a: 'Yearly -10%, 2 years -20%, 3 years -30% off the monthly rate. Stable on a 3-year contract is €41/mo effective vs €59/mo on monthly — 30% saving.' },
+  { q: 'How much do I save on a multi-year contract?', a: 'Yearly -10%, 2 years -20%, 3 years -30% off the monthly rate. A 3-year Stable contract works out to about 70% of the monthly list price.' },
   { q: 'What happens if I exceed horse or client limits?', a: "We'll suggest an upgrade — your data stays. The system simply prompts a higher limit." },
   { q: 'Do I need to sign a contract?', a: 'No. You accept Terms online and you are good to go. Enterprise customers get a framework agreement.' },
   { q: 'How does the 30-day money-back guarantee work?', a: "Within the first 30 days you get 100% refund — including the onboarding fee — no questions asked." },
 ];
 
-const setupFeeDisplay = locale === 'pl' ? '1 590 zł' : '€390';
+const setupFeeDisplay =
+  locale === 'pl' ? '1 590 zł' :
+  locale === 'de' ? '€490' :
+  locale === 'fr' ? '€490' : '€490 / £429 / A$790 / NZ$850';
 ---
 
 <section class="container-x">

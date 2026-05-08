@@ -1,14 +1,19 @@
 ---
 import Logo from './Logo.astro';
-import { useTranslations, localizePath, alternateLocale, unlocalizePath, type Locale } from '../i18n/utils';
+import { useTranslations, localizePath, unlocalizePath, locales, localeMeta, type Locale } from '../i18n/utils';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-const altLocale = alternateLocale(locale);
-const altPath = localizePath(unlocalizePath(Astro.url.pathname), altLocale);
+const canonicalPath = unlocalizePath(Astro.url.pathname);
+const langOptions = locales.map((loc) => ({
+  code: loc,
+  ...localeMeta[loc],
+  href: localizePath(canonicalPath, loc),
+  isCurrent: loc === locale,
+}));
 
 const lp = (p: string) => localizePath(p, locale);
 
@@ -73,9 +78,23 @@ const forItems = [
       </nav>
 
       <div class="flex items-center gap-2">
-        <a href={altPath} class="nav-link hidden md:inline-flex" aria-label={`Switch to ${altLocale}`}>
-          {t('lang.switch')}
-        </a>
+        <div class="hovera-dropdown lang-switcher group relative hidden md:block">
+          <button class="dropdown-trigger lang-trigger" type="button" aria-label="Language">
+            <span class="lang-flag">{localeMeta[locale].flag}</span>
+            <span>{localeMeta[locale].short}</span>
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div class="dropdown-panel lang-panel" role="menu">
+            {langOptions.map((opt) => (
+              <a href={opt.href} class={`dropdown-item lang-item ${opt.isCurrent ? 'is-current' : ''}`} data-lang={opt.code}>
+                <span class="lang-flag">{opt.flag}</span>
+                <span>{opt.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
         <a href={lp('/kontakt')} class="btn btn-primary text-[13px] px-4 py-2">
           {t('nav.cta')}
         </a>
@@ -126,7 +145,13 @@ const forItems = [
         <a class="block py-2 text-sm font-medium" href={lp('/blog')}>{t('nav.blog')}</a>
         <a class="block py-2 text-sm font-medium" href={lp('/co-nowego')}>{t('nav.changelog')}</a>
         <a class="block py-2 text-sm font-medium" href={lp('/demo')}>{t('nav.demo')}</a>
-        <a class="block py-2 text-sm font-medium" href={altPath}>{t('lang.switch')}</a>
+        <div class="border-t pt-3 mt-2 flex flex-wrap gap-3">
+          {langOptions.map((opt) => (
+            <a class={`text-sm ${opt.isCurrent ? 'font-semibold' : ''}`} href={opt.href} data-lang={opt.code}>
+              {opt.flag} {opt.short}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </div>
@@ -217,6 +242,13 @@ const forItems = [
   .hovera-mobile[hidden] {
     display: none;
   }
+  .lang-trigger { padding: 0.4rem 0.7rem; }
+  .lang-flag { font-size: 1rem; line-height: 1; }
+  .lang-panel { min-width: 180px; left: auto; right: 0; transform: translateY(-6px); }
+  .hovera-dropdown.lang-switcher:hover .lang-panel,
+  .hovera-dropdown.lang-switcher:focus-within .lang-panel { transform: translateY(0); }
+  .lang-item { display: flex; gap: 0.6rem; align-items: center; }
+  .lang-item.is-current { background: var(--color-sand-light); font-weight: 500; }
 </style>
 
 <script>
@@ -235,4 +267,36 @@ const forItems = [
     if (!panel) return;
     panel.hidden = !panel.hidden;
   });
+
+  // Manual override: clicking a language link saves the choice
+  document.querySelectorAll<HTMLAnchorElement>('a[data-lang]').forEach((a) => {
+    a.addEventListener('click', () => {
+      try { localStorage.setItem('hovera-lang', a.dataset.lang || 'pl'); } catch {}
+    });
+  });
+
+  // Auto-detect on first visit only — never override a saved preference
+  (() => {
+    try {
+      const saved = localStorage.getItem('hovera-lang');
+      if (saved) return;
+      const supported = ['pl', 'en', 'de', 'fr'] as const;
+      type L = typeof supported[number];
+      const browser = (navigator.language || 'pl').slice(0, 2).toLowerCase() as L;
+      if (!supported.includes(browser)) return;
+
+      const path = location.pathname;
+      const seg = path.split('/')[1] || '';
+      const currentLang: L = (supported as readonly string[]).includes(seg) ? (seg as L) : 'pl';
+      if (currentLang === browser) {
+        localStorage.setItem('hovera-lang', browser);
+        return;
+      }
+      // Compute target path: strip current locale prefix, then add browser one
+      const stripped = (currentLang === 'pl') ? path : (path.replace(new RegExp(`^/${currentLang}`), '') || '/');
+      const target = browser === 'pl' ? stripped : `/${browser}${stripped === '/' ? '' : stripped}`;
+      localStorage.setItem('hovera-lang', browser);
+      if (target !== path) location.replace(target);
+    } catch {}
+  })();
 </script>

@@ -1,0 +1,61 @@
+---
+import { regionMeta, type Locale } from '../i18n/utils';
+
+interface Props {
+  regions: string[];
+  locale: Locale;
+}
+const { regions, locale } = Astro.props;
+
+const labels = {
+  pl: 'Ten artykuł dotyczy:',
+  en: 'This article is about:',
+  de: 'Dieser Artikel betrifft:',
+  fr: 'Cet article concerne :',
+} as const;
+---
+
+<aside class="region-banner" role="note" aria-label={labels[locale]}>
+  <span class="region-label">{labels[locale]}</span>
+  <span class="region-pills">
+    {regions.map((code) => {
+      const meta = regionMeta[code];
+      if (!meta) return null;
+      return (
+        <span class="region-pill">
+          <span class="region-flag" aria-hidden="true">{meta.flag}</span>
+          <span>{meta.label[locale]}</span>
+        </span>
+      );
+    })}
+  </span>
+</aside>
+
+<style>
+  .region-banner {
+    max-width: 48rem;
+    margin: 0 auto 1.5rem;
+    padding: 0.7rem 1rem;
+    background: var(--color-sand-light);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+  .region-label { color: var(--color-fg-muted); font-weight: 500; }
+  .region-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .region-pill {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  .region-flag { font-size: 1rem; line-height: 1; }
+</style>

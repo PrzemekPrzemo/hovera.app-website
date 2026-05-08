@@ -6,6 +6,7 @@ description: "Praktyczny przewodnik krok po kroku: jak w 2 dni przenieść stajn
 date: "2026-04-21"
 author: "Przemek"
 tags: ["Migracja"]
+regions: ["PL"]
 ---
 
 Decyzja o przejściu z Excela na dedykowany system zarządzania stajnią jest często odkładana z jednego powodu: "Jak ja to wszystko przeniosę?". 80 koni, 200 klientów, historia karnetów, faktury z ostatnich trzech lat — wydaje się, że to zajmie tygodnie.

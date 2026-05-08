@@ -6,6 +6,7 @@ description: "Everything a stable owner needs to know about EU e-invoicing in 20
 date: "2026-04-14"
 author: "Przemek"
 tags: ["Finance", "Riding school"]
+regions: ["PL"]
 ---
 
 From 2026 onwards more European countries roll out **mandatory B2B e-invoicing**. Yes — that includes equestrian stables. If you run a riding school, boarding, breeding or any horse-related business and you're a VAT taxpayer, you have an obligation to issue invoices through your country's e-invoicing system.

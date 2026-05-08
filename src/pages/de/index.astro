@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import ProductTour from '../../components/ProductTour.astro';
+import UseCases from '../../components/UseCases.astro';
+import Differentiators from '../../components/Differentiators.astro';
+import PricingTeaser from '../../components/PricingTeaser.astro';
+import TechBar from '../../components/TechBar.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const locale = 'de' as const;
+---
+
+<Base
+  title="Hovera — Der Stall läuft. Du atmest auf."
+  description="Operations-SaaS für Reitställe. Stundenplan, Reitkarten, Finanzen und Pferdebetreuung in einem Tool."
+>
+  <Hero locale={locale} />
+  <ProductTour locale={locale} />
+  <UseCases locale={locale} />
+  <Differentiators locale={locale} />
+  <PricingTeaser locale={locale} />
+  <TechBar locale={locale} />
+  <FinalCTA locale={locale} />
+</Base>
