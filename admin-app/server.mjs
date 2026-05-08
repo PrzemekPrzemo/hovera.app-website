@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { basicAuthMiddleware } from './lib/auth.mjs';
 import { listPosts, getPost, savePost, deletePost, generatePostId } from './lib/storage.mjs';
 import { generatePost } from './lib/claude.mjs';
+import { bulkGenerate, suggestTopics } from './lib/bulk.mjs';
 import {
   getTokenStatus,
   refreshToken,
@@ -72,9 +73,22 @@ api.patch('/posts/:id', async (req, res) => {
   const existing = await getPost(req.params.id);
   if (!existing) return res.status(404).json({ error: 'not found' });
   const merged = { ...existing, ...(req.body || {}), id: existing.id, updated_at: new Date().toISOString() };
+
+  // Auto-approve: if a draft just got its media URL, flip to 'approved' so the
+  // scheduler picks it up at the next cron tick.
+  if (existing.status === 'draft' && merged.status === 'draft' && hasMedia(merged)) {
+    merged.status = 'approved';
+  }
+
   await savePost(merged);
   res.json({ post: merged });
 });
+
+function hasMedia(p) {
+  if (p.type === 'CAROUSEL') return Array.isArray(p.images) && p.images.length >= 2;
+  if (p.type === 'REEL') return !!p.video_url;
+  return !!p.image_url;
+}
 
 api.delete('/posts/:id', async (req, res) => {
   const ok = await deletePost(req.params.id);
@@ -124,6 +138,44 @@ api.post('/generate', async (req, res) => {
     res.json({ post, raw: generated });
   } catch (err) {
     console.error('[generate]', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Topic suggestions only (cheap call, used to preview before bulk-generate)
+api.post('/suggest-topics', async (req, res) => {
+  const { count = 10, languages = ['EN'], pillars = null } = req.body || {};
+  try {
+    const topics = await suggestTopics({ count, languages, pillars });
+    res.json({ topics });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Bulk generate. Heavy — can take several minutes for 30+ posts.
+api.post('/bulk-generate', async (req, res) => {
+  const {
+    count = 12,
+    start,
+    hour = 9,
+    daysOfWeek = [1, 3, 5],
+    languages = ['EN'],
+    pillars = null,
+    type = 'IMAGE',
+  } = req.body || {};
+
+  if (!start) return res.status(400).json({ error: 'start (YYYY-MM-DD) is required' });
+
+  // Allow long execution for large batches
+  req.setTimeout(30 * 60 * 1000);
+  res.setTimeout(30 * 60 * 1000);
+
+  try {
+    const result = await bulkGenerate({ count, start, hour, daysOfWeek, languages, pillars, type });
+    res.json(result);
+  } catch (err) {
+    console.error('[bulk-generate]', err);
     res.status(500).json({ error: err.message });
   }
 });
