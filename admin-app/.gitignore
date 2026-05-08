@@ -1,0 +1,7 @@
+node_modules/
+.env
+.env.local
+data/posts/*.json
+!data/posts/.gitkeep
+data/tokens.json
+*.log

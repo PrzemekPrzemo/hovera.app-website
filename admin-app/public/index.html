@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hovera — Social Manager</title>
+<meta name="robots" content="noindex,nofollow">
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; background: #FAF8F4; color: #3D2E22; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; }
+  .pill-draft { background: #E8DDD0; color: #6B5B47; }
+  .pill-pending { background: #F7E5C5; color: #6B4E18; }
+  .pill-approved { background: #DCEAD0; color: #3D5C2C; }
+  .pill-published { background: #6FB67A; color: white; }
+  .pill-failed { background: #F4D7CF; color: #7A2E1A; }
+  .btn { padding: 0.5rem 0.95rem; border-radius: 10px; font-size: 0.85rem; font-weight: 500; border: 1px solid transparent; cursor: pointer; transition: opacity 0.15s; }
+  .btn:hover { opacity: 0.88; }
+  .btn-primary { background: #3D2E22; color: #FAF8F4; }
+  .btn-secondary { background: white; color: #3D2E22; border-color: #E8DDD0; }
+  .btn-ghost { background: transparent; color: #6B5B47; }
+  .btn-danger { background: #C44A37; color: white; }
+  .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.78rem; }
+  .input, .select, .textarea { width: 100%; padding: 0.55rem 0.85rem; border: 1px solid #E8DDD0; border-radius: 8px; font-size: 0.9rem; background: white; }
+  .input:focus, .select:focus, .textarea:focus { outline: 2px solid #A8956B; outline-offset: 1px; border-color: transparent; }
+  .label { font-size: 0.8rem; font-weight: 500; color: #6B5B47; margin-bottom: 0.25rem; display: block; }
+  .card { background: white; border: 1px solid #E8DDD0; border-radius: 14px; padding: 1.25rem; }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(61,46,34,0.45); z-index: 50; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+  .modal { background: white; border-radius: 16px; max-width: 720px; width: 100%; padding: 1.75rem; box-shadow: 0 20px 50px -12px rgba(0,0,0,0.3); }
+  .checkbox-row { display: inline-flex; gap: 0.4rem; align-items: center; padding: 0.3rem 0.65rem; background: #FAF8F4; border-radius: 8px; cursor: pointer; }
+  .checkbox-row input { accent-color: #3D2E22; }
+  .calendar-cell { aspect-ratio: 1; min-height: 70px; padding: 6px; background: white; border: 1px solid #F4EFE7; border-radius: 8px; display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; }
+  .calendar-cell.is-other { background: #FAF8F4; opacity: 0.55; }
+  .calendar-event { font-size: 0.7rem; padding: 2px 5px; background: #F7E5C5; border-radius: 4px; truncate: true; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  .nav-tab { padding: 0.55rem 1rem; border-radius: 999px; font-weight: 500; font-size: 0.9rem; cursor: pointer; }
+  .nav-tab.is-active { background: #3D2E22; color: white; }
+  .nav-tab:not(.is-active):hover { background: #E8DDD0; }
+</style>
+</head>
+<body x-data="adminApp()" x-init="init()" class="min-h-screen">
+
+<header class="border-b" style="border-color:#E8DDD0; background: white;">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-4 justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-lg font-semibold tracking-tight">Hovera · Social Manager</span>
+      <span class="pill" :class="ig.is_valid ? 'pill-published' : 'pill-failed'" x-text="ig.is_valid ? `IG OK · ${ig.days_to_expiry || '?'} d.` : 'IG offline'"></span>
+    </div>
+    <nav class="flex gap-1 flex-wrap">
+      <button class="nav-tab" :class="view==='list' && 'is-active'" @click="view='list'">Posts</button>
+      <button class="nav-tab" :class="view==='calendar' && 'is-active'" @click="view='calendar'">Calendar</button>
+      <button class="nav-tab" :class="view==='generate' && 'is-active'" @click="view='generate'">Generate</button>
+      <button class="nav-tab" :class="view==='settings' && 'is-active'" @click="view='settings'">Settings</button>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-8">
+
+  <!-- LIST VIEW -->
+  <section x-show="view==='list'" class="space-y-4">
+    <div class="flex flex-wrap gap-3 items-end">
+      <div>
+        <label class="label">Status</label>
+        <select class="select" x-model="filter.status">
+          <option value="">All</option>
+          <option value="draft">Draft</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="published">Published</option>
+          <option value="failed">Failed</option>
+        </select>
+      </div>
+      <div>
+        <label class="label">Language</label>
+        <select class="select" x-model="filter.language">
+          <option value="">All</option>
+          <option value="EN">EN</option>
+          <option value="DE">DE</option>
+          <option value="PL">PL</option>
+          <option value="FR">FR</option>
+          <option value="NL">NL</option>
+        </select>
+      </div>
+      <div>
+        <label class="label">Pillar</label>
+        <select class="select" x-model="filter.pillar">
+          <option value="">All</option>
+          <option value="problem_solution">Problem/Solution</option>
+          <option value="education">Education</option>
+          <option value="social_proof">Social proof</option>
+          <option value="horse_content">Horse content</option>
+          <option value="behind_scenes">Behind the scenes</option>
+        </select>
+      </div>
+      <div class="flex-1"></div>
+      <button class="btn btn-primary" @click="view='generate'">+ Generate new</button>
+    </div>
+
+    <div class="space-y-3">
+      <template x-for="p in filteredPosts" :key="p.id">
+        <article class="card flex flex-col md:flex-row gap-4 cursor-pointer hover:shadow-md transition-shadow" @click="openPost(p.id)">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="pill" :class="`pill-${p.status}`" x-text="p.status"></span>
+              <span class="pill" style="background:#FAF8F4; color:#6B5B47;" x-text="p.type"></span>
+              <span class="pill" style="background:#FAF8F4; color:#6B5B47;" x-text="p.pillar"></span>
+              <template x-for="l in (p.languages || [])"><span class="pill" style="background:#FAF8F4; color:#6B5B47;" x-text="l"></span></template>
+            </div>
+            <p class="font-medium truncate" x-text="p.caption?.slice(0, 120) || '(empty)'"></p>
+            <p class="text-xs text-gray-500 mt-1">
+              <span x-text="p.scheduled_time ? new Date(p.scheduled_time).toLocaleString() : 'Not scheduled'"></span>
+              <span class="mx-1">·</span>
+              <span x-text="p.id"></span>
+            </p>
+          </div>
+        </article>
+      </template>
+      <p x-show="filteredPosts.length === 0" class="text-center text-gray-500 py-12">No posts. Generate the first one.</p>
+    </div>
+  </section>
+
+  <!-- CALENDAR VIEW -->
+  <section x-show="view==='calendar'" class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold" x-text="calendarTitle"></h2>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary btn-sm" @click="calendarPrev()">←</button>
+        <button class="btn btn-secondary btn-sm" @click="calendarToday()">Today</button>
+        <button class="btn btn-secondary btn-sm" @click="calendarNext()">→</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-7 gap-1 text-xs uppercase tracking-wider text-gray-500">
+      <template x-for="d in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']"><div class="px-2 py-1" x-text="d"></div></template>
+    </div>
+    <div class="grid grid-cols-7 gap-1">
+      <template x-for="cell in calendarCells" :key="cell.iso">
+        <div class="calendar-cell" :class="{'is-other': cell.otherMonth}">
+          <span class="font-medium" x-text="cell.day"></span>
+          <template x-for="post in cell.posts" :key="post.id">
+            <div class="calendar-event" @click="openPost(post.id)" x-text="(post.caption||'').slice(0,28)"></div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- GENERATE FORM -->
+  <section x-show="view==='generate'" class="max-w-3xl">
+    <h2 class="text-xl font-semibold mb-4">Generate new post</h2>
+    <form @submit.prevent="onGenerate()" class="space-y-4 card">
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="label">Topic</label>
+          <input class="input" x-model="gen.topic" placeholder="e.g. KSeF for stables 2026" required>
+        </div>
+        <div>
+          <label class="label">Scheduled date/time</label>
+          <input class="input" type="datetime-local" x-model="gen.scheduled_time">
+        </div>
+        <div>
+          <label class="label">Pillar</label>
+          <select class="select" x-model="gen.pillar">
+            <option value="problem_solution">Problem/Solution</option>
+            <option value="education">Education</option>
+            <option value="social_proof">Social proof</option>
+            <option value="horse_content">Horse content</option>
+            <option value="behind_scenes">Behind the scenes</option>
+          </select>
+        </div>
+        <div>
+          <label class="label">Type</label>
+          <select class="select" x-model="gen.type">
+            <option value="IMAGE">Image</option>
+            <option value="CAROUSEL">Carousel</option>
+            <option value="REEL">Reel</option>
+          </select>
+        </div>
+        <div>
+          <label class="label">Tone</label>
+          <select class="select" x-model="gen.tone">
+            <option value="educational">Educational</option>
+            <option value="inspirational">Inspirational</option>
+            <option value="funny">Funny</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="label">Languages</label>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="l in ['EN','DE','PL','FR','NL']">
+            <label class="checkbox-row"><input type="checkbox" :value="l" x-model="gen.languages"><span x-text="l"></span></label>
+          </template>
+        </div>
+      </div>
+
+      <div>
+        <label class="label">Target countries (optional)</label>
+        <input class="input" x-model="gen.countriesText" placeholder="comma-separated, e.g. PL, DE, FR, UK, NL">
+        <p class="text-xs text-gray-500 mt-1">For local hashtag context. Leave empty for global.</p>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" class="btn btn-secondary" @click="view='list'">Cancel</button>
+        <button type="submit" class="btn btn-primary" :disabled="loading.generate">
+          <span x-show="!loading.generate">Generate with Claude</span>
+          <span x-show="loading.generate">Generating…</span>
+        </button>
+      </div>
+      <p x-show="generateError" class="text-sm text-red-700" x-text="generateError"></p>
+    </form>
+  </section>
+
+  <!-- SETTINGS / IG STATUS -->
+  <section x-show="view==='settings'" class="space-y-4 max-w-3xl">
+    <h2 class="text-xl font-semibold">Instagram connection</h2>
+    <div class="card space-y-2">
+      <p><strong>Token valid:</strong> <span x-text="ig.is_valid ? 'yes' : 'no'"></span></p>
+      <p><strong>Expires:</strong> <span x-text="ig.expires_at || '—'"></span></p>
+      <p><strong>Days to expiry:</strong> <span x-text="ig.days_to_expiry ?? '—'"></span></p>
+      <p x-show="ig.error" class="text-red-700"><strong>Error:</strong> <span x-text="ig.error"></span></p>
+      <div class="flex gap-2 pt-2">
+        <button class="btn btn-primary" @click="refreshIg()" :disabled="loading.ig">
+          <span x-show="!loading.ig">Refresh token</span>
+          <span x-show="loading.ig">Refreshing…</span>
+        </button>
+        <button class="btn btn-secondary" @click="loadIg()">Reload status</button>
+      </div>
+      <p x-show="refreshNote" class="text-xs text-amber-800 mt-2" x-text="refreshNote"></p>
+    </div>
+
+    <h3 class="text-lg font-semibold mt-6">Last 5 published</h3>
+    <div class="card space-y-2">
+      <template x-for="m in ig.recent" :key="m.id">
+        <div class="border-b py-2" style="border-color:#F4EFE7;">
+          <p class="text-xs text-gray-500" x-text="`${m.media_type} · ${new Date(m.timestamp).toLocaleString()}`"></p>
+          <p class="text-sm" x-text="(m.caption||'').slice(0,140)"></p>
+          <a class="text-xs underline" :href="m.permalink" target="_blank">Open on Instagram →</a>
+        </div>
+      </template>
+      <p x-show="!ig.recent || ig.recent.length===0" class="text-sm text-gray-500">No posts visible. Maybe token is expired or no published posts yet.</p>
+    </div>
+  </section>
+
+  <!-- POST DETAIL MODAL -->
+  <div class="modal-backdrop" x-show="modalPost" @click.self="modalPost=null" x-cloak>
+    <div class="modal" x-show="modalPost">
+      <template x-if="modalPost">
+        <div class="space-y-4">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="pill" :class="`pill-${modalPost.status}`" x-text="modalPost.status"></span>
+            <span class="pill" style="background:#FAF8F4; color:#6B5B47;" x-text="modalPost.type"></span>
+            <span class="pill" style="background:#FAF8F4; color:#6B5B47;" x-text="modalPost.pillar"></span>
+            <span class="ml-auto text-xs text-gray-500" x-text="modalPost.id"></span>
+          </div>
+
+          <div>
+            <label class="label">Scheduled</label>
+            <input class="input" type="datetime-local" :value="toLocal(modalPost.scheduled_time)" @change="modalPost.scheduled_time = $event.target.value">
+          </div>
+
+          <div>
+            <label class="label">Caption</label>
+            <textarea class="textarea" rows="8" x-model="modalPost.caption"></textarea>
+          </div>
+
+          <div>
+            <label class="label">Hashtags</label>
+            <textarea class="textarea" rows="2" x-model="modalPost.hashtags"></textarea>
+          </div>
+
+          <div>
+            <label class="label">First comment (engagement boost)</label>
+            <textarea class="textarea" rows="2" x-model="modalPost.first_comment"></textarea>
+          </div>
+
+          <div>
+            <label class="label">Graphic brief (for designer / Canva)</label>
+            <textarea class="textarea" rows="4" x-model="modalPost.graphic_brief"></textarea>
+            <p class="text-xs text-gray-500 mt-1" x-show="modalPost.suggested_image_search_query">
+              Suggested stock search: <strong x-text="modalPost.suggested_image_search_query"></strong>
+            </p>
+          </div>
+
+          <template x-if="modalPost.type==='REEL'">
+            <div>
+              <label class="label">Reel script</label>
+              <textarea class="textarea" rows="6" x-model="modalPost.reel_script"></textarea>
+            </div>
+          </template>
+
+          <template x-if="modalPost.type==='CAROUSEL' && modalPost.carousel_slides">
+            <div>
+              <label class="label">Carousel slides</label>
+              <pre class="card text-xs" x-text="JSON.stringify(modalPost.carousel_slides, null, 2)"></pre>
+            </div>
+          </template>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="label">Image URL</label>
+              <input class="input" x-model="modalPost.image_url" placeholder="https://...">
+            </div>
+            <div x-show="modalPost.type==='REEL'">
+              <label class="label">Video URL (mp4 public URL)</label>
+              <input class="input" x-model="modalPost.video_url" placeholder="https://...">
+            </div>
+          </div>
+
+          <div x-show="modalPost.type==='CAROUSEL'">
+            <label class="label">Carousel image URLs (one per line, 2–10)</label>
+            <textarea class="textarea" rows="4" :value="(modalPost.images || []).join('\n')" @change="modalPost.images = $event.target.value.split('\n').map(s=>s.trim()).filter(Boolean)"></textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-2 pt-2 border-t" style="border-color:#F4EFE7;">
+            <button class="btn btn-primary" @click="saveModal()">Save</button>
+            <button class="btn btn-secondary" @click="approve()" x-show="modalPost.status==='draft'">Mark approved</button>
+            <button class="btn btn-primary" @click="publishNow()" x-show="modalPost.status!=='published'" :disabled="loading.publish">
+              <span x-show="!loading.publish">Publish now</span>
+              <span x-show="loading.publish">Publishing…</span>
+            </button>
+            <button class="btn btn-secondary" @click="copy()">Copy caption + hashtags</button>
+            <button class="btn btn-ghost" @click="closeModal()">Close</button>
+            <button class="btn btn-danger ml-auto" @click="deletePost()">Delete</button>
+          </div>
+          <p x-show="modalError" class="text-sm text-red-700" x-text="modalError"></p>
+        </div>
+      </template>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function adminApp() {
+  return {
+    view: 'list',
+    posts: [],
+    filter: { status: '', language: '', pillar: '' },
+    modalPost: null,
+    modalError: '',
+    generateError: '',
+    loading: { generate: false, publish: false, ig: false },
+    refreshNote: '',
+    ig: { is_valid: false, recent: [] },
+    calendarRef: new Date(),
+    gen: { topic: '', pillar: 'education', type: 'IMAGE', tone: 'educational', languages: ['EN'], countriesText: '', scheduled_time: '' },
+
+    async init() {
+      await this.loadPosts();
+      this.loadIg();
+    },
+
+    async loadPosts() {
+      const r = await fetch('/api/admin/posts');
+      const d = await r.json();
+      this.posts = d.posts || [];
+    },
+
+    async loadIg() {
+      try {
+        const r = await fetch('/api/admin/ig/status');
+        const d = await r.json();
+        this.ig = { ...d.status, recent: d.recent || [] };
+      } catch (err) {
+        this.ig = { is_valid: false, error: err.message, recent: [] };
+      }
+    },
+
+    async refreshIg() {
+      this.loading.ig = true; this.refreshNote = '';
+      try {
+        const r = await fetch('/api/admin/ig/refresh-token', { method: 'POST' });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        this.refreshNote = d.note + ' New token: ' + (d.data?.access_token || '?');
+        await this.loadIg();
+      } catch (err) {
+        this.refreshNote = 'Error: ' + err.message;
+      } finally {
+        this.loading.ig = false;
+      }
+    },
+
+    get filteredPosts() {
+      return this.posts.filter((p) => {
+        if (this.filter.status && p.status !== this.filter.status) return false;
+        if (this.filter.language && !(p.languages || []).includes(this.filter.language)) return false;
+        if (this.filter.pillar && p.pillar !== this.filter.pillar) return false;
+        return true;
+      });
+    },
+
+    async openPost(id) {
+      const r = await fetch(`/api/admin/posts/${encodeURIComponent(id)}`);
+      const d = await r.json();
+      this.modalPost = d.post;
+      this.modalError = '';
+    },
+
+    closeModal() { this.modalPost = null; this.modalError = ''; },
+
+    toLocal(iso) {
+      if (!iso) return '';
+      const d = new Date(iso);
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    },
+
+    async saveModal() {
+      this.modalError = '';
+      const id = this.modalPost.id;
+      const r = await fetch(`/api/admin/posts/${encodeURIComponent(id)}`, {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(this.modalPost),
+      });
+      const d = await r.json();
+      if (!r.ok) { this.modalError = d.error || 'save failed'; return; }
+      this.modalPost = d.post;
+      await this.loadPosts();
+    },
+
+    async approve() {
+      this.modalPost.status = 'approved';
+      await this.saveModal();
+    },
+
+    async publishNow() {
+      if (!confirm('Publish this post to Instagram now?')) return;
+      this.loading.publish = true; this.modalError = '';
+      try {
+        const r = await fetch(`/api/admin/publish/${encodeURIComponent(this.modalPost.id)}`, { method: 'POST' });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error);
+        this.modalPost = d.post;
+        await this.loadPosts();
+        alert('Published! IG ID: ' + (d.ig?.id || '?'));
+      } catch (err) {
+        this.modalError = err.message;
+      } finally {
+        this.loading.publish = false;
+      }
+    },
+
+    copy() {
+      const text = `${this.modalPost.caption}\n\n${this.modalPost.hashtags}`;
+      navigator.clipboard.writeText(text).then(() => alert('Copied!'));
+    },
+
+    async deletePost() {
+      if (!confirm('Delete this post permanently?')) return;
+      const id = this.modalPost.id;
+      const r = await fetch(`/api/admin/posts/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (!r.ok) { this.modalError = 'delete failed'; return; }
+      this.modalPost = null;
+      await this.loadPosts();
+    },
+
+    async onGenerate() {
+      this.loading.generate = true; this.generateError = '';
+      try {
+        const countries = this.gen.countriesText.split(',').map(s => s.trim()).filter(Boolean);
+        const r = await fetch('/api/admin/generate', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ ...this.gen, countries, scheduled_time: this.gen.scheduled_time || null }),
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'generation failed');
+        await this.loadPosts();
+        this.view = 'list';
+        await this.openPost(d.post.id);
+      } catch (err) {
+        this.generateError = err.message;
+      } finally {
+        this.loading.generate = false;
+      }
+    },
+
+    // Calendar
+    get calendarTitle() {
+      const m = this.calendarRef.toLocaleString(undefined, { month: 'long', year: 'numeric' });
+      return m.charAt(0).toUpperCase() + m.slice(1);
+    },
+    calendarPrev() { const d = new Date(this.calendarRef); d.setMonth(d.getMonth() - 1); this.calendarRef = d; },
+    calendarNext() { const d = new Date(this.calendarRef); d.setMonth(d.getMonth() + 1); this.calendarRef = d; },
+    calendarToday() { this.calendarRef = new Date(); },
+    get calendarCells() {
+      const ref = this.calendarRef;
+      const first = new Date(ref.getFullYear(), ref.getMonth(), 1);
+      // start from Monday
+      const offset = (first.getDay() + 6) % 7;
+      const start = new Date(first); start.setDate(start.getDate() - offset);
+      const cells = [];
+      for (let i = 0; i < 42; i++) {
+        const d = new Date(start); d.setDate(start.getDate() + i);
+        const iso = d.toISOString().slice(0, 10);
+        const posts = this.posts.filter((p) => p.scheduled_time && p.scheduled_time.slice(0, 10) === iso);
+        cells.push({
+          iso,
+          day: d.getDate(),
+          otherMonth: d.getMonth() !== ref.getMonth(),
+          posts,
+        });
+      }
+      return cells;
+    },
+  };
+}
+</script>
+</body>
+</html>
