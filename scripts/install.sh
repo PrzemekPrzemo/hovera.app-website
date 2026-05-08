@@ -161,6 +161,47 @@ if [[ $RUN_AS_ROOT -eq 1 ]]; then
   fi
 fi
 
+# ─── 7c. admin-app (Social Manager, Express + Node) ───
+ADMIN_SRC="$WORK_DIR/admin-app"
+ADMIN_DST="$(dirname "$DOCROOT")/admin-app"   # /var/www/vhosts/hovera.app/admin-app
+
+if [[ -d "$ADMIN_SRC" ]]; then
+  say "Synchronizuję admin-app → $ADMIN_DST"
+  mkdir -p "$ADMIN_DST"
+  # kod przepisujemy, ALE chronimy .env, data/ i node_modules
+  rsync -a --delete \
+    --exclude='/.env' \
+    --exclude='/data' \
+    --exclude='/node_modules' \
+    "$ADMIN_SRC/" "$ADMIN_DST/"
+  ok "Pliki admin-app zaktualizowane"
+
+  # zainstaluj zależności
+  say "Instaluję zależności admin-app (npm install --omit=dev)..."
+  ( cd "$ADMIN_DST" && npm install --omit=dev --no-audit --no-fund --silent ) || warn "npm install nieudane — sprawdź logi"
+
+  # struktura danych
+  mkdir -p "$ADMIN_DST/data/posts"
+  [[ -f "$ADMIN_DST/data/posts/.gitkeep" ]] || touch "$ADMIN_DST/data/posts/.gitkeep"
+
+  # .env — utwórz z .env.example tylko jeśli nie istnieje
+  if [[ ! -f "$ADMIN_DST/.env" ]]; then
+    cp "$ADMIN_DST/.env.example" "$ADMIN_DST/.env"
+    chmod 600 "$ADMIN_DST/.env"
+    warn ".env utworzone z domyślnych wartości — UZUPEŁNIJ klucze API w $ADMIN_DST/.env i restartuj Plesk Node app"
+  fi
+
+  # właściciel
+  if [[ $RUN_AS_ROOT -eq 1 && -n "${PLESK_OWNER:-}" && "$PLESK_OWNER" != "root:root" ]]; then
+    chown -R "$PLESK_OWNER" "$ADMIN_DST"
+  fi
+
+  ok "admin-app zsynchronizowany"
+  echo "    → włącz w Plesk: Domains → ${DOMAIN} → Node.js"
+  echo "      Application Root: /admin-app, Startup File: server.mjs, Node 22"
+  echo "    → Nginx proxy + cron w README: $ADMIN_DST/README.md"
+fi
+
 # ─── 8. podsumowanie ───
 echo
 echo "  ╔════════════════════════════════════════╗"
