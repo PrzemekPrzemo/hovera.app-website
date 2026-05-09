@@ -1,6 +1,6 @@
 ---
 type Slug = 'kalendarz' | 'karnety' | 'finanse-ksef' | 'zapisy-online' | 'dziennik-konia' | 'pensjonat' | 'pasza-zywienie';
-type Locale = 'pl' | 'en';
+type Locale = 'pl' | 'en' | 'de' | 'fr';
 
 interface Props {
   slug: Slug;
@@ -8,6 +8,10 @@ interface Props {
 }
 
 const { slug, locale } = Astro.props;
+// DE/FR product pages reuse the English mockup wording for now — only the
+// surrounding page copy is translated. Visual labels stay in EN to match
+// the actual app screenshots regardless of UI language.
+const dataLocale: 'pl' | 'en' = locale === 'pl' ? 'pl' : 'en';
 
 const t = {
   pl: {
@@ -148,7 +152,7 @@ const t = {
   },
 };
 
-const x = t[locale];
+const x = t[dataLocale];
 const url = x.urls[slug];
 ---
 
