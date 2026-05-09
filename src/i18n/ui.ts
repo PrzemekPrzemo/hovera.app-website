@@ -47,6 +47,7 @@ export const ui = {
     'hero.cta.primary': 'Wypróbuj za 0 zł',
     'hero.cta.secondary': 'Zobacz demo (3 min)',
     'hero.note': '14 dni za darmo • Bez karty • Bez instalacji',
+    'hero.demo.label': 'Live demo bez rejestracji',
 
     'social.title': 'Już używają nas stajnie w Polsce',
     'social.stat1': 'jazd zaplanowanych',
@@ -119,6 +120,7 @@ export const ui = {
     'hero.cta.primary': 'Try for free',
     'hero.cta.secondary': 'Watch demo (3 min)',
     'hero.note': '14 days free • No card • No install',
+    'hero.demo.label': 'Live demo, no signup',
 
     'social.title': 'Trusted by stables across Europe',
     'social.stat1': 'rides scheduled',
@@ -191,6 +193,7 @@ export const ui = {
     'hero.cta.primary': 'Kostenlos testen',
     'hero.cta.secondary': 'Demo ansehen (3 Min.)',
     'hero.note': '14 Tage gratis • Keine Karte • Keine Installation',
+    'hero.demo.label': 'Live-Demo ohne Anmeldung',
 
     'social.title': 'Vertraut von Reitställen in ganz Europa',
     'social.stat1': 'geplante Ritte',
@@ -263,6 +266,7 @@ export const ui = {
     'hero.cta.primary': 'Essai gratuit',
     'hero.cta.secondary': 'Voir la démo (3 min)',
     'hero.note': '14 jours gratuits • Sans carte • Sans installation',
+    'hero.demo.label': 'Démo en direct, sans inscription',
 
     'social.title': 'Utilisé par des écuries partout en Europe',
     'social.stat1': 'séances planifiées',

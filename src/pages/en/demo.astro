@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import LiveDemoCard from '../../components/LiveDemoCard.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 import { localizePath } from '../../i18n/utils';
 const locale = 'en' as const;
@@ -11,8 +12,10 @@ const lp = (p: string) => localizePath(p, locale);
   <PageHero
     eyebrow="Demo"
     title="See Hovera in action"
-    subtitle="Three paths: an interactive tour with real app screens, a live demo with our team, or a voice-over video (coming soon)."
+    subtitle="Four paths: a live demo of the running app with credentials ready, an interactive tour with real screens, a 1-on-1 with our team, or a voice-over video (coming soon)."
   />
+
+  <LiveDemoCard locale={locale} />
 
   <section class="container-x pb-8">
     <a href={lp('/demo/jak-to-dziala')} class="tour-cta" data-reveal>
