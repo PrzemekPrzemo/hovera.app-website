@@ -9,11 +9,13 @@ description: "Online booking for equestrian stables. Public page, Google integra
 accent: booking
 bullets:
   - "Public stable page on a custom domain"
-  - "24/7 booking, client only sees free slots"
-  - "Stripe / SEPA / instant payment"
+  - "24/7 booking, client only sees free slots (no Arena/Box/Instructor conflicts)"
+  - "Stripe / SEPA / Przelewy24 / card — instant payment"
+  - "Client account once, subsequent bookings without re-entering data"
+  - "ClientMessage — client ↔ stable chat in-panel, not in SMS threads"
   - "Automatic email + SMS confirmations"
-  - "Configurable cancellation policy"
-  - "SEO out-of-the-box (Google indexing)"
+  - "Cancellation policy configurable per ride type"
+  - "SEO out-of-the-box (Google indexing, schema.org, OG tags)"
 subFeatures:
   - title: "Stable website, no webmaster"
     body: "Hovera generates a public page at your-stable.hovera.app (or your domain). Logo, description, photos, horses, instructors, pricing. Edit in the panel — changes are live."

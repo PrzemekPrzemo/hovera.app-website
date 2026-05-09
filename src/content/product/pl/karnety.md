@@ -8,12 +8,14 @@ subtitle: "Klient kupuje karnet — system odlicza jazdy, generuje faktury i wys
 description: "Karnety jeździeckie online. Auto-rozliczanie po jeździe, integracja z bookingiem, fakturowanie KSeF, BLIK i Przelewy24. Czasowe i ilościowe."
 accent: passes
 bullets:
-  - "Auto-odjęcie po każdej jeździe"
-  - "Karnety czasowe (miesiąc) i ilościowe (np. 12 jazd)"
-  - "Powiadomienia 'zostały Ci 2 wejścia'"
-  - "Wpłaty BLIK / Przelewy24 / przelew tradycyjny"
-  - "Faktura wystawia się automatycznie z opłaty"
-  - "Polityka zwrotów konfigurowalna"
+  - "Auto-odjęcie po każdej jeździe (PassUse rejestruje datę, koń, instruktor)"
+  - "Karnety czasowe (miesiąc / kwartał) i ilościowe (4, 8, 10, 20 wejść)"
+  - "Karnety wspólne (rodzinne, partnerskie, dla rodzeństwa)"
+  - "Powiadomienia 'zostały Ci 2 wejścia' + 'karnet wygasa za 7 dni'"
+  - "Wpłaty BLIK / Przelewy24 / Stripe / przelew tradycyjny"
+  - "Faktura wystawia się automatycznie z każdej wpłaty (KSeF / Peppol)"
+  - "Polityka zwrotów konfigurowalna per karnet"
+  - "Sprzedaż jednym linkiem przez publiczną stronę stajni"
 subFeatures:
   - title: "Sprzedaż jednym linkiem"
     body: "Wysyłasz klientowi link, on płaci BLIKiem, dostaje karnet, ty masz fakturę KSeF. 30 sekund, bez papieru, bez 'oddzwonię z numerem konta'."

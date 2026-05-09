@@ -1,5 +1,5 @@
 ---
-type Slug = 'kalendarz' | 'karnety' | 'finanse-ksef' | 'zapisy-online' | 'dziennik-konia' | 'ai-copilot';
+type Slug = 'kalendarz' | 'karnety' | 'finanse-ksef' | 'zapisy-online' | 'dziennik-konia' | 'pensjonat' | 'pasza-zywienie';
 type Locale = 'pl' | 'en';
 
 interface Props {
@@ -17,7 +17,8 @@ const t = {
       'finanse-ksef': 'app.hovera.app/faktury',
       'zapisy-online': 'hovera.app/zapisz/stajnia-pod-debem',
       'dziennik-konia': 'app.hovera.app/konie/zorza',
-      'ai-copilot': 'app.hovera.app/copilot',
+      'pensjonat': 'app.hovera.app/pensjonat/mapa',
+      'pasza-zywienie': 'app.hovera.app/pasza/karmienie',
     },
     cal: { title: 'Kalendarz · poniedziałek 10 lis', conflict: 'Konflikt rezerwacji', conflictBody: 'Zorza i Tomek — 14:00. Wybierz innego konia albo przesuń godzinę.', resolve: 'Pokaż wolne sloty', cancel: 'Anuluj', monday: 'pon', dayLabels: ['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'] },
     pass: { title: 'Karnety · wszystkie aktywne', headerName: 'Klient', headerType: 'Typ', headerLeft: 'Pozostało', headerStatus: 'Status', rows: [
@@ -38,7 +39,44 @@ const t = {
       { time: '3 dni temu', label: 'Wizyta wet · szczepienia', kind: 'vet' },
       { time: '5 dni temu', label: 'Pasza zmieniona na musli', kind: 'feed' },
     ] },
-    ai: { title: 'Hovera Copilot', prompt: 'Pokaż konie, które w tym tygodniu były nadmiernie obciążone.', a: 'Zorza miała 6 jednostek treningowych w 5 dni — to o 2 więcej niż jej średnia. Sugeruję dzień pasywny lub jazdę spacerową.', actionA: 'Wstaw dzień wolny', actionB: 'Pokaż wykres' },
+    boarding: {
+      title: 'Pensjonat · mapa boksów',
+      legend: { occupied: 'Zajęty', free: 'Wolny', service: 'Serwis' },
+      summaryA: 'Stajnia A · 18 boksów · 16 zajętych',
+      summaryB: 'Stajnia B · 12 boksów · 11 zajętych',
+      boxes: [
+        { id: 1, name: 'Halina', state: 'occupied' },
+        { id: 2, name: 'Atos', state: 'occupied' },
+        { id: 3, name: '—', state: 'free' },
+        { id: 4, name: 'Bonita', state: 'occupied' },
+        { id: 5, name: 'Niko', state: 'occupied' },
+        { id: 6, name: 'Riko', state: 'occupied' },
+        { id: 7, name: 'Misia', state: 'occupied' },
+        { id: 8, name: '—', state: 'service' },
+        { id: 9, name: 'Lima', state: 'occupied' },
+        { id: 10, name: 'Karo', state: 'occupied' },
+        { id: 11, name: 'Mocca', state: 'occupied' },
+        { id: 12, name: 'Bystry', state: 'occupied' },
+      ],
+      footer: 'Klik na boks → karta konia, historia przypisań, faktura cykliczna',
+    },
+    feed: {
+      title: 'Karmienie · 6:30 · 24 konie',
+      progress: '17 z 24 zrobione',
+      rows: [
+        { name: 'Halina', plan: 'owies 2 kg + siano + suplement stawów', done: true },
+        { name: 'Atos', plan: 'musli 1.5 kg + siano + olej lniany', done: true },
+        { name: 'Bonita', plan: 'owies 1.8 kg + siano · LOW SUGAR', done: true },
+        { name: 'Niko', plan: 'musli 2 kg + siano + elektrolity', done: false, current: true },
+        { name: 'Riko', plan: 'owies 1.5 kg + siano', done: false },
+      ],
+      stockTitle: 'Magazyn (najniższe stany)',
+      stock: [
+        { item: 'Owies', amount: '50 kg', warn: true, days: '~3 dni' },
+        { item: 'Musli low-sugar', amount: '120 kg', warn: false, days: '~9 dni' },
+        { item: 'Olej lniany', amount: '4 L', warn: true, days: '~5 dni' },
+      ],
+    },
   },
   en: {
     urls: {
@@ -47,7 +85,8 @@ const t = {
       'finanse-ksef': 'app.hovera.app/invoices',
       'zapisy-online': 'hovera.app/book/stable-under-the-oak',
       'dziennik-konia': 'app.hovera.app/horses/zorza',
-      'ai-copilot': 'app.hovera.app/copilot',
+      'pensjonat': 'app.hovera.app/boarding/map',
+      'pasza-zywienie': 'app.hovera.app/feeding/round',
     },
     cal: { title: 'Calendar · Monday Nov 10', conflict: 'Booking conflict', conflictBody: 'Zorza and Tomek — 2:00 PM. Pick another horse or move the time.', resolve: 'Show free slots', cancel: 'Cancel', monday: 'Mon', dayLabels: ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'] },
     pass: { title: 'Passes · all active', headerName: 'Client', headerType: 'Type', headerLeft: 'Remaining', headerStatus: 'Status', rows: [
@@ -68,7 +107,44 @@ const t = {
       { time: '3 days ago', label: 'Vet · vaccinations', kind: 'vet' },
       { time: '5 days ago', label: 'Feed switched to muesli', kind: 'feed' },
     ] },
-    ai: { title: 'Hovera Copilot', prompt: 'Show me horses that were overworked this week.', a: 'Zorza had 6 training sessions in 5 days — 2 more than her average. I suggest a passive day or a walk-only ride.', actionA: 'Add rest day', actionB: 'Open chart' },
+    boarding: {
+      title: 'Boarding · box map',
+      legend: { occupied: 'Occupied', free: 'Free', service: 'Service' },
+      summaryA: 'Stable A · 18 boxes · 16 occupied',
+      summaryB: 'Stable B · 12 boxes · 11 occupied',
+      boxes: [
+        { id: 1, name: 'Halina', state: 'occupied' },
+        { id: 2, name: 'Atos', state: 'occupied' },
+        { id: 3, name: '—', state: 'free' },
+        { id: 4, name: 'Bonita', state: 'occupied' },
+        { id: 5, name: 'Niko', state: 'occupied' },
+        { id: 6, name: 'Riko', state: 'occupied' },
+        { id: 7, name: 'Misia', state: 'occupied' },
+        { id: 8, name: '—', state: 'service' },
+        { id: 9, name: 'Lima', state: 'occupied' },
+        { id: 10, name: 'Karo', state: 'occupied' },
+        { id: 11, name: 'Mocca', state: 'occupied' },
+        { id: 12, name: 'Bystry', state: 'occupied' },
+      ],
+      footer: 'Click a box → horse card, assignment history, recurring invoice',
+    },
+    feed: {
+      title: 'Feeding · 6:30 · 24 horses',
+      progress: '17 of 24 done',
+      rows: [
+        { name: 'Halina', plan: 'oats 2 kg + hay + joint supplement', done: true },
+        { name: 'Atos', plan: 'muesli 1.5 kg + hay + linseed oil', done: true },
+        { name: 'Bonita', plan: 'oats 1.8 kg + hay · LOW SUGAR', done: true },
+        { name: 'Niko', plan: 'muesli 2 kg + hay + electrolytes', done: false, current: true },
+        { name: 'Riko', plan: 'oats 1.5 kg + hay', done: false },
+      ],
+      stockTitle: 'Stock (lowest items)',
+      stock: [
+        { item: 'Oats', amount: '50 kg', warn: true, days: '~3 days' },
+        { item: 'Low-sugar muesli', amount: '120 kg', warn: false, days: '~9 days' },
+        { item: 'Linseed oil', amount: '4 L', warn: true, days: '~5 days' },
+      ],
+    },
   },
 };
 
@@ -209,16 +285,59 @@ const url = x.urls[slug];
       </div>
     )}
 
-    {slug === 'ai-copilot' && (
-      <div class="ai">
-        <div class="ai-head"><span class="ai-spark">✦</span><span class="ai-title">{x.ai.title}</span></div>
-        <div class="ai-prompt">{x.ai.prompt}</div>
-        <div class="ai-answer">
-          <p>{x.ai.a}</p>
-          <div class="ai-actions">
-            <button class="ps-btn ps-btn--primary">{x.ai.actionA}</button>
-            <button class="ps-btn ps-btn--ghost">{x.ai.actionB}</button>
-          </div>
+    {slug === 'pensjonat' && (
+      <div class="brd">
+        <div class="brd-head">
+          <span class="ps-eyebrow">{x.boarding.title}</span>
+          <span class="brd-legend">
+            <span class="brd-leg-item"><span class="brd-leg brd-leg--occ"></span>{x.boarding.legend.occupied}</span>
+            <span class="brd-leg-item"><span class="brd-leg brd-leg--free"></span>{x.boarding.legend.free}</span>
+            <span class="brd-leg-item"><span class="brd-leg brd-leg--svc"></span>{x.boarding.legend.service}</span>
+          </span>
+        </div>
+        <div class="brd-summary">{x.boarding.summaryA}</div>
+        <div class="brd-grid">
+          {x.boarding.boxes.map((b: { id: number; name: string; state: string }) => (
+            <div class={`brd-box brd-box--${b.state}`}>
+              <span class="brd-box-id">#{b.id}</span>
+              <span class="brd-box-name">{b.name}</span>
+            </div>
+          ))}
+        </div>
+        <div class="brd-summary brd-summary--b">{x.boarding.summaryB}</div>
+        <p class="brd-footer">{x.boarding.footer}</p>
+      </div>
+    )}
+
+    {slug === 'pasza-zywienie' && (
+      <div class="fd">
+        <div class="fd-head">
+          <span class="ps-eyebrow">{x.feed.title}</span>
+          <span class="status status--ok">{x.feed.progress}</span>
+        </div>
+        <ul class="fd-list">
+          {x.feed.rows.map((r: { name: string; plan: string; done: boolean; current?: boolean }) => (
+            <li class={`fd-row ${r.done ? 'is-done' : ''} ${r.current ? 'is-current' : ''}`}>
+              <span class={`fd-check ${r.done ? 'is-checked' : ''}`}>
+                {r.done && <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.5l2.5 2.5L9.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>}
+              </span>
+              <span class="fd-name">{r.name}</span>
+              <span class="fd-plan muted-cell">{r.plan}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="fd-stock">
+          <span class="ps-eyebrow">{x.feed.stockTitle}</span>
+          <ul class="fd-stock-list">
+            {x.feed.stock.map((s: { item: string; amount: string; warn: boolean; days: string }) => (
+              <li class={`fd-stock-row ${s.warn ? 'is-warn' : ''}`}>
+                <span class="fd-stock-name">{s.item}</span>
+                <span class="fd-stock-amount mono">{s.amount}</span>
+                <span class={`status ${s.warn ? 'status--warn' : 'status--ok'}`}>{s.days}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     )}
@@ -374,14 +493,47 @@ const url = x.urls[slug];
   .hev-time { font-family: ui-monospace, monospace; font-size: 0.78rem; color: var(--color-fg-muted); width: 84px; flex-shrink: 0; }
   .hev-label { font-size: 0.9rem; }
 
-  /* AI */
-  .ai-head { display: flex; gap: 0.6rem; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); }
-  .ai-spark { width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, var(--color-ochre), var(--color-bark)); color: var(--color-cream); display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; }
-  .ai-title { font-weight: 500; }
-  .ai-prompt { margin-top: 1rem; padding: 0.9rem 1.1rem; background: var(--color-sand-light); border-radius: 12px; font-size: 0.92rem; max-width: 32rem; }
-  .ai-answer { margin-top: 1rem; padding: 1.1rem 1.3rem; background: white; border: 1px solid var(--color-border); border-radius: 14px; box-shadow: 0 8px 20px -8px rgba(61,46,34,0.12); animation: typed 0.6s 0.4s both; }
-  .ai-answer p { line-height: 1.55; font-size: 0.92rem; }
-  .ai-actions { display: flex; gap: 0.6rem; margin-top: 0.9rem; }
+  /* BOARDING */
+  .brd-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem; }
+  .brd-legend { display: inline-flex; gap: 0.7rem; font-size: 0.72rem; color: var(--color-fg-muted); flex-wrap: wrap; }
+  .brd-leg-item { display: inline-flex; gap: 0.3rem; align-items: center; }
+  .brd-leg { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .brd-leg--occ { background: var(--color-ochre); }
+  .brd-leg--free { background: #DCEAD0; }
+  .brd-leg--svc { background: #F4D7CF; }
+  .brd-summary { font-size: 0.78rem; color: var(--color-fg-muted); margin: 0.5rem 0; }
+  .brd-summary--b { margin-top: 1rem; }
+  .brd-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 8px 0; }
+  @media (max-width: 600px) { .brd-grid { grid-template-columns: repeat(4, 1fr); } }
+  .brd-box {
+    aspect-ratio: 1.1; padding: 6px;
+    border-radius: 8px; border: 1px solid var(--color-border);
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-size: 0.72rem; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .brd-box:hover { transform: translateY(-1px); }
+  .brd-box--occupied { background: var(--color-ochre); color: var(--color-cream); border-color: var(--color-ochre); }
+  .brd-box--free { background: #DCEAD0; color: #3D5C2C; border-color: #DCEAD0; }
+  .brd-box--service { background: #F4D7CF; color: #7A2E1A; border-color: #F4D7CF; }
+  .brd-box-id { font-weight: 600; opacity: 0.8; font-family: ui-monospace, monospace; font-size: 0.64rem; }
+  .brd-box-name { font-weight: 500; }
+  .brd-footer { font-size: 0.72rem; color: var(--color-fg-muted); margin-top: 0.7rem; text-align: center; }
+
+  /* FEED */
+  .fd-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem; }
+  .fd-list { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-direction: column; gap: 4px; }
+  .fd-row { display: grid; grid-template-columns: 22px 84px 1fr; align-items: center; gap: 10px; padding: 7px 10px; background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.85rem; }
+  .fd-row.is-done { background: rgba(111,182,122,0.08); }
+  .fd-row.is-current { box-shadow: 0 0 0 2px var(--color-ochre); }
+  .fd-check { width: 20px; height: 20px; border-radius: 999px; border: 1.5px solid var(--color-border); display: inline-flex; align-items: center; justify-content: center; }
+  .fd-check.is-checked { background: #6FB67A; border-color: #6FB67A; color: white; }
+  .fd-name { font-weight: 600; }
+  .fd-plan { font-size: 0.78rem; line-height: 1.35; }
+  .fd-stock { padding: 10px 12px; background: var(--color-sand-light); border-radius: 10px; }
+  .fd-stock-list { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 3px; }
+  .fd-stock-row { display: grid; grid-template-columns: 1fr 70px 80px; align-items: center; gap: 8px; padding: 5px 8px; background: var(--color-cream); border-radius: 6px; font-size: 0.8rem; }
+  .fd-stock-row.is-warn { background: rgba(244,215,207,0.5); }
+  .fd-stock-name { font-weight: 500; }
 
   @media (max-width: 600px) {
     .ps-body { padding: 1rem; min-height: 320px; }
