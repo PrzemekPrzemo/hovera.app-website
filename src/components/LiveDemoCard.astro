@@ -7,52 +7,38 @@ interface Props {
 const { locale } = Astro.props;
 
 const DEMO_URL = 'https://app.hovera.app/demo';
-const DEMO_USER = 'demo@hovera.app';
-const DEMO_PASS = 'demo';
 
 const text = {
   pl: {
     eyebrow: 'Live demo',
-    title: 'Wejdź do działającej Hovery — login i hasło już czekają',
-    body: 'Pre-seeded sandbox z 30 końmi, 10 klientami, gotowym kalendarzem, fakturami cyklicznymi, planem żywienia, dziennikami zdrowia. Klikasz, edytujesz, generujesz fakturę — wszystko działa naprawdę.',
-    creds: 'Login do dema',
-    user: 'Login',
-    pass: 'Hasło',
+    title: 'Wejdź do działającej Hovery — bez rejestracji',
+    body: 'Pre-seeded sandbox z 30 końmi, 10 klientami, gotowym kalendarzem, fakturami cyklicznymi, planem żywienia i dziennikami zdrowia. Klikasz, edytujesz, generujesz fakturę — wszystko działa naprawdę.',
     cta: 'Otwórz live demo →',
-    note: 'Stan resetuje się co 7 dni. Twoje zmiany wracają do punktu wyjścia. Ograniczeń funkcjonalnych nie ma — testuj wszystko.',
-    tip: 'Wskazówka: zacznij od „Dashboard" → przejdź do „Kalendarz" → spróbuj zarezerwować jazdę z konfliktem (system Cię zatrzyma). Potem zobacz „Faktury cykliczne" → wystaw fakturę z KSeF.',
+    note: 'Bez logowania, bez formularza. Stan resetuje się co 7 dni — Twoje zmiany wracają do punktu wyjścia. Pełna funkcjonalność, brak ograniczeń.',
+    tip: 'Wskazówka: zacznij od „Dashboard" → przejdź do „Kalendarz" → spróbuj zarezerwować jazdę z konfliktem (system Cię zatrzyma). Potem otwórz „Faktury cykliczne" i wystaw fakturę z KSeF.',
   },
   en: {
     eyebrow: 'Live demo',
-    title: 'Step into a running Hovera — credentials are ready',
-    body: 'A pre-seeded sandbox with 30 horses, 10 clients, a populated calendar, recurring invoices, feeding plans, full health records. Click, edit, issue an invoice — everything is real.',
-    creds: 'Demo login',
-    user: 'Username',
-    pass: 'Password',
+    title: 'Step into a running Hovera — no signup',
+    body: 'A pre-seeded sandbox with 30 horses, 10 clients, a populated calendar, recurring invoices, feeding plans and full health records. Click, edit, issue an invoice — everything is real.',
     cta: 'Open live demo →',
-    note: 'The sandbox resets every 7 days. Your changes go back to the starting state. No feature limits — try everything.',
+    note: 'No login, no form. The sandbox resets every 7 days — your changes go back to the starting state. Full functionality, no limits.',
     tip: 'Tip: start with "Dashboard" → jump to "Calendar" → try booking a ride that creates a conflict (the system will block you). Then open "Recurring invoices" and issue one through e-invoicing.',
   },
   de: {
     eyebrow: 'Live-Demo',
-    title: 'Steig in die laufende Hovera ein — Login und Passwort sind bereit',
-    body: 'Vorbefüllter Sandbox mit 30 Pferden, 10 Kunden, vollem Kalender, wiederkehrenden Rechnungen, Fütterungsplänen, kompletten Gesundheitskarten. Klicken, bearbeiten, Rechnung ausstellen — alles ist echt.',
-    creds: 'Demo-Zugang',
-    user: 'Benutzername',
-    pass: 'Passwort',
+    title: 'Steig in die laufende Hovera ein — ohne Anmeldung',
+    body: 'Vorbefüllter Sandbox mit 30 Pferden, 10 Kunden, vollem Kalender, wiederkehrenden Rechnungen, Fütterungsplänen und kompletten Gesundheitskarten. Klicken, bearbeiten, Rechnung ausstellen — alles ist echt.',
     cta: 'Live-Demo öffnen →',
-    note: 'Der Sandbox setzt sich alle 7 Tage zurück. Deine Änderungen kehren zum Ausgangszustand zurück. Keine Funktionsbeschränkungen — probier alles aus.',
+    note: 'Kein Login, kein Formular. Der Sandbox setzt sich alle 7 Tage zurück — deine Änderungen kehren zum Ausgangszustand zurück. Volle Funktionalität, keine Grenzen.',
     tip: 'Tipp: starte mit „Dashboard" → wechsle zu „Kalender" → versuche eine Stunde zu buchen, die einen Konflikt erzeugt (das System blockiert dich). Dann öffne „Wiederkehrende Rechnungen" und stelle eine über E-Rechnung aus.',
   },
   fr: {
     eyebrow: 'Démo en direct',
-    title: 'Entrez dans une Hovera qui tourne — identifiants prêts',
-    body: 'Un bac à sable pré-rempli avec 30 chevaux, 10 clients, calendrier rempli, factures récurrentes, plans d\'alimentation, dossiers santé complets. Cliquez, modifiez, émettez une facture — tout est réel.',
-    creds: 'Identifiants démo',
-    user: 'Identifiant',
-    pass: 'Mot de passe',
+    title: 'Entrez dans une Hovera qui tourne — sans inscription',
+    body: 'Un bac à sable pré-rempli avec 30 chevaux, 10 clients, calendrier rempli, factures récurrentes, plans d\'alimentation et dossiers santé complets. Cliquez, modifiez, émettez une facture — tout est réel.',
     cta: 'Ouvrir la démo en direct →',
-    note: 'Le bac à sable se réinitialise tous les 7 jours. Vos modifications reviennent à l\'état initial. Aucune limite de fonctionnalité — testez tout.',
+    note: 'Sans connexion, sans formulaire. Le bac à sable se réinitialise tous les 7 jours — vos modifications reviennent à l\'état initial. Fonctionnalités complètes, aucune limite.',
     tip: 'Astuce : commencez par « Tableau de bord » → passez au « Calendrier » → essayez de réserver une séance créant un conflit (le système vous bloquera). Puis ouvrez « Factures récurrentes » et émettez-en une via la facturation électronique.',
   },
 };
@@ -67,18 +53,6 @@ const t = text[locale];
         <span class="eyebrow ld-eyebrow">🔓 {t.eyebrow}</span>
         <h2 class="display-3 mt-3">{t.title}</h2>
         <p class="muted mt-4 leading-relaxed">{t.body}</p>
-
-        <div class="ld-creds mt-6">
-          <span class="ld-creds-label">{t.creds}</span>
-          <div class="ld-cred-row">
-            <span class="ld-cred-key">{t.user}</span>
-            <code class="ld-cred-value">{DEMO_USER}</code>
-          </div>
-          <div class="ld-cred-row">
-            <span class="ld-cred-key">{t.pass}</span>
-            <code class="ld-cred-value">{DEMO_PASS}</code>
-          </div>
-        </div>
 
         <a href={DEMO_URL} class="btn btn-primary mt-6 ld-cta" target="_blank" rel="noopener">
           {t.cta}
@@ -128,42 +102,6 @@ const t = text[locale];
   }
   .ld-card .display-3 { color: var(--color-cream); }
   .ld-card .muted { color: rgba(250,248,244,0.78); }
-  .ld-creds {
-    padding: 1rem 1.25rem;
-    background: rgba(250,248,244,0.06);
-    border: 1px solid rgba(250,248,244,0.14);
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    max-width: 28rem;
-  }
-  .ld-creds-label {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(250,248,244,0.55);
-    font-weight: 500;
-  }
-  .ld-cred-row {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .ld-cred-key {
-    font-size: 0.85rem;
-    color: rgba(250,248,244,0.65);
-  }
-  .ld-cred-value {
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    background: rgba(250,248,244,0.12);
-    padding: 0.35rem 0.7rem;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    color: var(--color-cream);
-    user-select: all;
-  }
   .ld-cta {
     background: var(--color-ochre);
     color: var(--color-bark);
