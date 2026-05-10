@@ -8,12 +8,14 @@ subtitle: "Client buys a pass — system deducts rides, generates invoices, send
 description: "Online riding passes. Auto-settlement after each ride, booking integration, e-invoicing, instant payments. Time-based and ride-count passes."
 accent: passes
 bullets:
-  - "Auto-deduction after each ride"
-  - "Time-based (monthly) and count-based (e.g. 12 rides) passes"
-  - "Notifications: 'you have 2 entries left'"
-  - "Instant payments via Stripe / SEPA / bank transfer"
-  - "Invoice issues automatically from each payment"
-  - "Configurable cancellation policy"
+  - "Auto-deduction after every ride (PassUse logs date, horse, instructor)"
+  - "Time-based (monthly / quarterly) and count-based (4, 8, 10, 20) passes"
+  - "Shared passes (family, partner, sibling)"
+  - "Notifications: 'you have 2 entries left' + '7 days to expiry'"
+  - "Instant payments via Stripe / SEPA / Przelewy24 / bank transfer"
+  - "Invoice issues automatically from each payment (KSeF / Peppol)"
+  - "Cancellation policy configurable per pass type"
+  - "Sell with one link from the public stable page"
 subFeatures:
   - title: "Sell with one link"
     body: "Send the client a link, they pay, get the pass, you have an e-invoice. 30 seconds, no paper, no 'I'll call you with my IBAN'."

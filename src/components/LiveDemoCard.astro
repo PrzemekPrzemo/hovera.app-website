@@ -1,0 +1,191 @@
+---
+import { type Locale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+
+const DEMO_URL = 'https://app.hovera.app/demo';
+const DEMO_USER = 'demo@hovera.app';
+const DEMO_PASS = 'demo';
+
+const text = {
+  pl: {
+    eyebrow: 'Live demo',
+    title: 'Wejdź do działającej Hovery — login i hasło już czekają',
+    body: 'Pre-seeded sandbox z 30 końmi, 10 klientami, gotowym kalendarzem, fakturami cyklicznymi, planem żywienia, dziennikami zdrowia. Klikasz, edytujesz, generujesz fakturę — wszystko działa naprawdę.',
+    creds: 'Login do dema',
+    user: 'Login',
+    pass: 'Hasło',
+    cta: 'Otwórz live demo →',
+    note: 'Stan resetuje się co 7 dni. Twoje zmiany wracają do punktu wyjścia. Ograniczeń funkcjonalnych nie ma — testuj wszystko.',
+    tip: 'Wskazówka: zacznij od „Dashboard" → przejdź do „Kalendarz" → spróbuj zarezerwować jazdę z konfliktem (system Cię zatrzyma). Potem zobacz „Faktury cykliczne" → wystaw fakturę z KSeF.',
+  },
+  en: {
+    eyebrow: 'Live demo',
+    title: 'Step into a running Hovera — credentials are ready',
+    body: 'A pre-seeded sandbox with 30 horses, 10 clients, a populated calendar, recurring invoices, feeding plans, full health records. Click, edit, issue an invoice — everything is real.',
+    creds: 'Demo login',
+    user: 'Username',
+    pass: 'Password',
+    cta: 'Open live demo →',
+    note: 'The sandbox resets every 7 days. Your changes go back to the starting state. No feature limits — try everything.',
+    tip: 'Tip: start with "Dashboard" → jump to "Calendar" → try booking a ride that creates a conflict (the system will block you). Then open "Recurring invoices" and issue one through e-invoicing.',
+  },
+  de: {
+    eyebrow: 'Live-Demo',
+    title: 'Steig in die laufende Hovera ein — Login und Passwort sind bereit',
+    body: 'Vorbefüllter Sandbox mit 30 Pferden, 10 Kunden, vollem Kalender, wiederkehrenden Rechnungen, Fütterungsplänen, kompletten Gesundheitskarten. Klicken, bearbeiten, Rechnung ausstellen — alles ist echt.',
+    creds: 'Demo-Zugang',
+    user: 'Benutzername',
+    pass: 'Passwort',
+    cta: 'Live-Demo öffnen →',
+    note: 'Der Sandbox setzt sich alle 7 Tage zurück. Deine Änderungen kehren zum Ausgangszustand zurück. Keine Funktionsbeschränkungen — probier alles aus.',
+    tip: 'Tipp: starte mit „Dashboard" → wechsle zu „Kalender" → versuche eine Stunde zu buchen, die einen Konflikt erzeugt (das System blockiert dich). Dann öffne „Wiederkehrende Rechnungen" und stelle eine über E-Rechnung aus.',
+  },
+  fr: {
+    eyebrow: 'Démo en direct',
+    title: 'Entrez dans une Hovera qui tourne — identifiants prêts',
+    body: 'Un bac à sable pré-rempli avec 30 chevaux, 10 clients, calendrier rempli, factures récurrentes, plans d\'alimentation, dossiers santé complets. Cliquez, modifiez, émettez une facture — tout est réel.',
+    creds: 'Identifiants démo',
+    user: 'Identifiant',
+    pass: 'Mot de passe',
+    cta: 'Ouvrir la démo en direct →',
+    note: 'Le bac à sable se réinitialise tous les 7 jours. Vos modifications reviennent à l\'état initial. Aucune limite de fonctionnalité — testez tout.',
+    tip: 'Astuce : commencez par « Tableau de bord » → passez au « Calendrier » → essayez de réserver une séance créant un conflit (le système vous bloquera). Puis ouvrez « Factures récurrentes » et émettez-en une via la facturation électronique.',
+  },
+};
+
+const t = text[locale];
+---
+
+<section class="container-x py-8 md:py-12">
+  <div class="ld-card" data-reveal>
+    <div class="ld-grid">
+      <div>
+        <span class="eyebrow ld-eyebrow">🔓 {t.eyebrow}</span>
+        <h2 class="display-3 mt-3">{t.title}</h2>
+        <p class="muted mt-4 leading-relaxed">{t.body}</p>
+
+        <div class="ld-creds mt-6">
+          <span class="ld-creds-label">{t.creds}</span>
+          <div class="ld-cred-row">
+            <span class="ld-cred-key">{t.user}</span>
+            <code class="ld-cred-value">{DEMO_USER}</code>
+          </div>
+          <div class="ld-cred-row">
+            <span class="ld-cred-key">{t.pass}</span>
+            <code class="ld-cred-value">{DEMO_PASS}</code>
+          </div>
+        </div>
+
+        <a href={DEMO_URL} class="btn btn-primary mt-6 ld-cta" target="_blank" rel="noopener">
+          {t.cta}
+        </a>
+
+        <p class="ld-note mt-4">{t.note}</p>
+      </div>
+
+      <aside class="ld-tip">
+        <p>{t.tip}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ld-card {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, var(--color-bark) 0%, #2a2018 100%);
+    color: var(--color-cream);
+    border-radius: var(--radius-2xl);
+    box-shadow: 0 24px 50px -12px rgba(61,46,34,0.45);
+    overflow: hidden;
+    position: relative;
+  }
+  .ld-card::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(168,149,107,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ld-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    position: relative;
+  }
+  @media (min-width: 800px) { .ld-grid { grid-template-columns: 1.5fr 1fr; align-items: start; } }
+  .ld-eyebrow {
+    color: var(--color-ochre);
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .ld-card .display-3 { color: var(--color-cream); }
+  .ld-card .muted { color: rgba(250,248,244,0.78); }
+  .ld-creds {
+    padding: 1rem 1.25rem;
+    background: rgba(250,248,244,0.06);
+    border: 1px solid rgba(250,248,244,0.14);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 28rem;
+  }
+  .ld-creds-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(250,248,244,0.55);
+    font-weight: 500;
+  }
+  .ld-cred-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ld-cred-key {
+    font-size: 0.85rem;
+    color: rgba(250,248,244,0.65);
+  }
+  .ld-cred-value {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    background: rgba(250,248,244,0.12);
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: var(--color-cream);
+    user-select: all;
+  }
+  .ld-cta {
+    background: var(--color-ochre);
+    color: var(--color-bark);
+    font-weight: 600;
+  }
+  .ld-cta:hover { background: #c2ad7d; }
+  .ld-note {
+    font-size: 0.78rem;
+    color: rgba(250,248,244,0.55);
+    line-height: 1.5;
+    max-width: 32rem;
+  }
+  .ld-tip {
+    padding: 1.25rem 1.5rem;
+    background: rgba(168,149,107,0.18);
+    border: 1px solid rgba(168,149,107,0.3);
+    border-radius: 12px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: rgba(250,248,244,0.92);
+  }
+  @media (min-width: 800px) {
+    .ld-tip { margin-top: 2.5rem; }
+  }
+</style>

@@ -55,6 +55,19 @@ const stats = [
       </div>
 
       <p class="mt-5 text-xs muted">{t('hero.note')}</p>
+
+      <a
+        href="https://app.hovera.app/demo"
+        target="_blank"
+        rel="noopener"
+        class="hero-demo-link"
+        aria-label={t('hero.demo.label')}
+      >
+        <span class="hero-demo-dot" aria-hidden="true"></span>
+        <span>{t('hero.demo.label')}</span>
+        <code class="hero-demo-code">demo@hovera.app · demo</code>
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
 
     <!-- Animated product mockup -->
@@ -150,6 +163,43 @@ const stats = [
 <style>
   .hovera-hero {
     padding-top: 0;
+  }
+  .hero-demo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 1.25rem;
+    padding: 0.5rem 0.9rem;
+    background: var(--color-bark);
+    color: var(--color-cream);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo);
+    box-shadow: 0 8px 24px -10px rgba(61,46,34,0.4);
+  }
+  .hero-demo-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px -10px rgba(61,46,34,0.5);
+  }
+  .hero-demo-dot {
+    width: 7px; height: 7px; border-radius: 999px;
+    background: #6FB67A;
+    box-shadow: 0 0 0 4px rgba(111,182,122,0.25);
+    animation: hero-demo-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes hero-demo-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(111,182,122,0.45); }
+    50% { box-shadow: 0 0 0 6px rgba(111,182,122,0); }
+  }
+  .hero-demo-code {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    background: rgba(250,248,244,0.12);
+    padding: 1px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    letter-spacing: -0.01em;
   }
   .hero-mesh {
     position: absolute;

@@ -9,11 +9,13 @@ description: "Online booking dla stajni jeździeckiej. Publiczna strona, integra
 accent: booking
 bullets:
   - "Publiczna strona stajni pod własną domeną"
-  - "Booking 24/7, klient widzi tylko wolne sloty"
-  - "BLIK / Przelewy24 / karta — natychmiastowa płatność"
+  - "Booking 24/7, klient widzi tylko wolne sloty (bez konfliktów Arena/Box/Instruktor)"
+  - "BLIK / Przelewy24 / Stripe / karta — natychmiastowa płatność"
+  - "Klient zakłada konto raz, kolejne booki bez podawania danych"
+  - "ClientMessage — kanał wiadomości klient ↔ stajnia w panelu, nie w SMS-ach"
   - "Automatyczne potwierdzenia email + SMS"
-  - "Polityka anulowania konfigurowalna"
-  - "SEO out-of-the-box (Google indexing)"
+  - "Polityka anulowania konfigurowalna per typ jazdy"
+  - "SEO out-of-the-box (Google indexing, schema.org, OG tags)"
 subFeatures:
   - title: "Strona stajni, bez webmastera"
     body: "Hovera generuje publiczną stronę pod adresem twoja-stajnia.hovera.app (albo Twoja domena). Logo, opis, zdjęcia, koni, instruktorów, cennik. Edytujesz w panelu, zmiany na żywo."
