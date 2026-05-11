@@ -10,14 +10,48 @@ const lp = (p: string) => localizePath(p, locale);
 
 const t = (pl: string, en: string) => (locale === 'pl' ? pl : en);
 
-// Currency-specific pricing. PLN is the original baseline; others are
-// market-positioned (NOT direct conversions) — see /docs/PRICING.md.
+// Pricing per currency. Each paid plan has an explicit { monthly, yearly }
+// price; yearly is the amount paid for 12 months billed upfront (already
+// discounted vs monthly). 2y and 3y commitments apply an *additional*
+// discount on top of yearly (see periods below). Enterprise has no fixed
+// price — individual quote. PLN is the authoritative source; other
+// currencies are market-positioned placeholders.
 const pricesByCurrency = {
-  PLN: { solo: 89,  stable: 249, pro: 499, setup: 1590 },
-  EUR: { solo: 29,  stable: 79,  pro: 159, setup: 490 },
-  GBP: { solo: 25,  stable: 69,  pro: 139, setup: 429 },
-  AUD: { solo: 49,  stable: 129, pro: 259, setup: 790 },
-  NZD: { solo: 55,  stable: 139, pro: 279, setup: 850 },
+  PLN: {
+    start:  { monthly: 50,  yearly: 500 },
+    solo:   { monthly: 99,  yearly: 990 },
+    stable: { monthly: 249, yearly: 2690 },
+    pro:    { monthly: 499, yearly: 5390 },
+    setup: 1590,
+  },
+  EUR: {
+    start:  { monthly: 15,  yearly: 150 },
+    solo:   { monthly: 29,  yearly: 290 },
+    stable: { monthly: 79,  yearly: 790 },
+    pro:    { monthly: 159, yearly: 1590 },
+    setup: 490,
+  },
+  GBP: {
+    start:  { monthly: 12,  yearly: 120 },
+    solo:   { monthly: 25,  yearly: 250 },
+    stable: { monthly: 69,  yearly: 690 },
+    pro:    { monthly: 139, yearly: 1390 },
+    setup: 429,
+  },
+  AUD: {
+    start:  { monthly: 25,  yearly: 250 },
+    solo:   { monthly: 49,  yearly: 490 },
+    stable: { monthly: 129, yearly: 1290 },
+    pro:    { monthly: 259, yearly: 2590 },
+    setup: 790,
+  },
+  NZD: {
+    start:  { monthly: 28,  yearly: 280 },
+    solo:   { monthly: 55,  yearly: 550 },
+    stable: { monthly: 139, yearly: 1390 },
+    pro:    { monthly: 279, yearly: 2790 },
+    setup: 850,
+  },
 } as const;
 type CurrencyCode = keyof typeof pricesByCurrency;
 
@@ -41,42 +75,63 @@ const switchableCurrencies: CurrencyCode[] =
 
 const p0 = pricesByCurrency[defaultCurrency];
 
-const baseTiers = locale === 'pl' ? [
-  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Hobby / start',
-    features: ['Kalendarz', 'Dziennik konia', 'Booking online (limit)', 'Wsparcie community'] },
-  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Mała szkółka, instruktor solo',
-    features: ['Wszystko z Free', 'Booking online', 'Powtarzające się jazdy', 'Email support'] },
-  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Standardowa stajnia',
-    features: ['Wszystko z Solo', 'Karnety + auto-rozliczenie', 'Faktury i rozliczenia', 'Eksport do biura', 'Email + chat'], popular: true },
-  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Pensjonat / sieci stajni',
-    features: ['Wszystko ze Stable', 'Pensjonat / livery', 'Multi-instructor + role', 'Public API + webhooks', 'Priority support'] },
+type Tier = {
+  key: 'start' | 'solo' | 'stable' | 'pro' | 'enterprise';
+  name: string;
+  monthly: number;
+  yearly: number;
+  enterprise?: boolean;
+  horses: number;
+  clients: number;
+  desc: string;
+  features: string[];
+  popular?: boolean;
+};
+
+const baseTiers: Tier[] = locale === 'pl' ? [
+  { key: 'start',  name: 'Start',  monthly: p0.start.monthly,  yearly: p0.start.yearly,  horses: 5,   clients: 10,  desc: 'Hobby / pierwsze konie',
+    features: ['Kalendarz + 1 arena', 'Dziennik konia (podstawowy)', 'Booking online (limit 20/mc)', 'Wsparcie email'] },
+  { key: 'solo',   name: 'Solo',   monthly: p0.solo.monthly,   yearly: p0.solo.yearly,   horses: 10,  clients: 30,  desc: 'Mała szkółka, instruktor solo',
+    features: ['Wszystko ze Start', 'Wiele aren i hal', 'Powtarzające się jazdy', 'Powiadomienia SMS', 'Email support'] },
+  { key: 'stable', name: 'Stable', monthly: p0.stable.monthly, yearly: p0.stable.yearly, horses: 30,  clients: 100, desc: 'Standardowa stajnia',
+    features: ['Wszystko z Solo', 'Karnety + auto-rozliczenie', 'Faktury KSeF + Peppol', 'Eksport do biura', 'Pasza i żywienie', 'Email + chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    monthly: p0.pro.monthly,    yearly: p0.pro.yearly,    horses: 100, clients: 9999, desc: 'Pensjonat / sieci stajni',
+    features: ['Wszystko ze Stable', 'Pensjonat / livery (boksy, budynki)', 'Multi-instructor + role', 'Public API + webhooks', 'AuditLog (GoBD/RODO)', 'Priority support'] },
+  { key: 'enterprise', name: 'Enterprise', monthly: 0, yearly: 0, enterprise: true, horses: 9999, clients: 9999, desc: 'Sieć stajni / hodowla / duża skala',
+    features: ['Wszystko z Pro — wszystko w cenie', 'Bez limitu koni i klientów', 'Dedykowany account manager', 'SLA 99,9% + 24/7', 'Wdrożenie on-site', 'Niestandardowe integracje'] },
 ] : locale === 'de' ? [
-  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Hobby / Start',
-    features: ['Kalender', 'Pferdetagebuch', 'Online-Buchung (limitiert)', 'Community-Support'] },
-  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Kleine Schule, Solo-Trainer',
-    features: ['Alles aus Free', 'Online-Buchung', 'Wiederkehrende Termine', 'E-Mail-Support'] },
-  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Standard-Reitstall',
-    features: ['Alles aus Solo', 'Reitkarten + Auto-Abrechnung', 'Rechnungen & Buchhaltung', 'DATEV-Export', 'E-Mail + Chat'], popular: true },
-  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Pension / Stallnetzwerke',
-    features: ['Alles aus Stable', 'Pension / Livery', 'Multi-Trainer + Rollen', 'Public API + Webhooks', 'Priority Support'] },
+  { key: 'start',  name: 'Start',  monthly: p0.start.monthly,  yearly: p0.start.yearly,  horses: 5,   clients: 10,  desc: 'Hobby / erste Pferde',
+    features: ['Kalender + 1 Halle', 'Basisches Pferdetagebuch', 'Online-Buchung (Limit 20/Mon.)', 'E-Mail-Support'] },
+  { key: 'solo',   name: 'Solo',   monthly: p0.solo.monthly,   yearly: p0.solo.yearly,   horses: 10,  clients: 30,  desc: 'Kleine Schule, Solo-Trainer',
+    features: ['Alles aus Start', 'Mehrere Hallen und Plätze', 'Wiederkehrende Termine', 'SMS-Benachrichtigungen', 'E-Mail-Support'] },
+  { key: 'stable', name: 'Stable', monthly: p0.stable.monthly, yearly: p0.stable.yearly, horses: 30,  clients: 100, desc: 'Standard-Reitstall',
+    features: ['Alles aus Solo', 'Reitkarten + Auto-Abrechnung', 'E-Rechnung KSeF + Peppol', 'DATEV-Export', 'Futter & Ernährung', 'E-Mail + Chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    monthly: p0.pro.monthly,    yearly: p0.pro.yearly,    horses: 100, clients: 9999, desc: 'Pension / Stallnetzwerke',
+    features: ['Alles aus Stable', 'Pension / Livery (Boxen, Gebäude)', 'Multi-Trainer + Rollen', 'Public API + Webhooks', 'AuditLog (GoBD/DSGVO)', 'Priority Support'] },
+  { key: 'enterprise', name: 'Enterprise', monthly: 0, yearly: 0, enterprise: true, horses: 9999, clients: 9999, desc: 'Stallnetzwerk / Zucht / große Anlage',
+    features: ['Alles aus Pro — alles inklusive', 'Keine Pferde-/Kundengrenze', 'Dedizierter Account-Manager', 'SLA 99,9% + 24/7', 'On-site Einführung', 'Custom-Integrationen'] },
 ] : locale === 'fr' ? [
-  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Loisir / démarrage',
-    features: ['Calendrier', 'Carnet du cheval', 'Réservation en ligne (limitée)', 'Support communauté'] },
-  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Petit centre, moniteur solo',
-    features: ['Tout de Free', 'Réservation en ligne', 'Cours récurrents', 'Support e-mail'] },
-  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Centre équestre standard',
-    features: ['Tout de Solo', 'Forfaits + auto-décompte', 'Facturation', 'Export comptable', 'E-mail + chat'], popular: true },
-  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Pension / réseau d\'écuries',
-    features: ['Tout de Stable', 'Pension / livery', 'Multi-moniteur + rôles', 'API publique + webhooks', 'Support prioritaire'] },
+  { key: 'start',  name: 'Start',  monthly: p0.start.monthly,  yearly: p0.start.yearly,  horses: 5,   clients: 10,  desc: 'Loisir / premiers chevaux',
+    features: ['Calendrier + 1 manège', 'Carnet du cheval (basique)', 'Réservation en ligne (limite 20/mois)', 'Support e-mail'] },
+  { key: 'solo',   name: 'Solo',   monthly: p0.solo.monthly,   yearly: p0.solo.yearly,   horses: 10,  clients: 30,  desc: 'Petit centre, moniteur solo',
+    features: ['Tout de Start', 'Plusieurs manèges et carrières', 'Cours récurrents', 'Notifications SMS', 'Support e-mail'] },
+  { key: 'stable', name: 'Stable', monthly: p0.stable.monthly, yearly: p0.stable.yearly, horses: 30,  clients: 100, desc: 'Centre équestre standard',
+    features: ['Tout de Solo', 'Forfaits + auto-décompte', 'Facturation électronique', 'Export comptable', 'Alimentation', 'E-mail + chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    monthly: p0.pro.monthly,    yearly: p0.pro.yearly,    horses: 100, clients: 9999, desc: 'Pension / réseau d\'écuries',
+    features: ['Tout de Stable', 'Pension / livery (boxes, bâtiments)', 'Multi-moniteur + rôles', 'API publique + webhooks', 'AuditLog (GoBD/RGPD)', 'Support prioritaire'] },
+  { key: 'enterprise', name: 'Enterprise', monthly: 0, yearly: 0, enterprise: true, horses: 9999, clients: 9999, desc: 'Réseau d\'écuries / élevage / grande structure',
+    features: ['Tout de Pro — tout inclus', 'Sans limite chevaux/clients', 'Account manager dédié', 'SLA 99,9% + 24/7', 'Mise en route sur place', 'Intégrations sur mesure'] },
 ] : [
-  { key: 'free',   name: 'Free',   priceMonthly: 0,         horses: 5,   clients: 10,  desc: 'Hobby / starter',
-    features: ['Calendar', 'Horse journal', 'Online booking (limited)', 'Community support'] },
-  { key: 'solo',   name: 'Solo',   priceMonthly: p0.solo,   horses: 10,  clients: 30,  desc: 'Small school, solo instructor',
-    features: ['Everything in Free', 'Online booking', 'Recurring rides', 'Email support'] },
-  { key: 'stable', name: 'Stable', priceMonthly: p0.stable, horses: 30,  clients: 100, desc: 'Standard stable',
-    features: ['Everything in Solo', 'Passes + auto-settlement', 'Invoicing & billing', 'Bookkeeping export', 'Email + chat'], popular: true },
-  { key: 'pro',    name: 'Pro',    priceMonthly: p0.pro,    horses: 100, clients: 9999, desc: 'Boarding / stable networks',
-    features: ['Everything in Stable', 'Boarding / livery', 'Multi-instructor + roles', 'Public API + webhooks', 'Priority support'] },
+  { key: 'start',  name: 'Start',  monthly: p0.start.monthly,  yearly: p0.start.yearly,  horses: 5,   clients: 10,  desc: 'Hobby / first horses',
+    features: ['Calendar + 1 arena', 'Horse journal (basic)', 'Online booking (20/mo limit)', 'Email support'] },
+  { key: 'solo',   name: 'Solo',   monthly: p0.solo.monthly,   yearly: p0.solo.yearly,   horses: 10,  clients: 30,  desc: 'Small school, solo instructor',
+    features: ['Everything in Start', 'Multiple arenas + paddocks', 'Recurring rides', 'SMS notifications', 'Email support'] },
+  { key: 'stable', name: 'Stable', monthly: p0.stable.monthly, yearly: p0.stable.yearly, horses: 30,  clients: 100, desc: 'Standard stable',
+    features: ['Everything in Solo', 'Passes + auto-settlement', 'E-invoicing (KSeF + Peppol)', 'Bookkeeping export', 'Feed & nutrition', 'Email + chat'], popular: true },
+  { key: 'pro',    name: 'Pro',    monthly: p0.pro.monthly,    yearly: p0.pro.yearly,    horses: 100, clients: 9999, desc: 'Boarding / stable networks',
+    features: ['Everything in Stable', 'Boarding (boxes, buildings)', 'Multi-instructor + roles', 'Public API + webhooks', 'AuditLog (GoBD/GDPR)', 'Priority support'] },
+  { key: 'enterprise', name: 'Enterprise', monthly: 0, yearly: 0, enterprise: true, horses: 9999, clients: 9999, desc: 'Stable network / breeding / large operation',
+    features: ['Everything in Pro — all included', 'No horse/client limit', 'Dedicated account manager', 'SLA 99.9% + 24/7', 'On-site rollout', 'Custom integrations'] },
 ];
 
 const tiers = baseTiers;
@@ -85,17 +140,28 @@ const currencyPos: 'after' | 'before' = currencyMeta[defaultCurrency].pos;
 const pricingDataAttr = JSON.stringify(pricesByCurrency);
 const currencyMetaAttr = JSON.stringify(currencyMeta);
 
-// Period options — discount applied to base monthly price
+// Period options. Yearly price per plan is explicit (already discounted vs
+// monthly). 2y and 3y apply an *additional* discount on top of yearly.
 const periods = locale === 'pl' ? [
-  { key: 'monthly', label: 'Miesięcznie', discount: 0,    months: 1,   note: '' },
-  { key: 'yearly',  label: 'Rocznie',     discount: 0.10, months: 12,  note: '-10%' },
-  { key: 'two',     label: '2 lata',      discount: 0.20, months: 24,  note: '-20%' },
-  { key: 'three',   label: '3 lata',      discount: 0.30, months: 36,  note: '-30% ⭐' },
+  { key: 'monthly', label: 'Miesięcznie', extraDiscount: 0,    months: 1,   note: '' },
+  { key: 'yearly',  label: 'Rocznie',     extraDiscount: 0,    months: 12,  note: '' },
+  { key: 'two',     label: '2 lata',      extraDiscount: 0.05, months: 24,  note: '-5%' },
+  { key: 'three',   label: '3 lata',      extraDiscount: 0.10, months: 36,  note: '-10% ⭐' },
+] : locale === 'de' ? [
+  { key: 'monthly', label: 'Monatlich', extraDiscount: 0,    months: 1,   note: '' },
+  { key: 'yearly',  label: 'Jährlich',  extraDiscount: 0,    months: 12,  note: '' },
+  { key: 'two',     label: '2 Jahre',   extraDiscount: 0.05, months: 24,  note: '-5%' },
+  { key: 'three',   label: '3 Jahre',   extraDiscount: 0.10, months: 36,  note: '-10% ⭐' },
+] : locale === 'fr' ? [
+  { key: 'monthly', label: 'Mensuel',   extraDiscount: 0,    months: 1,   note: '' },
+  { key: 'yearly',  label: 'Annuel',    extraDiscount: 0,    months: 12,  note: '' },
+  { key: 'two',     label: '2 ans',     extraDiscount: 0.05, months: 24,  note: '-5%' },
+  { key: 'three',   label: '3 ans',     extraDiscount: 0.10, months: 36,  note: '-10% ⭐' },
 ] : [
-  { key: 'monthly', label: 'Monthly',     discount: 0,    months: 1,   note: '' },
-  { key: 'yearly',  label: 'Yearly',      discount: 0.10, months: 12,  note: '-10%' },
-  { key: 'two',     label: '2 years',     discount: 0.20, months: 24,  note: '-20%' },
-  { key: 'three',   label: '3 years',     discount: 0.30, months: 36,  note: '-30% ⭐' },
+  { key: 'monthly', label: 'Monthly',   extraDiscount: 0,    months: 1,   note: '' },
+  { key: 'yearly',  label: 'Yearly',    extraDiscount: 0,    months: 12,  note: '' },
+  { key: 'two',     label: '2 years',   extraDiscount: 0.05, months: 24,  note: '-5%' },
+  { key: 'three',   label: '3 years',   extraDiscount: 0.10, months: 36,  note: '-10% ⭐' },
 ];
 
 const setupFee = pricesByCurrency[defaultCurrency].setup;
@@ -136,7 +202,7 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
         type="button"
         class={`period-btn ${i === 1 ? 'is-active' : ''}`}
         data-period={p.key}
-        data-discount={p.discount}
+        data-extra-discount={p.extraDiscount}
         data-months={p.months}
         role="tab"
         aria-selected={i === 1 ? 'true' : 'false'}
@@ -172,34 +238,43 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
 
   <!-- Tier cards -->
   <div class={`tiers-grid ${variant === 'teaser' ? 'tiers-3' : ''}`}>
-    {tiers.filter((t) => variant === 'full' || t.key !== 'free').map((tier) => (
+    {tiers.filter((t) => variant === 'full' || t.key !== 'enterprise').map((tier) => (
       <div
-        class={`tier ${tier.popular ? 'tier-popular' : ''}`}
+        class={`tier ${tier.popular ? 'tier-popular' : ''} ${tier.enterprise ? 'tier-enterprise' : ''}`}
         data-tier={tier.key}
-        data-base-monthly={tier.priceMonthly}
+        data-base-monthly={tier.monthly}
+        data-base-yearly={tier.yearly}
       >
         {tier.popular && <span class="tier-badge">{t('Najczęściej wybierany', 'Most popular')}</span>}
+        {tier.enterprise && <span class="tier-badge tier-badge--enterprise">{t('Wycena indywidualna', 'Individual quote')}</span>}
         <div class="tier-name">{tier.name}</div>
         <div class="tier-desc muted">{tier.desc}</div>
 
         <div class="tier-price">
-          {tier.priceMonthly === 0 ? (
-            <span class="price-num">0 {currency}</span>
+          {tier.enterprise ? (
+            <span class="price-num price-num--quote">{t('Zapytaj', 'Get a quote')}</span>
           ) : (
             <>
-              <span class="price-num" data-price-effective>{tier.priceMonthly} {currency}</span>
+              <span class="price-num" data-price-effective>{currencyPos === 'before' ? `${currency}${tier.monthly}` : `${tier.monthly} ${currency}`}</span>
               <span class="price-period muted">{t('/ mies.', '/ mo')}</span>
             </>
           )}
         </div>
 
-        {tier.priceMonthly > 0 && (
+        {!tier.enterprise && (
           <div class="tier-totals">
             <span class="total-line" data-total-line>
               <span data-total-amount></span>
               <span class="muted" data-total-period></span>
             </span>
             <span class="setup-line" data-setup-line></span>
+          </div>
+        )}
+        {tier.enterprise && (
+          <div class="tier-totals">
+            <span class="total-line">
+              <span class="muted">{t('Wszystko w cenie. Wdrożenie, SLA, dedykowany manager.', 'Everything included. Onboarding, SLA, dedicated manager.')}</span>
+            </span>
           </div>
         )}
 
@@ -222,10 +297,10 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
 
         <a
           href={`${lp('/kontakt')}?plan=${tier.name}`}
-          class={`btn ${tier.popular ? 'btn-primary' : 'btn-secondary'} w-full mt-8`}
+          class={`btn ${tier.popular || tier.enterprise ? 'btn-primary' : 'btn-secondary'} w-full mt-8`}
           data-cta
         >
-          {tier.priceMonthly === 0 ? t('Załóż konto', 'Create account') : t(`Wybierz ${tier.name}`, `Choose ${tier.name}`)}
+          {tier.enterprise ? t('Skontaktuj się z nami', 'Contact us') : t(`Wybierz ${tier.name}`, `Choose ${tier.name}`)}
         </a>
       </div>
     ))}
@@ -344,9 +419,10 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
     grid-template-columns: 1fr;
   }
   @media (min-width: 720px)  { .tiers-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1100px) { .tiers-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 1100px) { .tiers-grid { grid-template-columns: repeat(5, 1fr); } }
   .tiers-grid.tiers-3 { grid-template-columns: 1fr; }
-  @media (min-width: 720px)  { .tiers-grid.tiers-3 { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 720px)  { .tiers-grid.tiers-3 { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .tiers-grid.tiers-3 { grid-template-columns: repeat(4, 1fr); } }
 
   .tier {
     position: relative;
@@ -377,6 +453,20 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
     border-radius: 999px;
     letter-spacing: 0.04em;
     white-space: nowrap;
+  }
+  .tier-badge--enterprise {
+    background: var(--color-bark);
+    color: var(--color-cream);
+  }
+  .tier-enterprise {
+    border-color: var(--color-bark-300, var(--color-bark));
+    background: linear-gradient(180deg, var(--color-sand-light) 0%, var(--color-cream) 100%);
+  }
+  .price-num--quote {
+    font-size: 1.4rem;
+    color: var(--color-bark);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
   .tier-name { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; }
   .tier-desc { font-size: 0.82rem; margin-top: 0.25rem; }
@@ -439,8 +529,11 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
 </style>
 
 <script>
-  type Period = { key: string; discount: number; months: number };
-  type PriceSet = { solo: number; stable: number; pro: number; setup: number };
+  type Period = { key: string; extraDiscount: number; months: number };
+  type PlanPrice = { monthly: number; yearly: number };
+  type PriceSet = {
+    start: PlanPrice; solo: PlanPrice; stable: PlanPrice; pro: PlanPrice; setup: number;
+  };
   type CurrencyMeta = { symbol: string; pos: 'before' | 'after'; flag: string; label: string };
 
   // Map browser country/region → currency code; used for first-visit auto-pick.
@@ -495,12 +588,16 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
       const refreshTierBasePrices = () => {
         const ps = pricesAll[currentCode];
         if (!ps) return;
-        const map: Record<string, number> = {
-          solo: ps.solo, stable: ps.stable, pro: ps.pro,
+        const planMap: Record<string, PlanPrice | undefined> = {
+          start: ps.start, solo: ps.solo, stable: ps.stable, pro: ps.pro,
         };
         tiers.forEach((tier) => {
           const key = tier.dataset.tier || '';
-          if (key in map) tier.dataset.baseMonthly = String(map[key]);
+          const plan = planMap[key];
+          if (plan) {
+            tier.dataset.baseMonthly = String(plan.monthly);
+            tier.dataset.baseYearly = String(plan.yearly);
+          }
         });
       };
 
@@ -510,14 +607,32 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
       };
 
       const update = (period: Period) => {
-        const factor = 1 - period.discount;
         const setupFee = currentSetupFee();
         tiers.forEach((tier) => {
-          const base = Number(tier.dataset.baseMonthly || 0);
-          if (base === 0) return;
+          if (tier.classList.contains('tier-enterprise')) return;
+          const baseMonthly = Number(tier.dataset.baseMonthly || 0);
+          const baseYearly  = Number(tier.dataset.baseYearly || 0);
+          if (baseMonthly === 0) return;
 
-          const effectiveMonthly = base * factor;
-          const total = effectiveMonthly * period.months;
+          // Per-plan price model:
+          //   monthly: pay baseMonthly each month
+          //   yearly:  pay baseYearly upfront for 12 months
+          //   2y:      pay (baseYearly × 2 × (1 - extraDiscount)) upfront for 24 months
+          //   3y:      pay (baseYearly × 3 × (1 - extraDiscount)) upfront for 36 months
+          let effectiveMonthly: number;
+          let total: number;
+
+          if (period.key === 'monthly') {
+            effectiveMonthly = baseMonthly;
+            total = baseMonthly;
+          } else if (period.key === 'yearly') {
+            effectiveMonthly = baseYearly / 12;
+            total = baseYearly;
+          } else {
+            const years = period.months / 12;
+            total = baseYearly * years * (1 - period.extraDiscount);
+            effectiveMonthly = total / period.months;
+          }
 
           const priceEl = tier.querySelector<HTMLElement>('[data-price-effective]');
           if (priceEl) priceEl.textContent = fmtPrice(effectiveMonthly);
@@ -526,7 +641,6 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
           const totalPeriod = tier.querySelector<HTMLElement>('[data-total-period]');
           const setupLine = tier.querySelector<HTMLElement>('[data-setup-line]');
 
-          // Setup fee is always shown for all paid plans
           const setupHtml = `<span class="setup-extra">+ ${fmtPrice(setupFee)} ${tr('opłata wdrożeniowa (jednorazowa)', 'onboarding fee (one-time)')}</span>`;
 
           if (period.key === 'monthly') {
@@ -551,7 +665,7 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
         const active = calc.querySelector<HTMLButtonElement>('.period-btn.is-active');
         return {
           key: active?.dataset.period || 'yearly',
-          discount: Number(active?.dataset.discount || 0),
+          extraDiscount: Number(active?.dataset.extraDiscount || 0),
           months: Number(active?.dataset.months || 12),
         };
       };
@@ -585,7 +699,7 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
           btn.setAttribute('aria-selected', 'true');
           update({
             key: btn.dataset.period || 'yearly',
-            discount: Number(btn.dataset.discount || 0),
+            extraDiscount: Number(btn.dataset.extraDiscount || 0),
             months: Number(btn.dataset.months || 12),
           });
         });

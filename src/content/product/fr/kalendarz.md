@@ -32,5 +32,5 @@ integrations:
   - "Apple Calendar / iCal"
   - "Outlook 365"
   - "FEI / FFE — export des engagements"
-pricingNote: "Disponible sur tous les plans dès Free. Plusieurs manèges et cours récurrents dès le plan Solo."
+pricingNote: "Disponible sur tous les plans dès Start. Plusieurs manèges et cours récurrents dès le plan Solo."
 ---

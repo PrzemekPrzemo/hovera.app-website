@@ -34,5 +34,5 @@ integrations:
   - "FFE / PZJ"
   - "Bases de passeports d'élevage"
   - "Communication vétérinaire via Hovera"
-pricingNote: "Disponible sur tous les plans dès Free. Poids, documents et modèles de soins dès le plan Stable."
+pricingNote: "Disponible sur tous les plans dès Start. Poids, documents et modèles de soins dès le plan Stable."
 ---

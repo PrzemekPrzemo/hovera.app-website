@@ -32,5 +32,5 @@ integrations:
   - "Apple Calendar / iCal"
   - "Outlook 365"
   - "FEI / PZJ — eksport startów"
-pricingNote: "Dostępne we wszystkich pakietach od planu Free. Wiele aren i powtarzające się wpisy — od planu Solo."
+pricingNote: "Dostępne we wszystkich pakietach od planu Start. Wiele aren i powtarzające się wpisy — od planu Solo."
 ---

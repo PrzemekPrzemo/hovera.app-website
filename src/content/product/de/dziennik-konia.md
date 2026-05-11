@@ -34,5 +34,5 @@ integrations:
   - "FN (Deutschland) / PZJ (Polen)"
   - "Pferdepass-Datenbanken"
   - "Tierarzt-Kommunikation über Hovera"
-pricingNote: "Auf jedem Plan ab Free verfügbar. Gewichte, Dokumente und Behandlungsvorlagen ab Stable-Plan."
+pricingNote: "Auf jedem Plan ab Start verfügbar. Gewichte, Dokumente und Behandlungsvorlagen ab Stable-Plan."
 ---

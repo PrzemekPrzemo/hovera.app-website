@@ -24,52 +24,65 @@ const onboardingItems = locale === 'pl' ? [
   'Team training (up to 5 people on Stable / Pro plans)',
 ];
 
+const UNL = t('bez limitu', 'unlimited');
 const allFeatures = locale === 'pl' ? [
-  { name: 'Konie', values: ['5', '10', '30', '100'] },
-  { name: 'Klienci', values: ['10', '30', '100', t('bez limitu', 'unlimited')] },
-  { name: 'Pracownicy / instruktorzy', values: ['1', '1', '5', t('bez limitu', 'unlimited')] },
-  { name: 'Kalendarz multi-resource', values: ['✓', '✓', '✓', '✓'] },
-  { name: 'Booking online', values: ['—', '✓', '✓', '✓'] },
-  { name: 'Karnety + auto-rozliczanie', values: ['—', '—', '✓', '✓'] },
-  { name: 'Faktury i rozliczenia', values: ['—', '—', '✓', '✓'] },
-  { name: 'Eksport do biura rachunkowego', values: ['—', '—', '✓', '✓'] },
-  { name: 'Pensjonat / livery + portal właściciela', values: ['—', '—', '—', '✓'] },
-  { name: 'Hodowla i dziennik źrebaków', values: ['—', '—', '✓', '✓'] },
-  { name: 'Public API + webhooks', values: ['—', '—', '—', '✓'] },
-  { name: 'Custom domena', values: ['—', '—', '+29 zł', '+29 zł'] },
-  { name: 'Wsparcie', values: ['Community', 'Email', 'Email + chat', 'Priority'] },
+  { name: 'Konie', values: ['5', '10', '30', '100', UNL] },
+  { name: 'Klienci', values: ['10', '30', '100', UNL, UNL] },
+  { name: 'Pracownicy / instruktorzy', values: ['1', '1', '5', UNL, UNL] },
+  { name: 'Kalendarz multi-resource', values: ['✓', '✓', '✓', '✓', '✓'] },
+  { name: 'Booking online', values: ['20/mc', '✓', '✓', '✓', '✓'] },
+  { name: 'Karnety + auto-rozliczanie', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Faktury KSeF + Peppol', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Eksport do biura rachunkowego', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Pasza i żywienie', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Pensjonat / livery + portal właściciela', values: ['—', '—', '—', '✓', '✓'] },
+  { name: 'Hodowla i dziennik źrebaków', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Public API + webhooks', values: ['—', '—', '—', '✓', '✓'] },
+  { name: 'AuditLog (GoBD / RODO)', values: ['—', '—', '—', '✓', '✓'] },
+  { name: 'SLA 99,9% + 24/7', values: ['—', '—', '—', '—', '✓'] },
+  { name: 'Dedykowany account manager', values: ['—', '—', '—', '—', '✓'] },
+  { name: 'Custom domena', values: ['—', '—', '+29 zł', '+29 zł', '✓'] },
+  { name: 'Wsparcie', values: ['Email', 'Email', 'Email + chat', 'Priority', 'Dedicated 24/7'] },
 ] : [
-  { name: 'Horses', values: ['5', '10', '30', '100'] },
-  { name: 'Clients', values: ['10', '30', '100', 'unlimited'] },
-  { name: 'Staff / instructors', values: ['1', '1', '5', 'unlimited'] },
-  { name: 'Multi-resource calendar', values: ['✓', '✓', '✓', '✓'] },
-  { name: 'Online booking', values: ['—', '✓', '✓', '✓'] },
-  { name: 'Passes + auto-settlement', values: ['—', '—', '✓', '✓'] },
-  { name: 'Invoicing & billing', values: ['—', '—', '✓', '✓'] },
-  { name: 'Bookkeeping export', values: ['—', '—', '✓', '✓'] },
-  { name: 'Boarding + owner portal', values: ['—', '—', '—', '✓'] },
-  { name: 'Breeding & foal journal', values: ['—', '—', '✓', '✓'] },
-  { name: 'Public API + webhooks', values: ['—', '—', '—', '✓'] },
-  { name: 'Custom domain', values: ['—', '—', '+€7', '+€7'] },
-  { name: 'Support', values: ['Community', 'Email', 'Email + chat', 'Priority'] },
+  { name: 'Horses', values: ['5', '10', '30', '100', UNL] },
+  { name: 'Clients', values: ['10', '30', '100', UNL, UNL] },
+  { name: 'Staff / instructors', values: ['1', '1', '5', UNL, UNL] },
+  { name: 'Multi-resource calendar', values: ['✓', '✓', '✓', '✓', '✓'] },
+  { name: 'Online booking', values: ['20/mo', '✓', '✓', '✓', '✓'] },
+  { name: 'Passes + auto-settlement', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'E-invoicing (KSeF + Peppol)', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Bookkeeping export', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Feed & nutrition', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Boarding + owner portal', values: ['—', '—', '—', '✓', '✓'] },
+  { name: 'Breeding & foal journal', values: ['—', '—', '✓', '✓', '✓'] },
+  { name: 'Public API + webhooks', values: ['—', '—', '—', '✓', '✓'] },
+  { name: 'AuditLog (GoBD / GDPR)', values: ['—', '—', '—', '✓', '✓'] },
+  { name: 'SLA 99.9% + 24/7', values: ['—', '—', '—', '—', '✓'] },
+  { name: 'Dedicated account manager', values: ['—', '—', '—', '—', '✓'] },
+  { name: 'Custom domain', values: ['—', '—', '+€7', '+€7', '✓'] },
+  { name: 'Support', values: ['Email', 'Email', 'Email + chat', 'Priority', 'Dedicated 24/7'] },
 ];
 
 const faqs = locale === 'pl' ? [
+  { q: 'Czy ceny są netto?', a: 'Tak. Wszystkie ceny w cenniku są podane netto. Doliczamy 23% VAT zgodnie z polskimi przepisami. Klienci z UE z ważnym numerem VAT UE — odwrotne obciążenie (VAT 0%). Klienci spoza UE — zwykle bez VAT.' },
+  { q: 'Czym różni się plan Start od reszty?', a: 'Start to wejście dla hobbystycznych stajni i pojedynczych instruktorów: 50 zł/mc netto za podstawowy kalendarz, dziennik konia i 20 rezerwacji online miesięcznie. Bez karnetów, bez faktur KSeF. Dla małej szkółki wybierz Solo (99 zł).' },
   { q: 'Czy mogę zmienić plan w każdej chwili?', a: 'Tak. Upgrade jest natychmiastowy z proporcjonalnym rozliczeniem. Downgrade działa od kolejnego okresu rozliczeniowego.' },
-  { q: 'Co dokładnie obejmuje opłata wdrożeniowa 1 590 zł?', a: 'Spotkanie 90 min, import danych, konfiguracja kalendarza i karnetów, setup publicznej strony stajni, powiadomień i szkolenie do 5 osób. Pełna lista wyżej.' },
-  { q: 'Czy opłata wdrożeniowa jest jednorazowa?', a: 'Tak — to jednorazowe 1 590 zł, niezależnie od wybranego planu i okresu. Doliczana do pierwszej faktury.' },
+  { q: 'Co obejmuje opłata wdrożeniowa 1 590 zł?', a: 'Spotkanie 90 min, import danych, konfiguracja kalendarza i karnetów, setup publicznej strony stajni, powiadomień i szkolenie do 5 osób. Jednorazowo, niezależnie od planu i okresu. W planie Enterprise wdrożenie indywidualne, wliczone w cenę.' },
   { q: 'Co znaczy „blokada ceny"?', a: 'Jeśli za rok podniesiemy cennik, Twoja stawka zostaje. Lock pricing działa przy każdej umowie rocznej, 2- i 3-letniej na cały okres jej trwania.' },
-  { q: 'Ile zaoszczędzę na umowie wieloletniej?', a: 'Rocznie -10%, 2 lata -20%, 3 lata -30% względem ceny miesięcznej. Plan Stable płacony 3 lata z góry to 174 zł/mc effective vs 249 zł/mc miesięcznie — oszczędność 30%.' },
+  { q: 'Ile zaoszczędzę na umowie wieloletniej?', a: 'Rocznie cena jest niższa niż 12 × miesięczna (np. Solo: 990 zł rocznie vs 99 × 12 = 1 188 zł). 2- i 3-letnie umowy dają dodatkowo -5% / -10% od ceny rocznej, z blokadą ceny na cały okres.' },
   { q: 'Co się dzieje, gdy przekroczę limit koni lub klientów?', a: 'Zaproponujemy upgrade, ale Twoje dane nie znikną — system po prostu poprosi o zwiększenie limitu. Bez ukrytego ucięcia funkcjonalności.' },
+  { q: 'Plan Enterprise — co dokładnie?', a: 'Bez limitu koni, klientów i instruktorów. Wszystko z planu Pro plus: SLA 99,9%, 24/7 wsparcie, dedykowany account manager, wdrożenie on-site, niestandardowe integracje (SSO, white-label, ERP). Wycena indywidualna — zapytaj o stawkę.' },
   { q: 'Czy potrzebuję podpisać umowę?', a: 'Nie. Akceptujesz Regulamin online i działasz. Dla planu Enterprise mamy odrębną umowę ramową.' },
   { q: 'Jak wygląda 30-dniowa gwarancja zwrotu?', a: 'Jeśli w ciągu pierwszych 30 dni zdecydujesz, że to nie dla Ciebie, zwracamy 100% opłaty (włącznie z opłatą wdrożeniową) bez pytań.' },
 ] : [
+  { q: 'Are prices VAT-inclusive?', a: 'No. All prices are net. 23% Polish VAT applies to invoices issued from Poland. EU B2B customers with a valid VAT ID — reverse charge (0% VAT). Non-EU customers — usually 0% VAT.' },
+  { q: 'How is Start different from the rest?', a: 'Start is the entry tier for hobby stables and single instructors: €15/mo net for basic calendar, horse journal and 20 online bookings per month. No passes, no e-invoicing. For a small riding school pick Solo (€29).' },
   { q: 'Can I change my plan at any time?', a: 'Yes. Upgrades are instant with prorated billing. Downgrades take effect at the next billing period.' },
-  { q: 'What does the onboarding fee include?', a: 'A 90-minute call, data import, calendar and passes setup, public stable page configuration, notifications, and team training for up to 5 people. Full list above.' },
-  { q: 'Is the onboarding fee one-time?', a: 'Yes — once, regardless of plan or billing period. Added to your first invoice.' },
+  { q: 'What does the onboarding fee cover?', a: '90-min call, data import, calendar and passes setup, public stable page, notifications, and team training for up to 5 people. One-time, regardless of plan or billing period. Enterprise gets a custom rollout included in the contract.' },
   { q: 'What does "price lock" mean?', a: "If we raise list prices next year, your rate stays the same. Price lock applies on every yearly, 2- and 3-year contract for the full term." },
-  { q: 'How much do I save on a multi-year contract?', a: 'Yearly -10%, 2 years -20%, 3 years -30% off the monthly rate. A 3-year Stable contract works out to about 70% of the monthly list price.' },
+  { q: 'How much do I save on a multi-year contract?', a: 'Yearly is already cheaper than 12 × monthly (e.g. Solo: €290/yr vs €29 × 12 = €348). 2- and 3-year contracts add an extra -5% / -10% on top of the yearly rate, with a price lock for the entire term.' },
   { q: 'What happens if I exceed horse or client limits?', a: "We'll suggest an upgrade — your data stays. The system simply prompts a higher limit." },
+  { q: 'Enterprise plan — what exactly?', a: 'No limits on horses, clients or instructors. Everything in Pro plus: 99.9% SLA, 24/7 support, dedicated account manager, on-site rollout, custom integrations (SSO, white-label, ERP). Individual quote — ask us for a number.' },
   { q: 'Do I need to sign a contract?', a: 'No. You accept Terms online and you are good to go. Enterprise customers get a framework agreement.' },
   { q: 'How does the 30-day money-back guarantee work?', a: "Within the first 30 days you get 100% refund — including the onboarding fee — no questions asked." },
 ];
@@ -82,18 +95,6 @@ const setupFeeDisplay =
 
 <section class="container-x">
   <PricingCalculator locale={locale} variant="full" />
-
-  <div class="enterprise-card mt-10" data-reveal>
-    <div class="ec-content">
-      <span class="eyebrow">Enterprise</span>
-      <h3 class="display-3 mt-3">{t('Sieci stajni, kluby sportowe, hodowle 100+ koni.', 'Stable networks, sport clubs, 100+ horse breeders.')}</h3>
-      <p class="muted mt-3">{t('White-label, multi-location, dedicated support, custom SLA, SSO, dedykowany customer success manager.', 'White-label, multi-location, dedicated support, custom SLA, SSO, dedicated CSM.')}</p>
-    </div>
-    <div class="ec-cta">
-      <a href={lp('/kontakt') + '?plan=Enterprise'} class="btn btn-primary">{t('Skontaktuj się', 'Contact us')}</a>
-      <p class="text-xs muted mt-2">{t('Wycena na zapytanie', 'Custom pricing')}</p>
-    </div>
-  </div>
 
   <div class="roi-banner mt-10" data-reveal>
     <div>
@@ -148,18 +149,19 @@ const setupFeeDisplay =
   <div class="mt-20" data-reveal>
     <h3 class="display-3 text-center">{t('Pełne porównanie funkcji', 'Full feature comparison')}</h3>
     <div class="comp-table mt-8">
-      <div class="ct-row ct-head">
+      <div class="ct-row ct-head ct-row-5">
         <div></div>
-        <div>Free</div>
+        <div>Start</div>
         <div>Solo</div>
         <div class="ct-popular">Stable</div>
         <div>Pro</div>
+        <div class="ct-enterprise">Enterprise</div>
       </div>
       {allFeatures.map((row) => (
-        <div class="ct-row">
+        <div class="ct-row ct-row-5">
           <div class="ct-name">{row.name}</div>
           {row.values.map((v, i) => (
-            <div class={i === 2 ? 'ct-popular' : ''}>{v}</div>
+            <div class={i === 2 ? 'ct-popular' : i === 4 ? 'ct-enterprise' : ''}>{v}</div>
           ))}
         </div>
       ))}
@@ -210,15 +212,16 @@ const setupFeeDisplay =
   .onboarding-list li { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.95rem; line-height: 1.5; }
   .onboarding-list svg { color: var(--color-ochre); flex-shrink: 0; margin-top: 0.4rem; }
   .comp-table { border-radius: var(--radius-xl); border: 1px solid var(--color-border); overflow: hidden; background: var(--color-cream); }
-  .ct-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+  .ct-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
   .ct-row:last-child { border-bottom: none; }
   .ct-head { background: var(--color-sand-light); font-weight: 500; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.18em; }
   .ct-row > div { padding: 0.85rem 1rem; border-right: 1px solid var(--color-border); text-align: center; }
   .ct-row > div:first-child { text-align: left; }
   .ct-row > div:last-child { border-right: none; }
   .ct-popular { background: rgba(168,149,107,0.08); font-weight: 500; }
+  .ct-enterprise { background: rgba(61,46,34,0.06); font-weight: 500; }
   .ct-name { color: var(--color-fg); }
-  @media (max-width: 700px) { .comp-table { font-size: 0.78rem; } .ct-row { grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; } .ct-row > div { padding: 0.6rem 0.4rem; } }
+  @media (max-width: 700px) { .comp-table { font-size: 0.72rem; } .ct-row { grid-template-columns: 1.6fr 0.85fr 0.85fr 0.85fr 0.85fr 0.85fr; } .ct-row > div { padding: 0.5rem 0.3rem; } }
   .faq-list { display: flex; flex-direction: column; gap: 0.5rem; }
   .faq-item { background: var(--color-cream); border: 1px solid var(--color-border); border-radius: 14px; }
   .faq-item summary { list-style: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }

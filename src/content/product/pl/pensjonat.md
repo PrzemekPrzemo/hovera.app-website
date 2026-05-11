@@ -31,5 +31,5 @@ integrations:
   - "KSeF / Peppol BIS Billing 3.0"
   - "Stripe / SEPA / Przelewy24"
   - "Eksport DATEV (DE), iFirma / Wfirma (PL)"
-pricingNote: "Moduł Pensjonat dostępny w planie Pro (od 349 zł/mies. przy umowie 3-letniej). Plan Stable obsługuje do 30 koni; Pro — bez limitu."
+pricingNote: "Moduł Pensjonat dostępny w planie Pro. Plan Stable obsługuje do 30 koni; Pro — bez limitu."
 ---
