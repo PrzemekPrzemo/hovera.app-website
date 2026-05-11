@@ -24,33 +24,37 @@ const pricesByCurrency = {
     pro:    { monthly: 499, yearly: 5390 },
     setup: 1590,
   },
+  // EUR: positioned below Equicty (€30-80 Stable) and EquineM (€40-100 Solo).
   EUR: {
     start:  { monthly: 15,  yearly: 150 },
-    solo:   { monthly: 29,  yearly: 290 },
-    stable: { monthly: 79,  yearly: 790 },
-    pro:    { monthly: 159, yearly: 1590 },
-    setup: 490,
+    solo:   { monthly: 25,  yearly: 250 },
+    stable: { monthly: 69,  yearly: 750 },
+    pro:    { monthly: 139, yearly: 1490 },
+    setup: 390,
   },
+  // GBP: undercuts Stable Secretary (£24-49) and HorseSmart (£29-89).
   GBP: {
     start:  { monthly: 12,  yearly: 120 },
-    solo:   { monthly: 25,  yearly: 250 },
-    stable: { monthly: 69,  yearly: 690 },
-    pro:    { monthly: 139, yearly: 1390 },
-    setup: 429,
+    solo:   { monthly: 22,  yearly: 220 },
+    stable: { monthly: 59,  yearly: 640 },
+    pro:    { monthly: 119, yearly: 1280 },
+    setup: 349,
   },
+  // AUD: below Equestrian Manager AU (A$45-120) and HorseDeskAU (A$55-150).
   AUD: {
+    start:  { monthly: 22,  yearly: 220 },
+    solo:   { monthly: 45,  yearly: 450 },
+    stable: { monthly: 115, yearly: 1240 },
+    pro:    { monthly: 229, yearly: 2470 },
+    setup: 690,
+  },
+  // NZD: small market, ~10% premium over AUD to cover overhead.
+  NZD: {
     start:  { monthly: 25,  yearly: 250 },
     solo:   { monthly: 49,  yearly: 490 },
-    stable: { monthly: 129, yearly: 1290 },
-    pro:    { monthly: 259, yearly: 2590 },
-    setup: 790,
-  },
-  NZD: {
-    start:  { monthly: 28,  yearly: 280 },
-    solo:   { monthly: 55,  yearly: 550 },
-    stable: { monthly: 139, yearly: 1390 },
-    pro:    { monthly: 279, yearly: 2790 },
-    setup: 850,
+    stable: { monthly: 125, yearly: 1350 },
+    pro:    { monthly: 249, yearly: 2690 },
+    setup: 749,
   },
 } as const;
 type CurrencyCode = keyof typeof pricesByCurrency;
