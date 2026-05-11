@@ -34,5 +34,5 @@ integrations:
   - "PZJ — polski rejestr"
   - "PASB (paszporty hodowlane)"
   - "Komunikacja z weterynarzem przez Hoverę"
-pricingNote: "Dostępne we wszystkich pakietach od Free. Wagi, dokumenty, szablony zabiegów — od planu Stable."
+pricingNote: "Dostępne we wszystkich pakietach od Start. Wagi, dokumenty, szablony zabiegów — od planu Stable."
 ---

@@ -31,5 +31,5 @@ integrations:
   - "KSeF / Peppol BIS Billing 3.0"
   - "Stripe / SEPA / Przelewy24"
   - "DATEV export (DE), iFirma / Wfirma (PL)"
-pricingNote: "Boarding module available on Pro plan (from €159/mo on a 3-year contract). Stable plan handles up to 30 horses; Pro has no limit."
+pricingNote: "Boarding module available on Pro plan. Stable plan handles up to 30 horses; Pro has no limit."
 ---

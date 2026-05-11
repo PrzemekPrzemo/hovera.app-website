@@ -34,5 +34,5 @@ integrations:
   - "PZJ (Polish registry)"
   - "PASB (breeding passports)"
   - "Vet communication via Hovera"
-pricingNote: "Available on every plan from Free. Weights, documents and treatment templates from Stable plan up."
+pricingNote: "Available on every plan from Start. Weights, documents and treatment templates from Stable plan up."
 ---

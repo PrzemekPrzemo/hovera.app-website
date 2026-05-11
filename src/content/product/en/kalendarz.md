@@ -32,5 +32,5 @@ integrations:
   - "Apple Calendar / iCal"
   - "Outlook 365"
   - "FEI / PZJ — start export"
-pricingNote: "Available on every plan from Free. Multiple arenas and recurring entries from Solo plan up."
+pricingNote: "Available on every plan from Start. Multiple arenas and recurring entries from Solo plan up."
 ---

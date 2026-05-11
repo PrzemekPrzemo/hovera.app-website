@@ -32,5 +32,5 @@ integrations:
   - "Apple Calendar / iCal"
   - "Outlook 365"
   - "FEI / FN — Turnierexport"
-pricingNote: "Auf jedem Plan ab Free verfügbar. Mehrere Hallen und wiederkehrende Termine ab Solo-Plan."
+pricingNote: "Auf jedem Plan ab Start verfügbar. Mehrere Hallen und wiederkehrende Termine ab Solo-Plan."
 ---
