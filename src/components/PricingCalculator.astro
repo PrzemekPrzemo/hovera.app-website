@@ -163,6 +163,13 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
     </span>
   </p>
 
+  <p class="vat-hint">
+    {locale === 'pl' && 'Wszystkie ceny są podane w kwotach netto. Doliczamy 23% VAT zgodnie z polskimi przepisami. Klienci z UE z ważnym numerem VAT UE — odwrotne obciążenie (VAT 0%).'}
+    {locale === 'en' && 'All prices are net. 23% Polish VAT applies to invoices issued from Poland. EU B2B customers with a valid VAT ID — reverse charge (0% VAT).'}
+    {locale === 'de' && 'Alle Preise verstehen sich netto. 23% polnische MwSt. kommt hinzu. EU-B2B-Kunden mit gültiger USt-IdNr. — Reverse-Charge-Verfahren (0% MwSt.).'}
+    {locale === 'fr' && 'Tous les prix sont nets de TVA. TVA polonaise 23% applicable. Clients B2B UE avec numéro de TVA valide — autoliquidation (TVA 0%).'}
+  </p>
+
   <!-- Tier cards -->
   <div class={`tiers-grid ${variant === 'teaser' ? 'tiers-3' : ''}`}>
     {tiers.filter((t) => variant === 'full' || t.key !== 'free').map((tier) => (
@@ -319,7 +326,16 @@ const setupFee = pricesByCurrency[defaultCurrency].setup;
     font-size: 0.8rem;
     color: var(--color-fg-muted);
     margin-top: 0.4rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .vat-hint {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--color-fg-muted);
+    max-width: 44rem;
+    margin: 0 auto 2rem;
+    line-height: 1.45;
+    opacity: 0.85;
   }
 
   .tiers-grid {
