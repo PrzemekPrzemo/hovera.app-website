@@ -22,6 +22,7 @@ const product = defineCollection({
       body: z.string(),
     })),
     integrations: z.array(z.string()).optional(),
+    heroImage: z.string().optional(),
     pricingNote: z.string(),
   }),
 });
