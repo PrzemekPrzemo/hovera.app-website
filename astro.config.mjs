@@ -3,12 +3,21 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
+import markdoc from '@astrojs/markdoc';
+import keystatic from '@keystatic/astro';
+import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
+
+// Keystatic admin needs SSR. Production deploy stays fully static — only the
+// dev command (KEYSTATIC=1 astro dev) flips Astro into server mode and mounts
+// the /keystatic route. The public site is never deployed with the adapter.
+const enableKeystatic = process.env.KEYSTATIC === '1';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://hovera.app',
-  output: 'static',
+  output: enableKeystatic ? 'server' : 'static',
+  ...(enableKeystatic ? { adapter: node({ mode: 'standalone' }) } : {}),
   trailingSlash: 'never',
   integrations: [
     mdx(),
@@ -19,6 +28,8 @@ export default defineConfig({
       },
     }),
     react(),
+    markdoc(),
+    ...(enableKeystatic ? [keystatic()] : []),
   ],
   vite: {
     plugins: [tailwindcss()],
