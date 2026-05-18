@@ -1,8 +1,7 @@
 User-agent: *
 Allow: /
 
-# Disallow internal admin and noindex pages
-Disallow: /admin/
+# Disallow noindex pages (Keystatic admin runs locally only — never deployed)
 Disallow: /dziekujemy
 Disallow: /en/dziekujemy
 
