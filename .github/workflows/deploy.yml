@@ -40,15 +40,7 @@ jobs:
       - name: Deploy with rsync
         run: |
           rsync -avz --delete \
-            --exclude='/admin/' \
             --exclude='/api' \
             -e "ssh -p ${{ secrets.PLESK_SSH_PORT || '22' }}" \
             ./dist/ \
             ${{ secrets.PLESK_USER }}@${{ secrets.PLESK_HOST }}:${{ secrets.PLESK_PATH }}/
-
-      - name: Sync /admin separately (for CMS updates)
-        run: |
-          rsync -avz \
-            -e "ssh -p ${{ secrets.PLESK_SSH_PORT || '22' }}" \
-            ./public/admin/ \
-            ${{ secrets.PLESK_USER }}@${{ secrets.PLESK_HOST }}:${{ secrets.PLESK_PATH }}/admin/
