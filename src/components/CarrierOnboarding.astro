@@ -7,141 +7,298 @@ interface Props {
 const { locale } = Astro.props;
 const lp = (p: string) => localizePath(p, locale);
 
+// Plan prices per currency. PLN is the authoritative source from product;
+// EUR / GBP / AUD / NZD are positioned proportionally.
+const planPrices = {
+  PLN: { start: 250,  pro: 549,  business: 999  },
+  EUR: { start: 59,   pro: 129,  business: 229  },
+  GBP: { start: 49,   pro: 109,  business: 199  },
+  AUD: { start: 99,   pro: 219,  business: 399  },
+  NZD: { start: 109,  pro: 239,  business: 439  },
+} as const;
+
+const addOns = {
+  PLN: {
+    migrate_excel:   { price: '499 zł',   recurring: false },
+    migrate_system:  { price: '1 499 zł', recurring: false },
+    onboarding_live: { price: '9,99 zł',  recurring: false },
+    invoice_setup:   { price: '299 zł',   recurring: false },
+    extra_driver:    { price: '25 zł',    recurring: true  },
+    extra_vehicle:   { price: '35 zł',    recurring: true  },
+  },
+  EUR: {
+    migrate_excel:   { price: '€119',   recurring: false },
+    migrate_system:  { price: '€359',   recurring: false },
+    onboarding_live: { price: '€2,49',  recurring: false },
+    invoice_setup:   { price: '€69',    recurring: false },
+    extra_driver:    { price: '€6',     recurring: true  },
+    extra_vehicle:   { price: '€8',     recurring: true  },
+  },
+  GBP: {
+    migrate_excel:   { price: '£99',    recurring: false },
+    migrate_system:  { price: '£299',   recurring: false },
+    onboarding_live: { price: '£1.99',  recurring: false },
+    invoice_setup:   { price: '£59',    recurring: false },
+    extra_driver:    { price: '£5',     recurring: true  },
+    extra_vehicle:   { price: '£7',     recurring: true  },
+  },
+  AUD: {
+    migrate_excel:   { price: 'A$199',  recurring: false },
+    migrate_system:  { price: 'A$599',  recurring: false },
+    onboarding_live: { price: 'A$3.99', recurring: false },
+    invoice_setup:   { price: 'A$119',  recurring: false },
+    extra_driver:    { price: 'A$10',   recurring: true  },
+    extra_vehicle:   { price: 'A$14',   recurring: true  },
+  },
+  NZD: {
+    migrate_excel:   { price: 'NZ$219',  recurring: false },
+    migrate_system:  { price: 'NZ$659',  recurring: false },
+    onboarding_live: { price: 'NZ$4.49', recurring: false },
+    invoice_setup:   { price: 'NZ$129',  recurring: false },
+    extra_driver:    { price: 'NZ$11',   recurring: true  },
+    extra_vehicle:   { price: 'NZ$15',   recurring: true  },
+  },
+} as const;
+
+type CurrencyCode = keyof typeof planPrices;
+
+const currencyMeta: Record<CurrencyCode, { symbol: string; pos: 'before' | 'after'; flag: string; label: string }> = {
+  PLN: { symbol: 'zł', pos: 'after',  flag: '🇵🇱', label: 'PLN' },
+  EUR: { symbol: '€',  pos: 'before', flag: '🇪🇺', label: 'EUR' },
+  GBP: { symbol: '£',  pos: 'before', flag: '🇬🇧', label: 'GBP' },
+  AUD: { symbol: 'A$', pos: 'before', flag: '🇦🇺', label: 'AUD' },
+  NZD: { symbol: 'NZ$', pos: 'before', flag: '🇳🇿', label: 'NZD' },
+};
+
+const defaultCurrency: CurrencyCode = locale === 'pl' ? 'PLN' : 'EUR';
+
+const planLimits = [
+  { key: 'drivers',  start: '4',  pro: '8',  business: '15',   enterprise: '∞' },
+  { key: 'vehicles', start: '4',  pro: '12', business: '25',   enterprise: '∞' },
+  { key: 'offers',   start: '100',pro: '500',business: '∞',   enterprise: '∞' },
+  { key: 'clients',  start: '200',pro: '1000',business: '∞',  enterprise: '∞' },
+  { key: 'storage',  start: '3 GB', pro: '15 GB', business: '50 GB', enterprise: '∞' },
+];
+
 const text = {
   pl: {
     eyebrow: 'Dla firm transportowych',
     title: 'Zarejestruj firmę i zacznij przyjmować zlecenia',
-    subtitle: 'Hovera pobiera od firm transportowych opłatę abonamentową za dostęp do systemu — bez prowizji od zleceń, bez ukrytych kosztów. Stajnie i ich klienci korzystają z modułu transport BEZPŁATNIE w ramach swojego pakietu Hovery.',
-    reqsTitle: 'Co przygotuj przed rejestracją',
+    subtitle: 'Hovera pobiera od firm transportowych opłatę abonamentową za dostęp do systemu — bez prowizji od zleceń. Stajnie i ich klienci korzystają z modułu transport BEZPŁATNIE w ramach swojego pakietu Hovery.',
+    trialBadge: '🎁 Pierwszy miesiąc gratis (po weryfikacji dokumentów)',
+    currencyLabel: 'Waluta',
+    roiTitle: '💰 Policz, ile zyskujesz',
+    roiBody: 'Robisz ~10 ofert miesięcznie, każda zajmuje 30 min ręcznie (sprawdzenie trasy, kalkulacja, mail, korekta, wystawienie faktury). To 20 h pracy w miesiącu. Po wdrożeniu Hovera Transport spadnie do 5 h — system sam liczy wycenę, generuje ofertę, wystawia fakturę KSeF/Peppol.',
+    roiCalc: 'Oszczędność: 15 h × 50 zł/h = 750 zł / miesiąc. Plan Start: 250 zł.',
+    roiPunch: 'Plan zwraca się 3-krotnie w pierwszym miesiącu. Plus pierwszy miesiąc gratis — testujesz bez ryzyka.',
+    reqsTitle: '📋 Co przygotuj przed rejestracją',
     reqs: [
       'Wpis do CEIDG lub KRS firmy + numer NIP',
       'Licencja na wykonywanie transportu drogowego (krajowa lub międzynarodowa)',
       'Ważny certyfikat na transport zwierząt (Rozporządzenie 1/2005, typ I lub II)',
       'Świadectwo kompetencji zawodowych kierownika transportu',
-      'Polisa OC przewoźnika (min. 1 000 000 zł sumy gwarancyjnej)',
-      'Dane pojazdów: dowód rejestracyjny, badanie techniczne, atest zatwierdzenia do transportu zwierząt',
-      'Dane kierowców: prawo jazdy + zaświadczenie o ukończeniu kursu przewozu zwierząt',
+      'Polisa OC przewoźnika (min. 1 000 000 zł)',
+      'Dane pojazdów: dowód rejestracyjny, badanie techniczne, atest do transportu zwierząt',
+      'Dane kierowców: prawo jazdy + kurs przewozu zwierząt',
       'Numer rachunku bankowego do wypłat (IBAN)',
     ],
-    pricingTitle: '3 plany abonamentowe dla firm transportowych',
-    pricingNote: 'Ceny finalne ogłosimy wkrótce. Zgłoś firmę już teraz — pierwsi przewoźnicy dostają darmowy okres próbny i preferencyjną stawkę przy starcie publicznym.',
-    plans: [
-      { name: 'Starter', desc: 'Solo-przewoźnik, do 5 zleceń/miesiąc', features: ['1 kierowca', '1 pojazd', 'Ofertowanie i booking', 'Auto-faktura KSeF/Peppol', 'Email support'] },
-      { name: 'Standard', desc: 'Mała firma, do 30 zleceń/miesiąc', popular: true, features: ['Do 5 kierowców', 'Do 5 pojazdów', 'Wszystko ze Startera', 'Kalkulator wyceny (km + paliwo)', 'CRM klientów', 'Raporty miesięczne', 'Email + chat'] },
-      { name: 'Fleet', desc: 'Sieci flot, bez limitu zleceń', features: ['Bez limitu kierowców', 'Bez limitu pojazdów', 'Wszystko ze Standard', 'Multi-region (PL + EU)', 'Public API + webhooks', 'White-label opcjonalnie', 'Dedicated account manager'] },
-    ],
+    plansTitle: '💼 4 plany abonamentowe',
+    plansSubtitle: 'Wybierz plan dopasowany do skali floty. Wszystkie ceny netto — doliczamy 23% VAT (klienci UE z VAT ID — odwrotne obciążenie).',
+    plans: {
+      start: { name: 'Start', desc: 'Małe firmy i przewoźnicy indywidualni', features: ['Pełny kalkulator wycen z routingiem HGV (ORS)', 'Oferty PDF + publiczna akceptacja + WhatsApp/email', 'CRM klientów ze stawkami indywidualnymi', 'POI własne miejsca + import z Google Maps', 'Kalendarz transportów + iCal feed', 'Publiczna strona firmy (PL)', 'Wpłaty + koszty z importem CSV', 'Faktury (integracja Fakturownia.pl)', 'Raporty: kierowcy, klienci, pojazdy, cash-flow', 'Wsparcie email · odpowiedź w 24h'] },
+      pro: { name: 'Pro', desc: 'Rosnące firmy z większym taborem', popular: true, features: ['Wszystko ze Start +', 'Wielojęzyczna strona publiczna (PL + EN + DE)', 'Indywidualne stawki i min. kwoty per klient', 'Auto-szacowanie opłat drogowych (ORS tollways)', 'Słownik typów postoju (załadunek/rozładunek/weterynarz/nocowanie)', 'Niewidoczne punkty pośrednie (tajne dla klienta)', 'Galeria publiczna ze zdjęciami transportów', 'Priorytetowy support · odpowiedź w 8h'] },
+      business: { name: 'Business', desc: 'Średnie i większe firmy transportowe', features: ['Wszystko z Pro +', 'Custom branding (logo + kolory na stronie i PDF)', 'Własna domena (np. panel.twojafirma.pl)', 'Raporty zaawansowane: marże, top trasy, popularność', 'Eksport CSV/JSON wszystkich danych (RODO)', 'Konfigurowalne stawki opłat drogowych (lekki vs HGV)', 'Dedicated account manager (1×/mc)', 'Priorytet w roadmapie (głosujesz na features)', 'Wsparcie · odpowiedź w 4h'] },
+      enterprise: { name: 'Enterprise', desc: 'Powyżej 15 kierowców / 25 pojazdów lub specjalne wymagania', features: ['Bez limitów. Indywidualna umowa.', 'Dedykowane środowisko (osobny VPS)', 'SLA 99,9% z gwarancją finansową', 'Onboarding z trenerem na żywo (2-4h)', 'Migracja danych — gratis', 'White-label (system pod Twoją marką)', 'API REST dla integracji', 'Backup do dedykowanego storage (S3 / GDrive)', 'Custom integracje (CRM/ERP/księgowość)', 'Wsparcie 24/7 · czas reakcji 1h'] },
+    },
+    limitsLabels: { drivers: 'Kierowcy', vehicles: 'Pojazdy/przyczepy', offers: 'Ofert/miesiąc', clients: 'Klienci w bazie', storage: 'Załączniki' },
+    monthly: '/ miesiąc',
+    enterpriseCta: 'Skontaktuj się',
+    addOnsTitle: '➕ Dodatkowe opcje (one-time / add-ons)',
+    addOnsSubtitle: 'Płacisz tylko za to, co potrzebujesz. Wszystkie ceny netto.',
+    addOnsLabels: {
+      migrate_excel: 'Migracja danych z Excela (do 500 wpisów)',
+      migrate_system: 'Migracja z innego systemu (do 2 000 wpisów)',
+      onboarding_live: 'Onboarding online — 2h live training, screen share',
+      invoice_setup: 'Konfiguracja faktur / KSeF + szablony PDF',
+      extra_driver: 'Dodatkowy kierowca powyżej limitu planu',
+      extra_vehicle: 'Dodatkowy pojazd powyżej limitu planu',
+    },
+    addOnsRecurring: '/ mies.',
+    addOnsOneTime: 'jednorazowo',
     ctaTitle: 'Wyślij zgłoszenie',
-    ctaBody: 'Załącz wymagane dokumenty (skany PDF/JPG) i napisz w jakim regionie operujesz. Weryfikacja zajmuje 2-5 dni roboczych. Po pozytywnej weryfikacji ustalamy plan dopasowany do skali Twojej floty. Pierwszy miesiąc gratis — bez ryzyka.',
+    ctaBody: 'Załącz wymagane dokumenty (skany PDF/JPG) i napisz w jakim regionie operujesz. Weryfikacja zajmuje 2-5 dni roboczych. Po pozytywnej weryfikacji aktywujemy plan z pierwszym miesiącem gratis.',
     ctaButton: 'Zgłoś firmę transportową',
-    freeNote: '🎁 Stajnie i właściciele koni korzystają z modułu Transport całkowicie BEZPŁATNIE — w ramach każdego pakietu Hovery od Start wzwyż. Tylko firmy transportowe wybierają jeden z 3 planów abonamentowych.',
-    roiTitle: '💰 Policz, ile zyskujesz',
-    roiBody: 'Robisz ~10 ofert miesięcznie, każda zajmuje 30 min ręcznie (sprawdzenie trasy, kalkulacja, mail, korekta, wystawienie faktury). To 20 h pracy w miesiącu. Po wdrożeniu Hovera Transport spadnie do 5 h — system sam liczy wycenę, generuje ofertę, wystawia fakturę KSeF/Peppol.',
-    roiCalc: 'Oszczędność: 15 h × 50 zł/h = 750 zł / miesiąc. Plan Standard ~349 zł.',
-    roiPunch: 'Plan zwraca się dwukrotnie w pierwszym miesiącu. Plus pierwszy miesiąc gratis — testujesz bez ryzyka.',
-    trialBadge: '🎁 Pierwszy miesiąc gratis (po weryfikacji)',
+    freeNote: '🎁 Stajnie i właściciele koni korzystają z modułu Transport całkowicie BEZPŁATNIE — w ramach każdego pakietu Hovery od Start wzwyż. Tylko firmy transportowe wybierają jeden z 4 planów abonamentowych.',
   },
   en: {
     eyebrow: 'For transport companies',
     title: 'Register your fleet and start accepting jobs',
-    subtitle: 'Hovera charges transport companies a subscription fee for system access — no per-job commission, no hidden costs. Stables and their clients use the Transport module FREE within their Hovera plan.',
-    reqsTitle: 'What to prepare before signing up',
+    subtitle: 'Hovera charges transport companies a subscription fee for system access — no per-job commission. Stables and their clients use the Transport module FREE within their Hovera plan.',
+    trialBadge: '🎁 First month free (after document verification)',
+    currencyLabel: 'Currency',
+    roiTitle: '💰 The math',
+    roiBody: 'You handle ~10 jobs a month. Each takes ~30 min manually (check the route, price it, email the client, correct the quote, issue the invoice). That is 20 h per month. With Hovera Transport it drops to ~5 h — the system prices the route, generates the quote, issues the e-invoice.',
+    roiCalc: 'Saving: 15 h × €15/h = €225/month. Start plan: €59.',
+    roiPunch: 'The plan pays for itself almost 4×. Plus the first month is free — you test with zero risk.',
+    reqsTitle: '📋 What to prepare before signing up',
     reqs: [
       'Company registration + VAT ID',
       'Road transport licence (national or international)',
       'Valid animal-transport certificate (Council Regulation EC 1/2005, type I or II)',
       'Transport manager certificate of professional competence',
       'Carrier third-party liability insurance (minimum €250,000)',
-      'Vehicle papers: registration certificate, technical inspection, animal-transport approval',
+      'Vehicle papers: registration, technical inspection, animal-transport approval',
       'Driver credentials: licence + animal-transport training certificate',
-      'Bank account (IBAN) for payouts',
+      'Bank account for payouts (IBAN)',
     ],
-    pricingTitle: '3 carrier subscription tiers',
-    pricingNote: 'Final pricing will be announced shortly. Apply now — early carriers get a free trial period and preferential rates at public launch.',
-    plans: [
-      { name: 'Starter', desc: 'Solo carrier, up to 5 jobs/month', features: ['1 driver', '1 vehicle', 'Quoting and booking', 'Auto e-invoicing (KSeF/Peppol)', 'Email support'] },
-      { name: 'Standard', desc: 'Small fleet, up to 30 jobs/month', popular: true, features: ['Up to 5 drivers', 'Up to 5 vehicles', 'Everything in Starter', 'Pricing calculator (km + fuel)', 'Client CRM', 'Monthly reports', 'Email + chat'] },
-      { name: 'Fleet', desc: 'Fleet networks, unlimited jobs', features: ['Unlimited drivers', 'Unlimited vehicles', 'Everything in Standard', 'Multi-region (PL + EU)', 'Public API + webhooks', 'Optional white-label', 'Dedicated account manager'] },
-    ],
+    plansTitle: '💼 4 carrier subscription tiers',
+    plansSubtitle: 'Pick a plan that fits your fleet. All prices are net — VAT may apply depending on your jurisdiction (EU B2B with VAT ID — reverse charge).',
+    plans: {
+      start: { name: 'Start', desc: 'Small fleets and solo carriers', features: ['Full quote calculator with HGV routing (ORS)', 'PDF quotes + public acceptance + WhatsApp/email', 'Client CRM with per-client rates', 'POI custom places + Google Maps import', 'Transport calendar + iCal feed', 'Public company page (PL)', 'Payments + costs with CSV import', 'Invoices (Fakturownia.pl integration)', 'Reports: drivers, clients, vehicles, cash-flow', 'Email support · 24h reply'] },
+      pro: { name: 'Pro', desc: 'Growing fleets with more vehicles', popular: true, features: ['Everything in Start +', 'Multilingual public page (PL + EN + DE)', 'Per-client rates and minimum charges', 'Auto toll estimation (ORS tollways)', 'Stop-type dictionary (loading/unloading/vet/overnight)', 'Hidden intermediate stops (private to client)', 'Public gallery with transport photos', 'Priority support · 8h reply'] },
+      business: { name: 'Business', desc: 'Mid-size and larger transport companies', features: ['Everything in Pro +', 'Custom branding (logo + colours on page and PDF)', 'Custom domain (e.g. panel.yourcompany.com)', 'Advanced reports: margins, top routes, popularity', 'CSV/JSON export of all data (GDPR)', 'Configurable toll rates (light vs HGV)', 'Dedicated account manager (1×/mo)', 'Roadmap priority (vote on features)', 'Support · 4h reply'] },
+      enterprise: { name: 'Enterprise', desc: 'Above 15 drivers / 25 vehicles, or special needs', features: ['No limits. Individual contract.', 'Dedicated environment (separate VPS)', '99.9% SLA with financial guarantee', 'On-site onboarding (2-4h trainer)', 'Data migration — free', 'White-label (system under your brand)', 'REST API for integrations', 'Backup to dedicated storage (S3 / GDrive)', 'Custom integrations (CRM/ERP/accounting)', '24/7 support · 1h response time'] },
+    },
+    limitsLabels: { drivers: 'Drivers', vehicles: 'Vehicles/trailers', offers: 'Offers/month', clients: 'Clients in DB', storage: 'Attachments' },
+    monthly: '/ month',
+    enterpriseCta: 'Contact us',
+    addOnsTitle: '➕ Add-ons (one-time and recurring)',
+    addOnsSubtitle: 'Pay only for what you need. All prices net.',
+    addOnsLabels: {
+      migrate_excel: 'Data migration from Excel (up to 500 records)',
+      migrate_system: 'Migration from another system (up to 2,000 records)',
+      onboarding_live: 'Online onboarding — 2h live training, screen share',
+      invoice_setup: 'Invoice / e-invoicing setup + PDF templates',
+      extra_driver: 'Extra driver above your plan limit',
+      extra_vehicle: 'Extra vehicle above your plan limit',
+    },
+    addOnsRecurring: '/ mo',
+    addOnsOneTime: 'one-time',
     ctaTitle: 'Send your application',
-    ctaBody: 'Attach the required documents (PDF/JPG scans) and tell us the region you operate in. Verification takes 2-5 business days. After approval we pick a plan that matches your fleet size. First month free — no risk.',
+    ctaBody: 'Attach the required documents (PDF/JPG scans) and tell us the region you operate in. Verification takes 2-5 business days. After approval we activate your plan with the first month free.',
     ctaButton: 'Apply as carrier',
-    freeNote: '🎁 Stables and horse owners use the Transport module completely FREE — included in every Hovera plan from Start up. Only transport companies pick one of the 3 carrier subscription tiers.',
-    roiTitle: '💰 The math',
-    roiBody: 'You handle ~10 jobs a month. Each one takes ~30 min manually (check the route, price it, email the client, correct the quote, issue the invoice). That is 20 h per month. With Hovera Transport it drops to ~5 h — the system prices the route, generates the quote, issues the e-invoice.',
-    roiCalc: 'Saving: 15 h × €15/h = €225/month. Standard plan ~€89.',
-    roiPunch: 'The plan pays for itself 2.5×. Plus the first month is free — you test with zero risk.',
-    trialBadge: '🎁 First month free (after verification)',
+    freeNote: '🎁 Stables and horse owners use the Transport module completely FREE — included in every Hovera plan from Start up. Only transport companies pick one of the 4 carrier subscription tiers.',
   },
   de: {
     eyebrow: 'Für Transportfirmen',
     title: 'Registriere deine Flotte und nimm Aufträge an',
-    subtitle: 'Hovera erhebt von Transportfirmen eine Abogebühr für den Systemzugang — keine Provision pro Auftrag, keine versteckten Kosten. Reitställe und deren Kunden nutzen das Transport-Modul KOSTENLOS im Rahmen ihres Hovera-Plans.',
-    reqsTitle: 'Was du vor der Registrierung vorbereitest',
+    subtitle: 'Hovera erhebt von Transportfirmen eine Abogebühr für den Systemzugang — keine Provision pro Auftrag. Reitställe und deren Kunden nutzen das Transport-Modul KOSTENLOS im Rahmen ihres Hovera-Plans.',
+    trialBadge: '🎁 Erster Monat gratis (nach Dokumenten-Verifizierung)',
+    currencyLabel: 'Währung',
+    roiTitle: '💰 Was du sparst',
+    roiBody: 'Du bearbeitest ~10 Aufträge pro Monat. Jeder dauert manuell ~30 Min. (Route prüfen, Preis kalkulieren, E-Mail an Kunden, Korrektur, Rechnung schreiben). Das sind 20 h pro Monat. Mit Hovera Transport sinkt das auf ~5 h.',
+    roiCalc: 'Ersparnis: 15 h × €15/h = €225/Monat. Start-Plan: €59.',
+    roiPunch: 'Der Plan rechnet sich fast 4-fach. Plus erster Monat gratis — risikofrei testen.',
+    reqsTitle: '📋 Was du vor der Registrierung vorbereitest',
     reqs: [
       'Handelsregistereintrag + USt-IdNr.',
       'Lizenz für gewerblichen Straßentransport (national oder international)',
       'Gültige Bescheinigung für Tiertransport (VO (EG) 1/2005, Typ I oder II)',
       'Fachkundenachweis des Transportleiters',
-      'Spediteurs-Haftpflichtversicherung (mind. €250.000 Deckungssumme)',
-      'Fahrzeugpapiere: Zulassung, HU-Bescheinigung, Tiertransport-Zulassung',
+      'Spediteurs-Haftpflichtversicherung (mind. €250.000)',
+      'Fahrzeugpapiere: Zulassung, HU, Tiertransport-Zulassung',
       'Fahrer-Nachweise: Führerschein + Tiertransport-Schulungsnachweis',
       'IBAN für Auszahlungen',
     ],
-    pricingTitle: '3 Abo-Pläne für Transportfirmen',
-    pricingNote: 'Endgültige Preise kündigen wir in Kürze an. Bewirb dich schon jetzt — frühe Spediteure erhalten eine kostenlose Testphase und Vorzugskonditionen beim öffentlichen Start.',
-    plans: [
-      { name: 'Starter', desc: 'Einzelspediteur, bis 5 Aufträge/Monat', features: ['1 Fahrer', '1 Fahrzeug', 'Angebot und Buchung', 'Auto-E-Rechnung (KSeF/Peppol)', 'E-Mail-Support'] },
-      { name: 'Standard', desc: 'Kleinflotte, bis 30 Aufträge/Monat', popular: true, features: ['Bis 5 Fahrer', 'Bis 5 Fahrzeuge', 'Alles aus Starter', 'Preisrechner (km + Diesel)', 'Kunden-CRM', 'Monatsberichte', 'E-Mail + Chat'] },
-      { name: 'Fleet', desc: 'Flottennetzwerk, unbegrenzte Aufträge', features: ['Unbegrenzte Fahrer', 'Unbegrenzte Fahrzeuge', 'Alles aus Standard', 'Multi-Region (PL + EU)', 'Public API + Webhooks', 'White-Label optional', 'Dedizierter Account-Manager'] },
-    ],
+    plansTitle: '💼 4 Abo-Pläne für Transportfirmen',
+    plansSubtitle: 'Wähle den Plan, der zu deiner Flotte passt. Alle Preise sind netto — MwSt. nach Jurisdiktion (EU B2B mit USt-IdNr. — Reverse Charge).',
+    plans: {
+      start: { name: 'Start', desc: 'Kleine Flotten und Einzelspediteure', features: ['Vollständiger Preisrechner mit HGV-Routing (ORS)', 'PDF-Angebote + öffentliche Annahme + WhatsApp/E-Mail', 'Kunden-CRM mit individuellen Tarifen', 'Eigene POIs + Google-Maps-Import', 'Transportkalender + iCal-Feed', 'Öffentliche Firmenseite (PL)', 'Zahlungen + Kosten mit CSV-Import', 'Rechnungen (Fakturownia.pl-Integration)', 'Reports: Fahrer, Kunden, Fahrzeuge, Cash-Flow', 'E-Mail-Support · 24h Antwort'] },
+      pro: { name: 'Pro', desc: 'Wachsende Flotten mit mehr Fahrzeugen', popular: true, features: ['Alles aus Start +', 'Mehrsprachige öffentliche Seite (PL + EN + DE)', 'Pro-Kunde-Tarife und Mindestbeträge', 'Auto-Mautberechnung (ORS tollways)', 'Stopp-Typen-Wörterbuch (Beladung/Entladung/Tierarzt/Übernachtung)', 'Versteckte Zwischenstopps (privat vom Kunden)', 'Öffentliche Galerie mit Transportfotos', 'Priority Support · 8h Antwort'] },
+      business: { name: 'Business', desc: 'Mittlere und größere Transportunternehmen', features: ['Alles aus Pro +', 'Custom Branding (Logo + Farben auf Seite und PDF)', 'Eigene Domain (z. B. panel.deinefirma.de)', 'Erweiterte Reports: Margen, Top-Routen, Beliebtheit', 'CSV/JSON-Export aller Daten (DSGVO)', 'Konfigurierbare Mauttarife (PKW vs HGV)', 'Dedizierter Account-Manager (1×/Monat)', 'Roadmap-Priorität (Stimme bei Features)', 'Support · 4h Antwort'] },
+      enterprise: { name: 'Enterprise', desc: 'Über 15 Fahrer / 25 Fahrzeuge oder Sonderwünsche', features: ['Keine Limits. Individueller Vertrag.', 'Dediziertes Environment (separater VPS)', '99,9% SLA mit finanzieller Garantie', 'On-site Onboarding (2-4h Trainer)', 'Datenmigration — kostenlos', 'White-Label (System unter deiner Marke)', 'REST-API für Integrationen', 'Backup zu dediziertem Storage (S3 / GDrive)', 'Custom-Integrationen (CRM/ERP/Buchhaltung)', '24/7 Support · 1h Reaktionszeit'] },
+    },
+    limitsLabels: { drivers: 'Fahrer', vehicles: 'Fahrzeuge/Anhänger', offers: 'Aufträge/Monat', clients: 'Kunden in DB', storage: 'Anhänge' },
+    monthly: '/ Monat',
+    enterpriseCta: 'Kontakt aufnehmen',
+    addOnsTitle: '➕ Add-ons (einmalig und monatlich)',
+    addOnsSubtitle: 'Zahle nur für das, was du brauchst. Alle Preise netto.',
+    addOnsLabels: {
+      migrate_excel: 'Datenmigration aus Excel (bis 500 Einträge)',
+      migrate_system: 'Migration aus anderem System (bis 2.000 Einträge)',
+      onboarding_live: 'Online-Onboarding — 2h Live-Training, Screen-Share',
+      invoice_setup: 'Rechnungs-/E-Rechnungs-Setup + PDF-Vorlagen',
+      extra_driver: 'Zusätzlicher Fahrer über Planlimit',
+      extra_vehicle: 'Zusätzliches Fahrzeug über Planlimit',
+    },
+    addOnsRecurring: '/ Monat',
+    addOnsOneTime: 'einmalig',
     ctaTitle: 'Bewerbung einreichen',
-    ctaBody: 'Lade die erforderlichen Dokumente (PDF/JPG-Scans) hoch und teile uns deine Einsatzregion mit. Die Verifizierung dauert 2-5 Werktage. Nach erfolgreicher Prüfung wählen wir den Plan, der zu deiner Flottengröße passt. Erster Monat kostenlos — risikofrei testen.',
+    ctaBody: 'Lade die erforderlichen Dokumente (PDF/JPG-Scans) hoch und teile uns deine Einsatzregion mit. Die Verifizierung dauert 2-5 Werktage. Nach erfolgreicher Prüfung aktivieren wir deinen Plan mit dem ersten Monat gratis.',
     ctaButton: 'Als Spediteur bewerben',
-    freeNote: '🎁 Reitställe und Pferdebesitzer nutzen das Transport-Modul komplett KOSTENLOS — in jedem Hovera-Plan ab Start enthalten. Nur Transportfirmen wählen einen der 3 Abo-Pläne.',
-    roiTitle: '💰 Was du sparst',
-    roiBody: 'Du bearbeitest ~10 Aufträge pro Monat. Jeder dauert manuell ~30 Min. (Route prüfen, Preis kalkulieren, E-Mail an Kunden, Korrektur, Rechnung schreiben). Das sind 20 h pro Monat. Mit Hovera Transport sinkt das auf ~5 h — das System kalkuliert die Route, erstellt das Angebot, stellt die E-Rechnung aus.',
-    roiCalc: 'Ersparnis: 15 h × €15/h = €225/Monat. Standard-Plan ~€89.',
-    roiPunch: 'Der Plan rechnet sich 2,5-fach. Plus erster Monat gratis — kostenlos testen.',
-    trialBadge: '🎁 Erster Monat gratis (nach Verifizierung)',
+    freeNote: '🎁 Reitställe und Pferdebesitzer nutzen das Transport-Modul komplett KOSTENLOS — in jedem Hovera-Plan ab Start enthalten. Nur Transportfirmen wählen einen der 4 Abo-Pläne.',
   },
   fr: {
     eyebrow: 'Pour les transporteurs',
     title: 'Enregistrez votre flotte et commencez à recevoir des missions',
-    subtitle: 'Hovera facture aux transporteurs un abonnement pour l\'accès au système — sans commission par mission, sans frais cachés. Les écuries et leurs clients utilisent le module Transport GRATUITEMENT dans leur plan Hovera.',
-    reqsTitle: 'Ce qu\'il faut préparer avant l\'inscription',
+    subtitle: 'Hovera facture aux transporteurs un abonnement pour l\'accès au système — sans commission par mission. Les écuries et leurs clients utilisent le module Transport GRATUITEMENT dans leur plan Hovera.',
+    trialBadge: '🎁 Premier mois gratuit (après vérification des documents)',
+    currencyLabel: 'Devise',
+    roiTitle: '💰 Combien vous gagnez',
+    roiBody: 'Vous traitez ~10 missions par mois. Chacune prend ~30 min manuellement (vérifier la route, calculer le prix, mail au client, correction, émettre la facture). C\'est 20 h par mois. Avec Hovera Transport ça tombe à ~5 h.',
+    roiCalc: 'Économie : 15 h × 15 €/h = 225 €/mois. Plan Start : 59 €.',
+    roiPunch: 'Le plan se rembourse presque 4×. Plus le premier mois est gratuit — testez sans risque.',
+    reqsTitle: '📋 Ce qu\'il faut préparer avant l\'inscription',
     reqs: [
-      'Immatriculation de l\'entreprise + N° TVA intracommunautaire',
+      'Immatriculation de l\'entreprise + N° TVA',
       'Licence de transport routier (nationale ou internationale)',
       'Certificat d\'agrément transporteur d\'animaux valide (Règlement CE 1/2005, type I ou II)',
       'Attestation de capacité professionnelle',
-      'Assurance RC transporteur (minimum 250 000 € de garantie)',
+      'Assurance RC transporteur (minimum 250 000 €)',
       'Papiers des véhicules : carte grise, contrôle technique, agrément transport d\'animaux',
-      'Documents chauffeurs : permis + certificat de formation transport animal',
+      'Documents chauffeurs : permis + certificat de transport animal',
       'IBAN bancaire pour les versements',
     ],
-    pricingTitle: '3 plans d\'abonnement pour transporteurs',
-    pricingNote: 'Les tarifs définitifs seront annoncés prochainement. Inscrivez-vous dès maintenant — les premiers transporteurs bénéficient d\'une période d\'essai gratuite et de tarifs préférentiels au lancement public.',
-    plans: [
-      { name: 'Starter', desc: 'Transporteur solo, jusqu\'à 5 missions/mois', features: ['1 chauffeur', '1 véhicule', 'Devis et réservation', 'Facturation auto (KSeF/Peppol)', 'Support e-mail'] },
-      { name: 'Standard', desc: 'Petite flotte, jusqu\'à 30 missions/mois', popular: true, features: ['Jusqu\'à 5 chauffeurs', 'Jusqu\'à 5 véhicules', 'Tout de Starter', 'Calculateur de prix (km + gazole)', 'CRM clients', 'Rapports mensuels', 'E-mail + chat'] },
-      { name: 'Fleet', desc: 'Réseau de flottes, missions illimitées', features: ['Chauffeurs illimités', 'Véhicules illimités', 'Tout de Standard', 'Multi-région (PL + UE)', 'API publique + webhooks', 'White-label en option', 'Account manager dédié'] },
-    ],
+    plansTitle: '💼 4 plans d\'abonnement pour transporteurs',
+    plansSubtitle: 'Choisissez un plan adapté à votre flotte. Tous les prix sont nets — TVA selon votre juridiction (B2B UE avec N° TVA — autoliquidation).',
+    plans: {
+      start: { name: 'Start', desc: 'Petites flottes et transporteurs solo', features: ['Calculateur complet avec routage PL (ORS)', 'Devis PDF + acceptation publique + WhatsApp/email', 'CRM clients avec tarifs personnalisés', 'POI lieux personnalisés + import Google Maps', 'Calendrier transports + flux iCal', 'Page publique d\'entreprise (PL)', 'Paiements + coûts avec import CSV', 'Factures (intégration Fakturownia.pl)', 'Rapports : chauffeurs, clients, véhicules, trésorerie', 'Support e-mail · réponse en 24h'] },
+      pro: { name: 'Pro', desc: 'Flottes en croissance', popular: true, features: ['Tout de Start +', 'Page publique multilingue (PL + EN + DE)', 'Tarifs et montants minimums par client', 'Estimation auto des péages (ORS tollways)', 'Dictionnaire de types d\'arrêt (chargement/déchargement/véto/nuit)', 'Étapes intermédiaires masquées (privées au client)', 'Galerie publique avec photos de transports', 'Support prioritaire · réponse en 8h'] },
+      business: { name: 'Business', desc: 'Entreprises de transport moyennes et grandes', features: ['Tout de Pro +', 'Branding personnalisé (logo + couleurs sur page et PDF)', 'Domaine personnalisé (ex. panel.votresociete.fr)', 'Rapports avancés : marges, top routes, popularité', 'Export CSV/JSON de toutes les données (RGPD)', 'Tarifs péages configurables (léger vs HGV)', 'Account manager dédié (1×/mois)', 'Priorité roadmap (votez sur les features)', 'Support · réponse en 4h'] },
+      enterprise: { name: 'Enterprise', desc: 'Au-delà de 15 chauffeurs / 25 véhicules, ou besoins spéciaux', features: ['Aucune limite. Contrat individuel.', 'Environnement dédié (VPS séparé)', 'SLA 99,9% avec garantie financière', 'Onboarding sur place (2-4h formateur)', 'Migration de données — gratuite', 'White-label (système sous votre marque)', 'API REST pour intégrations', 'Backup vers stockage dédié (S3 / GDrive)', 'Intégrations sur mesure (CRM/ERP/compta)', 'Support 24/7 · temps de réaction 1h'] },
+    },
+    limitsLabels: { drivers: 'Chauffeurs', vehicles: 'Véhicules/remorques', offers: 'Missions/mois', clients: 'Clients en base', storage: 'Pièces jointes' },
+    monthly: '/ mois',
+    enterpriseCta: 'Contactez-nous',
+    addOnsTitle: '➕ Options additionnelles (one-time et mensuelles)',
+    addOnsSubtitle: 'Payez uniquement ce dont vous avez besoin. Tous les prix nets.',
+    addOnsLabels: {
+      migrate_excel: 'Migration de données Excel (jusqu\'à 500 entrées)',
+      migrate_system: 'Migration depuis un autre système (jusqu\'à 2 000 entrées)',
+      onboarding_live: 'Onboarding en ligne — 2h formation live, partage d\'écran',
+      invoice_setup: 'Configuration factures / facturation électronique + modèles PDF',
+      extra_driver: 'Chauffeur supplémentaire au-delà du plan',
+      extra_vehicle: 'Véhicule supplémentaire au-delà du plan',
+    },
+    addOnsRecurring: '/ mois',
+    addOnsOneTime: 'unique',
     ctaTitle: 'Envoyer votre candidature',
-    ctaBody: 'Joignez les documents requis (scans PDF/JPG) et indiquez la région où vous opérez. La vérification prend 2 à 5 jours ouvrés. Après validation, nous choisissons un plan adapté à la taille de votre flotte. Premier mois gratuit — sans risque.',
+    ctaBody: 'Joignez les documents requis (scans PDF/JPG) et indiquez la région où vous opérez. La vérification prend 2 à 5 jours ouvrés. Après validation, nous activons votre plan avec le premier mois gratuit.',
     ctaButton: 'Postuler comme transporteur',
-    freeNote: '🎁 Les écuries et propriétaires de chevaux utilisent le module Transport entièrement GRATUITEMENT — inclus dans chaque plan Hovera dès Start. Seuls les transporteurs choisissent l\'un des 3 plans d\'abonnement.',
-    roiTitle: '💰 Combien vous gagnez',
-    roiBody: 'Vous traitez ~10 missions par mois. Chacune prend ~30 min manuellement (vérifier la route, calculer le prix, mail au client, correction, émettre la facture). C\'est 20 h par mois. Avec Hovera Transport ça tombe à ~5 h — le système calcule la route, génère le devis, émet la facture électronique.',
-    roiCalc: 'Économie : 15 h × 15 €/h = 225 €/mois. Plan Standard ~89 €.',
-    roiPunch: 'Le plan se rembourse 2,5×. Plus le premier mois est gratuit — testez sans risque.',
-    trialBadge: '🎁 Premier mois gratuit (après vérification)',
+    freeNote: '🎁 Les écuries et propriétaires de chevaux utilisent le module Transport entièrement GRATUITEMENT — inclus dans chaque plan Hovera dès Start. Seuls les transporteurs choisissent l\'un des 4 plans d\'abonnement.',
   },
 };
 
 const t = text[locale];
+const planKeys = ['start', 'pro', 'business', 'enterprise'] as const;
+const planPricesAttr = JSON.stringify(planPrices);
+const addOnsAttr = JSON.stringify(addOns);
+const currencyMetaAttr = JSON.stringify(currencyMeta);
+const cm = currencyMeta[defaultCurrency];
+const pp = planPrices[defaultCurrency];
+const ao = addOns[defaultCurrency];
+const fmt = (n: number) => cm.pos === 'after' ? `${n.toLocaleString(locale === 'pl' ? 'pl-PL' : 'en-GB').replace(/,/g, ' ')} ${cm.symbol}` : `${cm.symbol}${n}`;
 ---
 
-<section class="container-x py-20" data-reveal>
+<section
+  class="container-x py-20"
+  data-reveal
+  data-carrier-pricing
+  data-default-currency={defaultCurrency}
+  data-plan-prices={planPricesAttr}
+  data-addons={addOnsAttr}
+  data-currency-meta={currencyMetaAttr}
+>
   <div class="co-wrap">
     <header class="co-header">
       <span class="eyebrow">{t.eyebrow}</span>
@@ -151,16 +308,14 @@ const t = text[locale];
     </header>
 
     <div class="co-roi" data-reveal>
-      <div class="co-roi-head">
-        <span class="co-roi-title">{t.roiTitle}</span>
-      </div>
+      <span class="co-roi-title">{t.roiTitle}</span>
       <p class="co-roi-body">{t.roiBody}</p>
-      <p class="co-roi-calc">{t.roiCalc}</p>
+      <p class="co-roi-calc" data-roi-calc>{t.roiCalc}</p>
       <p class="co-roi-punch">{t.roiPunch}</p>
     </div>
 
     <div class="co-reqs-box">
-      <h3 class="co-col-title">📋 {t.reqsTitle}</h3>
+      <h3 class="co-col-title">{t.reqsTitle}</h3>
       <ul class="co-reqs">
         {t.reqs.map((r) => (
           <li>
@@ -173,30 +328,91 @@ const t = text[locale];
       </ul>
     </div>
 
-    <h3 class="co-plans-title">💼 {t.pricingTitle}</h3>
-    <p class="co-plans-note muted">{t.pricingNote}</p>
+    <div class="co-plans-head">
+      <h3 class="co-section-title">{t.plansTitle}</h3>
+      <p class="co-section-sub">{t.plansSubtitle}</p>
+
+      <div class="co-curr-switch" role="tablist" aria-label={t.currencyLabel}>
+        <span class="co-curr-label">{t.currencyLabel}:</span>
+        {(Object.keys(currencyMeta) as CurrencyCode[]).map((c) => (
+          <button
+            type="button"
+            class={`co-curr-btn ${c === defaultCurrency ? 'is-active' : ''}`}
+            data-curr={c}
+            role="tab"
+            aria-selected={c === defaultCurrency ? 'true' : 'false'}
+          >
+            <span aria-hidden="true">{currencyMeta[c].flag}</span>
+            <span>{currencyMeta[c].label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
 
     <div class="co-plans">
-      {t.plans.map((p) => (
-        <div class={`co-plan ${p.popular ? 'is-popular' : ''}`}>
-          {p.popular && <span class="co-plan-badge">★</span>}
-          <div class="co-plan-name">{p.name}</div>
-          <div class="co-plan-desc">{p.desc}</div>
-          <div class="co-plan-price">
-            <span class="co-plan-price-tba">{locale === 'pl' ? 'cena wkrótce' : locale === 'de' ? 'Preis folgt' : locale === 'fr' ? 'prix à venir' : 'pricing soon'}</span>
+      {planKeys.map((key) => {
+        const plan = t.plans[key];
+        const isEnterprise = key === 'enterprise';
+        const popular = 'popular' in plan && plan.popular;
+        return (
+          <div class={`co-plan ${popular ? 'is-popular' : ''} ${isEnterprise ? 'is-enterprise' : ''}`} data-plan={key}>
+            {popular && <span class="co-plan-badge">★</span>}
+            <div class="co-plan-name">{plan.name}</div>
+            <div class="co-plan-desc">{plan.desc}</div>
+
+            <div class="co-plan-price">
+              {isEnterprise ? (
+                <span class="co-plan-price-tba">{t.enterpriseCta}</span>
+              ) : (
+                <>
+                  <span class="co-plan-price-num" data-price>{fmt(pp[key as 'start' | 'pro' | 'business'])}</span>
+                  <span class="co-plan-price-period">{t.monthly}</span>
+                </>
+              )}
+            </div>
+
+            <ul class="co-plan-limits">
+              {planLimits.map((l) => (
+                <li>
+                  <span class="muted">{t.limitsLabels[l.key as keyof typeof t.limitsLabels]}</span>
+                  <strong>{l[key]}</strong>
+                </li>
+              ))}
+            </ul>
+
+            <ul class="co-plan-feats">
+              {plan.features.map((f) => (
+                <li>
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul class="co-plan-feats">
-            {p.features.map((f) => (
-              <li>
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>{f}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+        );
+      })}
+    </div>
+
+    <div class="co-addons">
+      <h3 class="co-section-title">{t.addOnsTitle}</h3>
+      <p class="co-section-sub">{t.addOnsSubtitle}</p>
+      <ul class="co-addons-list">
+        {(Object.keys(t.addOnsLabels)).map((kRaw) => {
+          const k = kRaw as keyof typeof t.addOnsLabels;
+          const item = ao[k as keyof typeof ao];
+          return (
+            <li class="co-addon-row" data-addon={k}>
+              <div class="co-addon-label">{t.addOnsLabels[k]}</div>
+              <div class="co-addon-meta">
+                <span class="co-addon-price" data-addon-price>{item.price}</span>
+                <span class="co-addon-period muted">{item.recurring ? t.addOnsRecurring : t.addOnsOneTime}</span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </div>
 
     <div class="co-cta">
@@ -214,10 +430,7 @@ const t = text[locale];
 </section>
 
 <style>
-  .co-wrap {
-    max-width: 64rem;
-    margin: 0 auto;
-  }
+  .co-wrap { max-width: 72rem; margin: 0 auto; }
   .co-header { text-align: center; }
   .co-trial-badge {
     display: inline-block;
@@ -230,6 +443,7 @@ const t = text[locale];
     font-size: 0.85rem;
     font-weight: 600;
   }
+
   .co-roi {
     margin-top: 2.5rem;
     padding: 1.75rem 2rem;
@@ -240,18 +454,8 @@ const t = text[locale];
     margin-left: auto;
     margin-right: auto;
   }
-  .co-roi-head { display: flex; align-items: center; gap: 0.5rem; }
-  .co-roi-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-bark);
-  }
-  .co-roi-body {
-    margin-top: 0.7rem;
-    font-size: 0.95rem;
-    line-height: 1.55;
-    color: var(--color-fg);
-  }
+  .co-roi-title { font-size: 1.1rem; font-weight: 700; color: var(--color-bark); }
+  .co-roi-body { margin-top: 0.7rem; font-size: 0.95rem; line-height: 1.55; }
   .co-roi-calc {
     margin-top: 0.9rem;
     padding: 0.7rem 1rem;
@@ -262,71 +466,62 @@ const t = text[locale];
     font-size: 0.95rem;
     text-align: center;
   }
-  .co-roi-punch {
-    margin-top: 0.7rem;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    color: var(--color-bark);
-    font-weight: 500;
-  }
+  .co-roi-punch { margin-top: 0.7rem; font-size: 0.92rem; color: var(--color-bark); font-weight: 500; }
+
   .co-reqs-box {
     background: var(--color-cream);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-xl);
     padding: 1.75rem 2rem;
-    margin-top: 3rem;
+    margin-top: 2.5rem;
   }
-  .co-col-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1.25rem;
-  }
-  .co-reqs {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.65rem;
-  }
-  @media (min-width: 640px) {
-    .co-reqs { grid-template-columns: 1fr 1fr; gap: 0.65rem 1.5rem; }
-  }
-  .co-reqs li {
-    display: flex;
-    gap: 0.55rem;
-    align-items: flex-start;
-    font-size: 0.88rem;
-    line-height: 1.5;
-  }
-  .co-reqs svg {
-    color: var(--color-ochre);
-    flex-shrink: 0;
-    margin-top: 0.25rem;
-  }
+  .co-col-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.25rem; }
+  .co-reqs { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 0.65rem; }
+  @media (min-width: 640px) { .co-reqs { grid-template-columns: 1fr 1fr; gap: 0.65rem 1.5rem; } }
+  .co-reqs li { display: flex; gap: 0.55rem; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; }
+  .co-reqs svg { color: var(--color-ochre); flex-shrink: 0; margin-top: 0.25rem; }
 
-  .co-plans-title {
-    margin-top: 3rem;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 600;
+  .co-plans-head { margin-top: 3rem; text-align: center; }
+  .co-section-title { font-size: 1.5rem; font-weight: 600; }
+  .co-section-sub { font-size: 0.92rem; color: var(--color-fg-muted); margin-top: 0.6rem; max-width: 44rem; margin-left: auto; margin-right: auto; line-height: 1.5; }
+
+  .co-curr-switch {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    margin-top: 1.25rem;
+    padding: 0.35rem 0.7rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.8rem;
   }
-  .co-plans-note {
-    text-align: center;
-    margin-top: 0.6rem;
-    font-size: 0.9rem;
-    max-width: 40rem;
-    margin-left: auto;
-    margin-right: auto;
+  .co-curr-label { color: var(--color-fg-muted); margin-right: 0.25rem; }
+  .co-curr-btn {
+    display: inline-flex; gap: 0.3rem; align-items: center;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    color: var(--color-fg);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
   }
+  .co-curr-btn:hover { background: var(--color-sand-light); }
+  .co-curr-btn.is-active { background: var(--color-bark); color: var(--color-cream); }
+
   .co-plans {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.25rem;
     margin-top: 2rem;
   }
-  @media (min-width: 800px) {
-    .co-plans { grid-template-columns: repeat(3, 1fr); }
-  }
+  @media (min-width: 720px) { .co-plans { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .co-plans { grid-template-columns: repeat(4, 1fr); } }
+
   .co-plan {
     background: var(--color-cream);
     border: 1px solid var(--color-border);
@@ -341,8 +536,12 @@ const t = text[locale];
     color: var(--color-cream);
     border-color: var(--color-bark);
   }
-  .co-plan.is-popular .co-plan-desc,
-  .co-plan.is-popular .co-plan-price-tba { color: rgba(250,248,244,0.65); }
+  .co-plan.is-popular .co-plan-desc, .co-plan.is-popular .co-plan-price-period,
+  .co-plan.is-popular .co-plan-limits .muted { color: rgba(250,248,244,0.65); }
+  .co-plan.is-enterprise {
+    background: linear-gradient(180deg, var(--color-sand-light) 0%, var(--color-cream) 100%);
+    border-color: var(--color-bark-300, #B8A87B);
+  }
   .co-plan-badge {
     position: absolute;
     top: -10px; left: 50%; transform: translateX(-50%);
@@ -352,45 +551,78 @@ const t = text[locale];
     padding: 4px 12px;
     border-radius: 999px;
   }
-  .co-plan-name {
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
+  .co-plan-name { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; }
+  .co-plan-desc { font-size: 0.85rem; margin-top: 0.3rem; color: var(--color-fg-muted); line-height: 1.4; }
+  .co-plan-price { margin-top: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); }
+  .co-plan.is-popular .co-plan-price { border-bottom-color: rgba(250,248,244,0.18); }
+  .co-plan-price-num { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; }
+  .co-plan-price-period { font-size: 0.85rem; color: var(--color-fg-muted); margin-left: 0.3rem; }
+  .co-plan-price-tba {
+    font-size: 1.1rem; font-weight: 600; color: var(--color-bark);
+    font-style: italic;
   }
-  .co-plan-desc {
-    font-size: 0.85rem;
-    margin-top: 0.3rem;
-    color: var(--color-fg-muted);
-  }
-  .co-plan-price {
-    margin-top: 1.25rem;
+  .co-plan.is-popular .co-plan-price-tba { color: var(--color-ochre); }
+
+  .co-plan-limits {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-border);
   }
-  .co-plan.is-popular .co-plan-price { border-bottom-color: rgba(250,248,244,0.18); }
-  .co-plan-price-tba {
-    font-style: italic;
-    font-size: 0.95rem;
-    color: var(--color-fg-muted);
+  .co-plan.is-popular .co-plan-limits { border-bottom-color: rgba(250,248,244,0.18); }
+  .co-plan-limits li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
   }
+  .co-plan-limits .muted { font-size: 0.78rem; }
+  .co-plan-limits strong { font-weight: 600; font-family: ui-monospace, monospace; font-size: 0.82rem; }
+
   .co-plan-feats {
     list-style: none;
     padding: 0;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: 0.45rem;
     flex: 1;
   }
   .co-plan-feats li {
     display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    font-size: 0.88rem;
+    gap: 0.45rem;
+    align-items: flex-start;
+    font-size: 0.82rem;
+    line-height: 1.4;
   }
-  .co-plan-feats svg { color: var(--color-ochre); flex-shrink: 0; }
-  .co-plan.is-popular .co-plan-feats svg { color: var(--color-ochre-light, #c2ad7d); }
+  .co-plan-feats svg { color: var(--color-ochre); flex-shrink: 0; margin-top: 0.25rem; }
+  .co-plan.is-popular .co-plan-feats svg { color: #c2ad7d; }
+
+  .co-addons {
+    margin-top: 3rem;
+    padding: 1.75rem 2rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+  .co-addons-list { list-style: none; padding: 0; margin-top: 1rem; }
+  .co-addon-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .co-addon-row:last-child { border-bottom: none; }
+  .co-addon-label { font-size: 0.92rem; line-height: 1.4; }
+  .co-addon-meta { display: flex; align-items: baseline; gap: 0.45rem; flex-shrink: 0; }
+  .co-addon-price { font-weight: 600; font-family: ui-monospace, monospace; color: var(--color-bark); }
+  .co-addon-period { font-size: 0.75rem; }
 
   .co-cta {
     margin-top: 3rem;
@@ -400,19 +632,9 @@ const t = text[locale];
     border-radius: var(--radius-xl);
     text-align: center;
   }
-  .co-cta-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-bark);
-  }
-  .co-cta-body {
-    margin-top: 0.6rem;
-    color: var(--color-fg-muted);
-    font-size: 0.92rem;
-    max-width: 40rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  .co-cta-title { font-size: 1.25rem; font-weight: 600; color: var(--color-bark); }
+  .co-cta-body { margin-top: 0.6rem; color: var(--color-fg-muted); font-size: 0.92rem; max-width: 44rem; margin-left: auto; margin-right: auto; line-height: 1.5; }
+
   .co-free {
     margin-top: 2rem;
     padding: 1.25rem 1.5rem;
@@ -424,3 +646,76 @@ const t = text[locale];
     color: #2c5530;
   }
 </style>
+
+<script>
+  // Currency switcher for the carrier pricing block. Mirrors the main
+  // PricingCalculator behaviour: click a chip, swap plan prices and
+  // add-on prices, persist the choice.
+  type PlanPriceMap = { start: number; pro: number; business: number };
+  type AddOnItem = { price: string; recurring: boolean };
+  type AddOnMap = Record<string, AddOnItem>;
+  type CMeta = { symbol: string; pos: 'before' | 'after'; flag: string; label: string };
+
+  function init() {
+    document.querySelectorAll<HTMLElement>('[data-carrier-pricing]').forEach((root) => {
+      let plans: Record<string, PlanPriceMap> = {};
+      let addons: Record<string, AddOnMap> = {};
+      let meta: Record<string, CMeta> = {};
+      try { plans = JSON.parse(root.dataset.planPrices || '{}'); } catch {}
+      try { addons = JSON.parse(root.dataset.addons || '{}'); } catch {}
+      try { meta = JSON.parse(root.dataset.currencyMeta || '{}'); } catch {}
+
+      let current = root.dataset.defaultCurrency || 'PLN';
+
+      const fmt = (n: number, code: string) => {
+        const m = meta[code];
+        if (!m) return String(n);
+        const formatted = code === 'PLN'
+          ? n.toLocaleString('pl-PL').replace(/,/g, ' ')
+          : n.toLocaleString('en-GB');
+        return m.pos === 'after' ? `${formatted} ${m.symbol}` : `${m.symbol}${formatted}`;
+      };
+
+      const apply = (code: string) => {
+        if (!plans[code]) return;
+        current = code;
+        // Plan prices
+        root.querySelectorAll<HTMLElement>('.co-plan[data-plan]').forEach((card) => {
+          const key = card.dataset.plan as 'start' | 'pro' | 'business' | 'enterprise';
+          if (key === 'enterprise') return;
+          const priceEl = card.querySelector<HTMLElement>('[data-price]');
+          if (priceEl) priceEl.textContent = fmt(plans[code][key], code);
+        });
+        // Add-on prices
+        root.querySelectorAll<HTMLElement>('.co-addon-row[data-addon]').forEach((row) => {
+          const key = row.dataset.addon!;
+          const item = addons[code]?.[key];
+          const priceEl = row.querySelector<HTMLElement>('[data-addon-price]');
+          if (priceEl && item) priceEl.textContent = item.price;
+        });
+        // Currency button active state
+        root.querySelectorAll<HTMLButtonElement>('.co-curr-btn').forEach((btn) => {
+          const isActive = btn.dataset.curr === code;
+          btn.classList.toggle('is-active', isActive);
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+        try { localStorage.setItem('hovera-currency', code); } catch {}
+      };
+
+      root.querySelectorAll<HTMLButtonElement>('.co-curr-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const code = btn.dataset.curr;
+          if (code) apply(code);
+        });
+      });
+
+      // Pick up saved choice if it differs from default
+      try {
+        const saved = localStorage.getItem('hovera-currency');
+        if (saved && saved !== current && plans[saved]) apply(saved);
+      } catch {}
+    });
+  }
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>
