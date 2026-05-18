@@ -1,0 +1,73 @@
+---
+import { type Locale } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+
+const text = {
+  pl: {
+    eyebrow: '⚖️ Informacja prawna',
+    title: 'Hovera.app jest platformą, nie przewoźnikiem',
+    body: 'Hovera.app łączy właścicieli koni z firmami transportowymi. Nie świadczymy samodzielnie usług przewozu zwierząt — odpowiedzialność za jakość transportu, bezpieczeństwo konia i terminowość ponosi wybrana firma. Wszyscy przewoźnicy zarejestrowani na platformie posiadają wymagane licencje, ważny certyfikat transportu zwierząt oraz ubezpieczenie OC.',
+  },
+  en: {
+    eyebrow: '⚖️ Legal notice',
+    title: 'Hovera.app is a marketplace, not a carrier',
+    body: 'Hovera.app connects horse owners with transport companies. We do not provide animal-transport services ourselves — quality, animal welfare and on-time delivery are the responsibility of the chosen carrier. Every carrier on the platform holds the required licence, a valid animal-transport certificate and third-party liability insurance.',
+  },
+  de: {
+    eyebrow: '⚖️ Rechtlicher Hinweis',
+    title: 'Hovera.app ist eine Plattform, kein Spediteur',
+    body: 'Hovera.app verbindet Pferdebesitzer mit Transportfirmen. Wir erbringen selbst keine Tiertransportdienstleistungen — Qualität, Tierwohl und Pünktlichkeit liegen in der Verantwortung des gewählten Spediteurs. Alle Spediteure auf der Plattform verfügen über die erforderliche Lizenz, ein gültiges Tiertransport-Zertifikat und Haftpflichtversicherung.',
+  },
+  fr: {
+    eyebrow: '⚖️ Mention légale',
+    title: 'Hovera.app est une plateforme, pas un transporteur',
+    body: 'Hovera.app met en relation les propriétaires de chevaux et les entreprises de transport. Nous ne fournissons pas nous-mêmes de services de transport d\'animaux — la qualité, le bien-être animal et la ponctualité relèvent de la responsabilité du transporteur choisi. Tous les transporteurs présents sur la plateforme disposent de la licence requise, d\'un certificat de transport d\'animaux valide et d\'une assurance responsabilité civile.',
+  },
+};
+
+const t = text[locale];
+---
+
+<section class="container-x py-12" data-reveal>
+  <div class="td-card">
+    <span class="td-eyebrow">{t.eyebrow}</span>
+    <h3 class="td-title">{t.title}</h3>
+    <p class="td-body">{t.body}</p>
+  </div>
+</section>
+
+<style>
+  .td-card {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.75rem;
+    background: var(--color-sand-light);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    border-left: 4px solid var(--color-ochre);
+  }
+  .td-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ochre-dark);
+    font-weight: 600;
+  }
+  .td-title {
+    font-size: 1.1rem;
+    line-height: 1.3;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: var(--color-bark);
+  }
+  .td-body {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--color-fg-muted);
+    margin-top: 0.6rem;
+  }
+</style>

@@ -1,5 +1,5 @@
 ---
-type Slug = 'kalendarz' | 'karnety' | 'finanse-ksef' | 'zapisy-online' | 'dziennik-konia' | 'pensjonat' | 'pasza-zywienie';
+type Slug = 'kalendarz' | 'karnety' | 'finanse-ksef' | 'zapisy-online' | 'dziennik-konia' | 'pensjonat' | 'pasza-zywienie' | 'transport';
 type Locale = 'pl' | 'en' | 'de' | 'fr';
 
 interface Props {
@@ -23,6 +23,7 @@ const t = {
       'dziennik-konia': 'app.hovera.app/konie/zorza',
       'pensjonat': 'app.hovera.app/pensjonat/mapa',
       'pasza-zywienie': 'app.hovera.app/pasza/karmienie',
+      'transport': 'app.hovera.app/transport',
     },
     cal: { title: 'Kalendarz · poniedziałek 10 lis', conflict: 'Konflikt rezerwacji', conflictBody: 'Zorza i Tomek — 14:00. Wybierz innego konia albo przesuń godzinę.', resolve: 'Pokaż wolne sloty', cancel: 'Anuluj', monday: 'pon', dayLabels: ['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'] },
     pass: { title: 'Karnety · wszystkie aktywne', headerName: 'Klient', headerType: 'Typ', headerLeft: 'Pozostało', headerStatus: 'Status', rows: [
@@ -81,6 +82,18 @@ const t = {
         { item: 'Olej lniany', amount: '4 L', warn: true, days: '~5 dni' },
       ],
     },
+    transport: {
+      title: 'Transport koni · oferty na Twoją trasę',
+      headerFrom: 'Warszawa → Berlin',
+      headerWhen: '15 mar · 2 konie',
+      offers: [
+        { company: 'GalopTrans PL', rating: '4.9', trips: 142, price: '2 850 zł', features: ['Klimatyzacja', 'Kamery', 'IATA cert'], time: '12 h', highlight: true },
+        { company: 'PferdeExpress', rating: '4.7', trips: 89, price: '3 100 zł', features: ['Pow. zawieszenie', 'GPS live'], time: '13 h' },
+        { company: 'EquiRide PL', rating: '4.5', trips: 56, price: '2 690 zł', features: ['Mały bok'], time: '14 h' },
+      ],
+      cta: 'Zarezerwuj transport',
+      footer: 'Wszyscy kierowcy z certyfikatem transportu zwierząt. Płatność online · auto-faktura KSeF',
+    },
   },
   en: {
     urls: {
@@ -91,6 +104,7 @@ const t = {
       'dziennik-konia': 'app.hovera.app/horses/zorza',
       'pensjonat': 'app.hovera.app/boarding/map',
       'pasza-zywienie': 'app.hovera.app/feeding/round',
+      'transport': 'app.hovera.app/transport',
     },
     cal: { title: 'Calendar · Monday Nov 10', conflict: 'Booking conflict', conflictBody: 'Zorza and Tomek — 2:00 PM. Pick another horse or move the time.', resolve: 'Show free slots', cancel: 'Cancel', monday: 'Mon', dayLabels: ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'] },
     pass: { title: 'Passes · all active', headerName: 'Client', headerType: 'Type', headerLeft: 'Remaining', headerStatus: 'Status', rows: [
@@ -148,6 +162,18 @@ const t = {
         { item: 'Low-sugar muesli', amount: '120 kg', warn: false, days: '~9 days' },
         { item: 'Linseed oil', amount: '4 L', warn: true, days: '~5 days' },
       ],
+    },
+    transport: {
+      title: 'Horse transport · offers for your route',
+      headerFrom: 'Warsaw → Berlin',
+      headerWhen: 'Mar 15 · 2 horses',
+      offers: [
+        { company: 'GalopTrans PL', rating: '4.9', trips: 142, price: '€650', features: ['Climate control', 'Cameras', 'IATA cert'], time: '12 h', highlight: true },
+        { company: 'PferdeExpress', rating: '4.7', trips: 89, price: '€720', features: ['Air suspension', 'GPS live'], time: '13 h' },
+        { company: 'EquiRide PL', rating: '4.5', trips: 56, price: '€620', features: ['Small carrier'], time: '14 h' },
+      ],
+      cta: 'Book this transport',
+      footer: 'All drivers certified for animal transport. Online payment · auto e-invoice',
     },
   },
 };
@@ -345,6 +371,46 @@ const url = x.urls[slug];
         </div>
       </div>
     )}
+
+    {slug === 'transport' && (
+      <div class="tr">
+        <div class="tr-head">
+          <div>
+            <span class="ps-eyebrow">{x.transport.title}</span>
+            <div class="tr-route">
+              <strong>{x.transport.headerFrom}</strong>
+              <span class="tr-when muted-cell">· {x.transport.headerWhen}</span>
+            </div>
+          </div>
+          <span class="status status--ok">3 ofert</span>
+        </div>
+
+        <ul class="tr-list">
+          {x.transport.offers.map((o: { company: string; rating: string; trips: number; price: string; features: string[]; time: string; highlight?: boolean }) => (
+            <li class={`tr-offer ${o.highlight ? 'is-highlight' : ''}`}>
+              <div class="tr-co">
+                <div class="tr-co-name">
+                  <strong>{o.company}</strong>
+                  {o.highlight && <span class="tr-pill">⭐ Best value</span>}
+                </div>
+                <div class="tr-co-meta muted-cell">
+                  ★ {o.rating} · {o.trips} przewozów · {o.time}
+                </div>
+                <div class="tr-feats">
+                  {o.features.map((f: string) => <span class="tr-feat">{f}</span>)}
+                </div>
+              </div>
+              <div class="tr-price-col">
+                <div class="tr-price">{o.price}</div>
+                <button class={`ps-btn ps-btn--sm ${o.highlight ? 'ps-btn--primary' : 'ps-btn--ghost'}`}>{x.transport.cta}</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <p class="tr-footer">{x.transport.footer}</p>
+      </div>
+    )}
   </div>
 </div>
 
@@ -538,6 +604,39 @@ const url = x.urls[slug];
   .fd-stock-row { display: grid; grid-template-columns: 1fr 70px 80px; align-items: center; gap: 8px; padding: 5px 8px; background: var(--color-cream); border-radius: 6px; font-size: 0.8rem; }
   .fd-stock-row.is-warn { background: rgba(244,215,207,0.5); }
   .fd-stock-name { font-weight: 500; }
+
+  /* TRANSPORT */
+  .tr-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .tr-route { margin-top: 0.3rem; font-size: 1rem; }
+  .tr-when { font-size: 0.8rem; }
+  .tr-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .tr-offer {
+    display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center;
+    padding: 0.85rem 1rem;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    transition: transform 0.2s var(--ease-out-expo);
+  }
+  .tr-offer.is-highlight {
+    border-color: var(--color-ochre);
+    box-shadow: 0 0 0 2px rgba(168,149,107,0.18);
+    background: linear-gradient(180deg, var(--color-cream) 0%, rgba(168,149,107,0.06) 100%);
+  }
+  .tr-co-name { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+  .tr-co-name strong { font-size: 0.95rem; }
+  .tr-pill { font-size: 10px; padding: 2px 8px; background: var(--color-ochre); color: var(--color-bark); border-radius: 999px; font-weight: 600; }
+  .tr-co-meta { font-size: 0.75rem; margin-top: 0.25rem; }
+  .tr-feats { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.4rem; }
+  .tr-feat { font-size: 0.68rem; padding: 2px 7px; background: var(--color-sand-light); border-radius: 999px; color: var(--color-fg-muted); }
+  .tr-price-col { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+  .tr-price { font-size: 1.1rem; font-weight: 600; font-family: ui-monospace, monospace; letter-spacing: -0.01em; }
+  .ps-btn--sm { font-size: 0.7rem; padding: 0.35rem 0.7rem; }
+  .tr-footer { font-size: 0.72rem; color: var(--color-fg-muted); margin-top: 0.9rem; text-align: center; line-height: 1.4; }
+  @media (max-width: 600px) {
+    .tr-offer { grid-template-columns: 1fr; }
+    .tr-price-col { flex-direction: row; align-items: center; justify-content: space-between; }
+  }
 
   @media (max-width: 600px) {
     .ps-body { padding: 1rem; min-height: 320px; }
