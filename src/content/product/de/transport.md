@@ -7,6 +7,7 @@ headline: "Wir verbinden Pferdebesitzer mit Transportfirmen."
 subtitle: "Nach der Fusion mit GalopTrans gibt es eine Plattform für alles — Transport bestellen, Angebote abgeben, ein ganzes Transportunternehmen führen. Online-Zahlungen, Auto-Rechnungen, geprüfte Spediteure mit Tiertransport-Zertifikat."
 description: "Zwei-seitiger Marketplace für Pferdetransport. Besitzer — bestelle eine Fahrt in 2 Minuten. Transportfirmen — kompletter Backoffice mit Angeboten, Rechnungen, Routen, Fahrern und Kunden."
 accent: booking
+heroImage: /og/transport-banner-en.png
 bullets:
   - "Zwei-seitige Plattform: Besitzer fragt, Spediteure bieten"
   - "Nur Fahrer mit Führerschein + gültiger Tiertransport-Bescheinigung"
@@ -34,5 +35,5 @@ integrations:
   - "Stripe / SEPA / Sofort — Zahlung mit Treuhand"
   - "KSeF (Polen) + Peppol BIS Billing 3.0 (EU)"
   - "Google Maps + OSRM — Routing und km-Berechnung"
-pricingNote: "Für Besitzer — Transport-Anfrage kostenlos, du zahlst nur den gewählten Spediteur. Für Spediteure — 8% Provision pro abgeschlossenem Auftrag, keine Abogebühren. Hovera Pro schaltet das volle Kunden-CRM und Flotten-Reports frei."
+pricingNote: "Reitställe und Pferdebesitzer — das Transport-Modul ist im Rahmen jedes Hovera-Plans ab Start KOSTENLOS. Transportfirmen — Abo in 3 Plänen (Starter / Standard / Fleet), keine Auftrags-Provision. Endgültige Preise kündigen wir in Kürze an — Details unten."
 ---

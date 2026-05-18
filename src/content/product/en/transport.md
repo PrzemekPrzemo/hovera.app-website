@@ -7,6 +7,7 @@ headline: "We connect horse owners with transport companies."
 subtitle: "After merging with GalopTrans, one platform handles it all — order a transport, post offers, run an entire transport business. Online payments, auto-invoicing, verified carriers with animal-transport certification."
 description: "A two-sided marketplace for horse transport. Owners — order a ride in 2 minutes. Transport companies — full portal with quoting, invoicing, routes, drivers and clients."
 accent: booking
+heroImage: /og/transport-banner-en.png
 bullets:
   - "Two-sided platform: owners post, carriers bid"
   - "Only carriers with licence + valid animal-transport certificate"
@@ -34,5 +35,5 @@ integrations:
   - "Stripe / BLIK / SEPA — payment with escrow"
   - "KSeF (Poland) + Peppol BIS Billing 3.0 (EU)"
   - "Google Maps + OSRM — routing and km computation"
-pricingNote: "For owners — placing a transport request is free, you only pay the chosen carrier. For carriers — 8% commission per completed job, no subscription. Hovera Pro plan unlocks the full client CRM and fleet reports."
+pricingNote: "Stables and horse owners — the Transport module is FREE within every Hovera plan from Start up. Transport companies — subscription in 3 tiers (Starter / Standard / Fleet), no per-job commission. Final pricing will be announced shortly — details below."
 ---

@@ -7,6 +7,7 @@ headline: "Łączymy właścicieli koni z firmami transportowymi."
 subtitle: "Po połączeniu z GalopTrans w jednym miejscu zamawiasz przewóz albo wystawiasz oferty. Płatności online, auto-faktury, weryfikowani kierowcy z certyfikatami transportu zwierząt."
 description: "Marketplace transportu koni. Dla właścicieli — zamów przewóz w 2 minuty. Dla firm transportowych — portal do ofertowania, fakturowania, zarządzania trasami i pracownikami."
 accent: booking
+heroImage: /og/transport-banner-pl.png
 bullets:
   - "Dwustronna platforma: właściciel zamawia, firmy transportowe ofertują"
   - "Tylko przewoźnicy z licencją + ważnym certyfikatem transportu zwierząt"
@@ -34,5 +35,5 @@ integrations:
   - "Stripe / BLIK / Przelewy24 — płatność z escrow"
   - "KSeF (Polska) + Peppol BIS Billing 3.0 (UE)"
   - "Google Maps + OSRM — routing i kalkulacja kilometrów"
-pricingNote: "Dla właścicieli — zamówienie transportu bezpłatne, płacisz tylko za przewóz wybranej firmie. Dla firm transportowych — prowizja 8% od zrealizowanego zlecenia, brak opłat abonamentowych. Plan Pro Hovery rozszerza moduł o pełne CRM klientów i raporty floty."
+pricingNote: "Stajnie i właściciele koni — moduł Transport BEZPŁATNIE w ramach każdego pakietu Hovery od Start wzwyż. Firmy transportowe — abonament w 3 planach (Starter / Standard / Fleet), bez prowizji od zleceń. Cennik ogłosimy wkrótce — szczegóły poniżej."
 ---

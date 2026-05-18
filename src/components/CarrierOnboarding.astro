@@ -1,0 +1,346 @@
+---
+import { type Locale, localizePath } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const lp = (p: string) => localizePath(p, locale);
+
+const text = {
+  pl: {
+    eyebrow: 'Dla firm transportowych',
+    title: 'Zarejestruj firmę i zacznij przyjmować zlecenia',
+    subtitle: 'Hovera pobiera od firm transportowych opłatę abonamentową za dostęp do systemu — bez prowizji od zleceń, bez ukrytych kosztów. Stajnie i ich klienci korzystają z modułu transport BEZPŁATNIE w ramach swojego pakietu Hovery.',
+    reqsTitle: 'Co przygotuj przed rejestracją',
+    reqs: [
+      'Wpis do CEIDG lub KRS firmy + numer NIP',
+      'Licencja na wykonywanie transportu drogowego (krajowa lub międzynarodowa)',
+      'Ważny certyfikat na transport zwierząt (Rozporządzenie 1/2005, typ I lub II)',
+      'Świadectwo kompetencji zawodowych kierownika transportu',
+      'Polisa OC przewoźnika (min. 1 000 000 zł sumy gwarancyjnej)',
+      'Dane pojazdów: dowód rejestracyjny, badanie techniczne, atest zatwierdzenia do transportu zwierząt',
+      'Dane kierowców: prawo jazdy + zaświadczenie o ukończeniu kursu przewozu zwierząt',
+      'Numer rachunku bankowego do wypłat (IBAN)',
+    ],
+    pricingTitle: '3 plany abonamentowe dla firm transportowych',
+    pricingNote: 'Ceny finalne ogłosimy wkrótce. Zgłoś firmę już teraz — pierwsi przewoźnicy dostają darmowy okres próbny i preferencyjną stawkę przy starcie publicznym.',
+    plans: [
+      { name: 'Starter', desc: 'Solo-przewoźnik, do 5 zleceń/miesiąc', features: ['1 kierowca', '1 pojazd', 'Ofertowanie i booking', 'Auto-faktura KSeF/Peppol', 'Email support'] },
+      { name: 'Standard', desc: 'Mała firma, do 30 zleceń/miesiąc', popular: true, features: ['Do 5 kierowców', 'Do 5 pojazdów', 'Wszystko ze Startera', 'Kalkulator wyceny (km + paliwo)', 'CRM klientów', 'Raporty miesięczne', 'Email + chat'] },
+      { name: 'Fleet', desc: 'Sieci flot, bez limitu zleceń', features: ['Bez limitu kierowców', 'Bez limitu pojazdów', 'Wszystko ze Standard', 'Multi-region (PL + EU)', 'Public API + webhooks', 'White-label opcjonalnie', 'Dedicated account manager'] },
+    ],
+    ctaTitle: 'Wyślij zgłoszenie',
+    ctaBody: 'Załącz wymagane dokumenty (skany PDF/JPG) i napisz w jakim regionie operujesz. Weryfikacja zajmuje 2-5 dni roboczych. Po pozytywnej weryfikacji ustalamy plan dopasowany do skali Twojej floty.',
+    ctaButton: 'Zgłoś firmę transportową',
+    freeNote: '🎁 Stajnie i właściciele koni korzystają z modułu Transport całkowicie BEZPŁATNIE — w ramach każdego pakietu Hovery od Start wzwyż. Tylko firmy transportowe wybierają jeden z 3 planów abonamentowych.',
+  },
+  en: {
+    eyebrow: 'For transport companies',
+    title: 'Register your fleet and start accepting jobs',
+    subtitle: 'Hovera charges transport companies a subscription fee for system access — no per-job commission, no hidden costs. Stables and their clients use the Transport module FREE within their Hovera plan.',
+    reqsTitle: 'What to prepare before signing up',
+    reqs: [
+      'Company registration + VAT ID',
+      'Road transport licence (national or international)',
+      'Valid animal-transport certificate (Council Regulation EC 1/2005, type I or II)',
+      'Transport manager certificate of professional competence',
+      'Carrier third-party liability insurance (minimum €250,000)',
+      'Vehicle papers: registration certificate, technical inspection, animal-transport approval',
+      'Driver credentials: licence + animal-transport training certificate',
+      'Bank account (IBAN) for payouts',
+    ],
+    pricingTitle: '3 carrier subscription tiers',
+    pricingNote: 'Final pricing will be announced shortly. Apply now — early carriers get a free trial period and preferential rates at public launch.',
+    plans: [
+      { name: 'Starter', desc: 'Solo carrier, up to 5 jobs/month', features: ['1 driver', '1 vehicle', 'Quoting and booking', 'Auto e-invoicing (KSeF/Peppol)', 'Email support'] },
+      { name: 'Standard', desc: 'Small fleet, up to 30 jobs/month', popular: true, features: ['Up to 5 drivers', 'Up to 5 vehicles', 'Everything in Starter', 'Pricing calculator (km + fuel)', 'Client CRM', 'Monthly reports', 'Email + chat'] },
+      { name: 'Fleet', desc: 'Fleet networks, unlimited jobs', features: ['Unlimited drivers', 'Unlimited vehicles', 'Everything in Standard', 'Multi-region (PL + EU)', 'Public API + webhooks', 'Optional white-label', 'Dedicated account manager'] },
+    ],
+    ctaTitle: 'Send your application',
+    ctaBody: 'Attach the required documents (PDF/JPG scans) and tell us the region you operate in. Verification takes 2-5 business days. After approval we pick a plan that matches your fleet size.',
+    ctaButton: 'Apply as carrier',
+    freeNote: '🎁 Stables and horse owners use the Transport module completely FREE — included in every Hovera plan from Start up. Only transport companies pick one of the 3 carrier subscription tiers.',
+  },
+  de: {
+    eyebrow: 'Für Transportfirmen',
+    title: 'Registriere deine Flotte und nimm Aufträge an',
+    subtitle: 'Hovera erhebt von Transportfirmen eine Abogebühr für den Systemzugang — keine Provision pro Auftrag, keine versteckten Kosten. Reitställe und deren Kunden nutzen das Transport-Modul KOSTENLOS im Rahmen ihres Hovera-Plans.',
+    reqsTitle: 'Was du vor der Registrierung vorbereitest',
+    reqs: [
+      'Handelsregistereintrag + USt-IdNr.',
+      'Lizenz für gewerblichen Straßentransport (national oder international)',
+      'Gültige Bescheinigung für Tiertransport (VO (EG) 1/2005, Typ I oder II)',
+      'Fachkundenachweis des Transportleiters',
+      'Spediteurs-Haftpflichtversicherung (mind. €250.000 Deckungssumme)',
+      'Fahrzeugpapiere: Zulassung, HU-Bescheinigung, Tiertransport-Zulassung',
+      'Fahrer-Nachweise: Führerschein + Tiertransport-Schulungsnachweis',
+      'IBAN für Auszahlungen',
+    ],
+    pricingTitle: '3 Abo-Pläne für Transportfirmen',
+    pricingNote: 'Endgültige Preise kündigen wir in Kürze an. Bewirb dich schon jetzt — frühe Spediteure erhalten eine kostenlose Testphase und Vorzugskonditionen beim öffentlichen Start.',
+    plans: [
+      { name: 'Starter', desc: 'Einzelspediteur, bis 5 Aufträge/Monat', features: ['1 Fahrer', '1 Fahrzeug', 'Angebot und Buchung', 'Auto-E-Rechnung (KSeF/Peppol)', 'E-Mail-Support'] },
+      { name: 'Standard', desc: 'Kleinflotte, bis 30 Aufträge/Monat', popular: true, features: ['Bis 5 Fahrer', 'Bis 5 Fahrzeuge', 'Alles aus Starter', 'Preisrechner (km + Diesel)', 'Kunden-CRM', 'Monatsberichte', 'E-Mail + Chat'] },
+      { name: 'Fleet', desc: 'Flottennetzwerk, unbegrenzte Aufträge', features: ['Unbegrenzte Fahrer', 'Unbegrenzte Fahrzeuge', 'Alles aus Standard', 'Multi-Region (PL + EU)', 'Public API + Webhooks', 'White-Label optional', 'Dedizierter Account-Manager'] },
+    ],
+    ctaTitle: 'Bewerbung einreichen',
+    ctaBody: 'Lade die erforderlichen Dokumente (PDF/JPG-Scans) hoch und teile uns deine Einsatzregion mit. Die Verifizierung dauert 2-5 Werktage. Nach erfolgreicher Prüfung wählen wir den Plan, der zu deiner Flottengröße passt.',
+    ctaButton: 'Als Spediteur bewerben',
+    freeNote: '🎁 Reitställe und Pferdebesitzer nutzen das Transport-Modul komplett KOSTENLOS — in jedem Hovera-Plan ab Start enthalten. Nur Transportfirmen wählen einen der 3 Abo-Pläne.',
+  },
+  fr: {
+    eyebrow: 'Pour les transporteurs',
+    title: 'Enregistrez votre flotte et commencez à recevoir des missions',
+    subtitle: 'Hovera facture aux transporteurs un abonnement pour l\'accès au système — sans commission par mission, sans frais cachés. Les écuries et leurs clients utilisent le module Transport GRATUITEMENT dans leur plan Hovera.',
+    reqsTitle: 'Ce qu\'il faut préparer avant l\'inscription',
+    reqs: [
+      'Immatriculation de l\'entreprise + N° TVA intracommunautaire',
+      'Licence de transport routier (nationale ou internationale)',
+      'Certificat d\'agrément transporteur d\'animaux valide (Règlement CE 1/2005, type I ou II)',
+      'Attestation de capacité professionnelle',
+      'Assurance RC transporteur (minimum 250 000 € de garantie)',
+      'Papiers des véhicules : carte grise, contrôle technique, agrément transport d\'animaux',
+      'Documents chauffeurs : permis + certificat de formation transport animal',
+      'IBAN bancaire pour les versements',
+    ],
+    pricingTitle: '3 plans d\'abonnement pour transporteurs',
+    pricingNote: 'Les tarifs définitifs seront annoncés prochainement. Inscrivez-vous dès maintenant — les premiers transporteurs bénéficient d\'une période d\'essai gratuite et de tarifs préférentiels au lancement public.',
+    plans: [
+      { name: 'Starter', desc: 'Transporteur solo, jusqu\'à 5 missions/mois', features: ['1 chauffeur', '1 véhicule', 'Devis et réservation', 'Facturation auto (KSeF/Peppol)', 'Support e-mail'] },
+      { name: 'Standard', desc: 'Petite flotte, jusqu\'à 30 missions/mois', popular: true, features: ['Jusqu\'à 5 chauffeurs', 'Jusqu\'à 5 véhicules', 'Tout de Starter', 'Calculateur de prix (km + gazole)', 'CRM clients', 'Rapports mensuels', 'E-mail + chat'] },
+      { name: 'Fleet', desc: 'Réseau de flottes, missions illimitées', features: ['Chauffeurs illimités', 'Véhicules illimités', 'Tout de Standard', 'Multi-région (PL + UE)', 'API publique + webhooks', 'White-label en option', 'Account manager dédié'] },
+    ],
+    ctaTitle: 'Envoyer votre candidature',
+    ctaBody: 'Joignez les documents requis (scans PDF/JPG) et indiquez la région où vous opérez. La vérification prend 2 à 5 jours ouvrés. Après validation, nous choisissons un plan adapté à la taille de votre flotte.',
+    ctaButton: 'Postuler comme transporteur',
+    freeNote: '🎁 Les écuries et propriétaires de chevaux utilisent le module Transport entièrement GRATUITEMENT — inclus dans chaque plan Hovera dès Start. Seuls les transporteurs choisissent l\'un des 3 plans d\'abonnement.',
+  },
+};
+
+const t = text[locale];
+---
+
+<section class="container-x py-20" data-reveal>
+  <div class="co-wrap">
+    <header class="co-header">
+      <span class="eyebrow">{t.eyebrow}</span>
+      <h2 class="display-3 mt-3 text-balance">{t.title}</h2>
+      <p class="muted mt-4 max-w-2xl mx-auto">{t.subtitle}</p>
+    </header>
+
+    <div class="co-reqs-box">
+      <h3 class="co-col-title">📋 {t.reqsTitle}</h3>
+      <ul class="co-reqs">
+        {t.reqs.map((r) => (
+          <li>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>{r}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <h3 class="co-plans-title">💼 {t.pricingTitle}</h3>
+    <p class="co-plans-note muted">{t.pricingNote}</p>
+
+    <div class="co-plans">
+      {t.plans.map((p) => (
+        <div class={`co-plan ${p.popular ? 'is-popular' : ''}`}>
+          {p.popular && <span class="co-plan-badge">★</span>}
+          <div class="co-plan-name">{p.name}</div>
+          <div class="co-plan-desc">{p.desc}</div>
+          <div class="co-plan-price">
+            <span class="co-plan-price-tba">{locale === 'pl' ? 'cena wkrótce' : locale === 'de' ? 'Preis folgt' : locale === 'fr' ? 'prix à venir' : 'pricing soon'}</span>
+          </div>
+          <ul class="co-plan-feats">
+            {p.features.map((f) => (
+              <li>
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <path d="M3 7.5l2.5 2.5L11 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="co-cta">
+      <h3 class="co-cta-title">{t.ctaTitle}</h3>
+      <p class="co-cta-body">{t.ctaBody}</p>
+      <a href={`${lp('/kontakt')}?subject=carrier-application`} class="btn btn-primary mt-5">
+        {t.ctaButton} →
+      </a>
+    </div>
+
+    <div class="co-free">
+      <p>{t.freeNote}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .co-wrap {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+  .co-header { text-align: center; }
+  .co-reqs-box {
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem 2rem;
+    margin-top: 3rem;
+  }
+  .co-col-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+  }
+  .co-reqs {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+  @media (min-width: 640px) {
+    .co-reqs { grid-template-columns: 1fr 1fr; gap: 0.65rem 1.5rem; }
+  }
+  .co-reqs li {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .co-reqs svg {
+    color: var(--color-ochre);
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+  }
+
+  .co-plans-title {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  .co-plans-note {
+    text-align: center;
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .co-plans {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  @media (min-width: 800px) {
+    .co-plans { grid-template-columns: repeat(3, 1fr); }
+  }
+  .co-plan {
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .co-plan.is-popular {
+    background: linear-gradient(180deg, var(--color-bark) 0%, #2a2018 100%);
+    color: var(--color-cream);
+    border-color: var(--color-bark);
+  }
+  .co-plan.is-popular .co-plan-desc,
+  .co-plan.is-popular .co-plan-price-tba { color: rgba(250,248,244,0.65); }
+  .co-plan-badge {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--color-ochre);
+    color: var(--color-bark);
+    font-size: 11px; font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+  .co-plan-name {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+  .co-plan-desc {
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    color: var(--color-fg-muted);
+  }
+  .co-plan-price {
+    margin-top: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .co-plan.is-popular .co-plan-price { border-bottom-color: rgba(250,248,244,0.18); }
+  .co-plan-price-tba {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--color-fg-muted);
+  }
+  .co-plan-feats {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex: 1;
+  }
+  .co-plan-feats li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.88rem;
+  }
+  .co-plan-feats svg { color: var(--color-ochre); flex-shrink: 0; }
+  .co-plan.is-popular .co-plan-feats svg { color: var(--color-ochre-light, #c2ad7d); }
+
+  .co-cta {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--color-sand-light);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    text-align: center;
+  }
+  .co-cta-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-bark);
+  }
+  .co-cta-body {
+    margin-top: 0.6rem;
+    color: var(--color-fg-muted);
+    font-size: 0.92rem;
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .co-free {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(111,182,122,0.12);
+    border-left: 4px solid #6FB67A;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #2c5530;
+  }
+</style>

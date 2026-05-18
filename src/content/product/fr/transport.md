@@ -7,6 +7,7 @@ headline: "Nous connectons les propriétaires de chevaux aux transporteurs."
 subtitle: "Après la fusion avec GalopTrans, une seule plateforme : commander un transport, déposer des offres, gérer toute une entreprise de transport. Paiements en ligne, factures auto, transporteurs vérifiés avec certificat de transport animal."
 description: "Un marketplace à deux faces pour le transport de chevaux. Propriétaires — commandez en 2 minutes. Transporteurs — portail complet : devis, facturation, routes, chauffeurs, clients."
 accent: booking
+heroImage: /og/transport-banner-en.png
 bullets:
   - "Plateforme à deux faces : propriétaire demande, transporteurs répondent"
   - "Uniquement transporteurs avec permis + certificat de transport animal valide"
@@ -34,5 +35,5 @@ integrations:
   - "Stripe / SEPA / BLIK — paiement avec escrow"
   - "KSeF (Pologne) + Peppol BIS Billing 3.0 (UE)"
   - "Google Maps + OSRM — routing et calcul de km"
-pricingNote: "Pour les propriétaires — déposer une demande est gratuit, vous ne payez que le transporteur choisi. Pour les transporteurs — 8 % de commission par mission réalisée, pas d'abonnement. Le plan Hovera Pro débloque le CRM client complet et les rapports flotte."
+pricingNote: "Écuries et propriétaires de chevaux — le module Transport est GRATUIT dans chaque plan Hovera dès Start. Transporteurs — abonnement en 3 plans (Starter / Standard / Fleet), sans commission par mission. Les tarifs définitifs seront annoncés prochainement — détails ci-dessous."
 ---
