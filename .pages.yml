@@ -1,0 +1,514 @@
+# Pages CMS configuration for hovera.app-website
+# Hosted admin UI: https://app.pagescms.org
+# Docs: https://pagescms.org/docs
+
+media:
+  - name: og
+    label: "OG / Banery"
+    input: public/og
+    output: /og
+  - name: public
+    label: "Public assets"
+    input: public
+    output: /
+
+content:
+  # ============================================================
+  # PRODUKT (5 fields / locale)
+  # ============================================================
+  - name: product-pl
+    label: "Produkt — PL"
+    type: collection
+    path: src/content/product/pl
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view:
+      fields: [title, slug]
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: pl, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: "Headline (H1)", type: text }
+      - { name: subtitle, label: Subtitle, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: accent, label: "Visual accent", type: select, default: calendar, options: { values: [calendar, passes, invoice, journal, mobile, booking, ai] } }
+      - { name: heroImage, label: "Hero image (banner)", type: image }
+      - { name: bullets, label: Bullets, type: string, list: true }
+      - name: subFeatures
+        label: "Sub-features"
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: integrations, label: Integrations, type: string, list: true }
+      - { name: pricingNote, label: "Pricing note", type: text }
+      - { name: body, label: "Long-form body (opcjonalne)", type: rich-text }
+
+  - name: product-en
+    label: "Produkt — EN"
+    type: collection
+    path: src/content/product/en
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, slug] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: en, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: "Headline (H1)", type: text }
+      - { name: subtitle, label: Subtitle, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: accent, label: "Visual accent", type: select, default: calendar, options: { values: [calendar, passes, invoice, journal, mobile, booking, ai] } }
+      - { name: heroImage, label: "Hero image (banner)", type: image }
+      - { name: bullets, label: Bullets, type: string, list: true }
+      - name: subFeatures
+        label: "Sub-features"
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: integrations, label: Integrations, type: string, list: true }
+      - { name: pricingNote, label: "Pricing note", type: text }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  - name: product-de
+    label: "Produkt — DE"
+    type: collection
+    path: src/content/product/de
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, slug] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: de, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: "Headline (H1)", type: text }
+      - { name: subtitle, label: Subtitle, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: accent, label: "Visual accent", type: select, default: calendar, options: { values: [calendar, passes, invoice, journal, mobile, booking, ai] } }
+      - { name: heroImage, label: "Hero image (banner)", type: image }
+      - { name: bullets, label: Bullets, type: string, list: true }
+      - name: subFeatures
+        label: "Sub-features"
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: integrations, label: Integrations, type: string, list: true }
+      - { name: pricingNote, label: "Pricing note", type: text }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  - name: product-fr
+    label: "Produkt — FR"
+    type: collection
+    path: src/content/product/fr
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, slug] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: fr, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: "Headline (H1)", type: text }
+      - { name: subtitle, label: Subtitle, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: accent, label: "Visual accent", type: select, default: calendar, options: { values: [calendar, passes, invoice, journal, mobile, booking, ai] } }
+      - { name: heroImage, label: "Hero image (banner)", type: image }
+      - { name: bullets, label: Bullets, type: string, list: true }
+      - name: subFeatures
+        label: "Sub-features"
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: integrations, label: Integrations, type: string, list: true }
+      - { name: pricingNote, label: "Pricing note", type: text }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  # ============================================================
+  # BLOG
+  # ============================================================
+  - name: blog-pl
+    label: "Blog — PL"
+    type: collection
+    path: src/content/blog/pl
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: pl, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: date, label: Date, type: date }
+      - { name: author, label: Author, type: string, default: Przemek }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: body, label: Body, type: rich-text }
+
+  - name: blog-en
+    label: "Blog — EN"
+    type: collection
+    path: src/content/blog/en
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: en, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: date, label: Date, type: date }
+      - { name: author, label: Author, type: string, default: Przemek }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: body, label: Body, type: rich-text }
+
+  - name: blog-de
+    label: "Blog — DE"
+    type: collection
+    path: src/content/blog/de
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: de, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: date, label: Date, type: date }
+      - { name: author, label: Author, type: string, default: Przemek }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: body, label: Body, type: rich-text }
+
+  - name: blog-fr
+    label: "Blog — FR"
+    type: collection
+    path: src/content/blog/fr
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: fr, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: date, label: Date, type: date }
+      - { name: author, label: Author, type: string, default: Przemek }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: body, label: Body, type: rich-text }
+
+  # ============================================================
+  # CHANGELOG  (filename: 2026-05-18-foo.md, prowadzony ręcznie w polu slug)
+  # ============================================================
+  - name: changelog-pl
+    label: "Changelog — PL"
+    type: collection
+    path: src/content/changelog/pl
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date, type] }
+    fields:
+      - { name: slug, label: "Slug (np. 2026-05-18-foo)", type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: pl, options: { values: [pl, en, de, fr] } }
+      - { name: date, label: Date, type: date }
+      - { name: type, label: Type, type: select, default: Feature, options: { values: [Feature, Improvement, Fix, Mobile, API, Integration] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: Summary, type: text }
+      - { name: body, label: Body, type: rich-text }
+
+  - name: changelog-en
+    label: "Changelog — EN"
+    type: collection
+    path: src/content/changelog/en
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date, type] }
+    fields:
+      - { name: slug, label: "Slug (e.g. 2026-05-18-foo)", type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: en, options: { values: [pl, en, de, fr] } }
+      - { name: date, label: Date, type: date }
+      - { name: type, label: Type, type: select, default: Feature, options: { values: [Feature, Improvement, Fix, Mobile, API, Integration] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: Summary, type: text }
+      - { name: body, label: Body, type: rich-text }
+
+  - name: changelog-de
+    label: "Changelog — DE"
+    type: collection
+    path: src/content/changelog/de
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date, type] }
+    fields:
+      - { name: slug, label: "Slug (z.B. 2026-05-18-foo)", type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: de, options: { values: [pl, en, de, fr] } }
+      - { name: date, label: Date, type: date }
+      - { name: type, label: Type, type: select, default: Feature, options: { values: [Feature, Improvement, Fix, Mobile, API, Integration] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: Summary, type: text }
+      - { name: body, label: Body, type: rich-text }
+
+  - name: changelog-fr
+    label: "Changelog — FR"
+    type: collection
+    path: src/content/changelog/fr
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, date, type] }
+    fields:
+      - { name: slug, label: "Slug (par ex. 2026-05-18-foo)", type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: fr, options: { values: [pl, en, de, fr] } }
+      - { name: date, label: Date, type: date }
+      - { name: type, label: Type, type: select, default: Feature, options: { values: [Feature, Improvement, Fix, Mobile, API, Integration] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: Summary, type: text }
+      - { name: body, label: Body, type: rich-text }
+
+  # ============================================================
+  # USE CASE (segmenty)
+  # ============================================================
+  - name: usecase-pl
+    label: "Dla kogo — PL"
+    type: collection
+    path: src/content/usecase/pl
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, slug] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: pl, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: Headline, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: plan, label: "Recommended plan", type: string }
+      - name: scenarios
+        label: Scenarios
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: features, label: Features, type: string, list: true }
+      - name: quote
+        label: "Customer quote"
+        type: object
+        fields:
+          - { name: text, label: Quote, type: text }
+          - { name: name, label: Name, type: string }
+          - { name: role, label: "Role / stable", type: string }
+      - { name: body, label: "Long-form body (opcjonalne)", type: rich-text }
+
+  - name: usecase-en
+    label: "Dla kogo — EN"
+    type: collection
+    path: src/content/usecase/en
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, slug] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: en, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: Headline, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: plan, label: "Recommended plan", type: string }
+      - name: scenarios
+        label: Scenarios
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: features, label: Features, type: string, list: true }
+      - name: quote
+        label: "Customer quote"
+        type: object
+        fields:
+          - { name: text, label: Quote, type: text }
+          - { name: name, label: Name, type: string }
+          - { name: role, label: "Role / stable", type: string }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  - name: usecase-de
+    label: "Dla kogo — DE"
+    type: collection
+    path: src/content/usecase/de
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, slug] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: de, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: Headline, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: plan, label: "Recommended plan", type: string }
+      - name: scenarios
+        label: Scenarios
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: features, label: Features, type: string, list: true }
+      - name: quote
+        label: "Customer quote"
+        type: object
+        fields:
+          - { name: text, label: Quote, type: text }
+          - { name: name, label: Name, type: string }
+          - { name: role, label: "Role / stable", type: string }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  - name: usecase-fr
+    label: "Dla kogo — FR"
+    type: collection
+    path: src/content/usecase/fr
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, slug] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: fr, options: { values: [pl, en, de, fr] } }
+      - { name: title, label: Title, type: string, required: true }
+      - { name: eyebrow, label: Eyebrow, type: string }
+      - { name: headline, label: Headline, type: text }
+      - { name: description, label: "Meta description", type: text }
+      - { name: plan, label: "Recommended plan", type: string }
+      - name: scenarios
+        label: Scenarios
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: body, label: Body, type: text }
+      - { name: features, label: Features, type: string, list: true }
+      - name: quote
+        label: "Customer quote"
+        type: object
+        fields:
+          - { name: text, label: Quote, type: text }
+          - { name: name, label: Name, type: string }
+          - { name: role, label: "Role / stable", type: string }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  # ============================================================
+  # VERSUS  (porównania z konkurencją)
+  # ============================================================
+  - name: versus-pl
+    label: "Versus — PL"
+    type: collection
+    path: src/content/versus/pl
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, competitor] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: pl, options: { values: [pl, en, de, fr] } }
+      - { name: competitor, label: "Competitor name", type: string, required: true }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: tldr, label: "TL;DR", type: text }
+      - name: table
+        label: "Comparison table"
+        type: object
+        list: true
+        fields:
+          - { name: feature, label: Feature, type: string }
+          - { name: hovera, label: Hovera, type: string }
+          - { name: them, label: Competitor, type: string }
+      - { name: chooseHovera, label: "Wybierz Hoverę jeśli", type: string, list: true }
+      - { name: chooseThem, label: "Wybierz konkurencję jeśli", type: string, list: true }
+      - { name: body, label: "Long-form body (opcjonalne)", type: rich-text }
+
+  - name: versus-en
+    label: "Versus — EN"
+    type: collection
+    path: src/content/versus/en
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, competitor] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: en, options: { values: [pl, en, de, fr] } }
+      - { name: competitor, label: "Competitor name", type: string, required: true }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: tldr, label: "TL;DR", type: text }
+      - name: table
+        label: "Comparison table"
+        type: object
+        list: true
+        fields:
+          - { name: feature, label: Feature, type: string }
+          - { name: hovera, label: Hovera, type: string }
+          - { name: them, label: Competitor, type: string }
+      - { name: chooseHovera, label: "Choose Hovera if", type: string, list: true }
+      - { name: chooseThem, label: "Choose competitor if", type: string, list: true }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  - name: versus-de
+    label: "Versus — DE"
+    type: collection
+    path: src/content/versus/de
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, competitor] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: de, options: { values: [pl, en, de, fr] } }
+      - { name: competitor, label: "Competitor name", type: string, required: true }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: tldr, label: "TL;DR", type: text }
+      - name: table
+        label: "Comparison table"
+        type: object
+        list: true
+        fields:
+          - { name: feature, label: Feature, type: string }
+          - { name: hovera, label: Hovera, type: string }
+          - { name: them, label: Competitor, type: string }
+      - { name: chooseHovera, label: "Wähle Hovera, wenn", type: string, list: true }
+      - { name: chooseThem, label: "Wähle Konkurrenz, wenn", type: string, list: true }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+  - name: versus-fr
+    label: "Versus — FR"
+    type: collection
+    path: src/content/versus/fr
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view: { fields: [title, competitor] }
+    fields:
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: locale, label: Locale, type: select, default: fr, options: { values: [pl, en, de, fr] } }
+      - { name: competitor, label: "Competitor name", type: string, required: true }
+      - { name: title, label: "SEO title", type: string, required: true }
+      - { name: description, label: "Meta description", type: text }
+      - { name: tldr, label: "TL;DR", type: text }
+      - name: table
+        label: "Comparison table"
+        type: object
+        list: true
+        fields:
+          - { name: feature, label: Feature, type: string }
+          - { name: hovera, label: Hovera, type: string }
+          - { name: them, label: Competitor, type: string }
+      - { name: chooseHovera, label: "Choisir Hovera si", type: string, list: true }
+      - { name: chooseThem, label: "Choisir concurrent si", type: string, list: true }
+      - { name: body, label: "Long-form body (optional)", type: rich-text }
+
+settings:
+  content:
+    merge: false

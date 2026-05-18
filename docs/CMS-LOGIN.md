@@ -1,97 +1,87 @@
-# Logowanie do panelu CMS Hovera
+# Logowanie do panelu CMS Hovery
 
-Edycja treści idzie przez **Sveltia CMS** (git-based). Zmiany zapisują się jako commity do GitHuba i automatycznie deployują na Plesk w ~2 min.
+Edytujemy treści przez **[Pages CMS](https://pagescms.org)** — hostowany przez nich, w pełni przeglądarkowy CMS git-based. Zmiany zapisują się jako commity do GitHuba, GitHub Actions automatycznie buduje i wgrywa stronę na Plesk (~2 min).
 
-## 🚀 Jednorazowy setup (5 minut)
+## 🚀 Jednorazowy setup (2 minuty)
 
-### Krok 1 — wygeneruj GitHub Personal Access Token
+### Krok 1 — wejdź do panelu
 
-Kliknij ten link → otworzy gotowy formularz na GitHubie:
+**<https://app.pagescms.org>**
 
-**<https://github.com/settings/personal-access-tokens/new>**
+### Krok 2 — zaloguj się przez GitHub
 
-Wypełnij:
+1. Klik **„Sign in with GitHub"**.
+2. GitHub zapyta o uprawnienia — autoryzujesz aplikację **Pages CMS** (read/write tylko do wskazanych repozytoriów).
+3. Z listy repozytoriów wybierz **`PrzemekPrzemo/hovera.app-website`**.
 
-| Pole | Wartość |
-|---|---|
-| Token name | `Hovera CMS` |
-| Expiration | 1 year (potem wygenerujesz nowy) |
-| Resource owner | `PrzemekPrzemo` (Twoje konto) |
-| Repository access | **Only select repositories** → wybierz `hovera.app-website` |
-
-W sekcji **Permissions → Repository permissions** ustaw:
-
-| Permission | Access |
-|---|---|
-| **Contents** | Read and write |
-| **Metadata** | Read-only (auto) |
-| **Pull requests** | Read and write |
-
-Kliknij **Generate token** na dole.
-
-GitHub pokaże token zaczynający się od `github_pat_...` — **skopiuj go teraz**, nie zobaczysz go drugi raz.
-
-### Krok 2 — zaloguj się do CMS
-
-Otwórz w przeglądarce:
-
-**<https://hovera.app/admin>**
-
-W ekranie logowania wybierz **„Use a token"** (lub „Sign in with token"), wklej skopiowany PAT, zatwierdź.
-
-Sveltia zapamięta token w localStorage Twojej przeglądarki — następnym razem zalogujesz się jednym kliknięciem na tym samym urządzeniu.
+To wszystko. Bez generowania PAT-ów, bez instalacji.
 
 ## 📝 Codzienne logowanie
 
-Po pierwszym setupie wystarczy:
+1. Otwórz <https://app.pagescms.org>.
+2. Klikasz w repo `hovera.app-website` → masz pełny panel.
+3. Edytujesz → klikasz **Save** → automatycznie commit do `main` → deploy.
 
-1. Otwórz `https://hovera.app/admin`
-2. Sveltia automatycznie Cię rozpozna, klikasz **Sign in**
-3. Pracujesz, klikasz **Save** lub **Publish**
+Pages CMS pamięta logowanie w przeglądarce (z konta GitHub). Działa na laptopie, iPadzie i telefonie.
 
 ## 🔄 Co się dzieje po zapisie
 
-1. Klikasz **Save & Publish** w CMS
-2. Sveltia robi commit do gałęzi `main` na GitHubie (przez Twój token)
-3. GitHub Actions automatycznie buduje stronę
-4. Wgrywa nową wersję na Plesk (`https://hovera.app`) — całość ~2 min
+1. Klikasz **Save** w Pages CMS.
+2. Pages CMS commituje do gałęzi `main` (przez Twoje uprawnienia GitHub).
+3. GitHub Actions (workflow `Build and deploy to Plesk`) buduje stronę.
+4. `rsync` wgrywa nowy build na `hovera.app` — całość ~2 min.
 
-> **Bez automatycznego deployu (jeśli GitHub Actions secrets nie są skonfigurowane)**: zmiana siedzi w repo, ale nie jest live. Wtedy trzeba ręcznie zaktualizować VPS:
->
-> ```bash
-> bash <(curl -fsSL https://raw.githubusercontent.com/PrzemekPrzemo/hovera.app-website/main/scripts/install.sh)
-> ```
+Status deployu zobaczysz pod: <https://github.com/PrzemekPrzemo/hovera.app-website/actions>
 
-## 📂 Co możesz edytować w CMS
+## 📂 Co możesz edytować
+
+Boczne menu w Pages CMS dzieli kolekcje per język (PL / EN / DE / FR). Wszystko mapowane z folderów w `src/content/`.
 
 | Kolekcja | Co to | Gdzie się pojawia |
 |---|---|---|
-| **Produkt — funkcje** | Opisy modułów (kalendarz, karnety...) | `/produkt/*` deep-dive pages |
-| **Dla kogo — use cases** | Strony per segment (szkółka, pensjonat...) | `/dla/*` pages |
-| **Porównania (vs)** | Hovera vs konkurencja | `/vs/*` pages |
-| **Co nowego (changelog)** | Historia release'ów produktu | `/co-nowego` |
-| **Blog** | Artykuły blogowe | `/blog/*` |
+| **Produkt** | Strony per moduł (Kalendarz, Transport, KSeF…) | `/produkt/<slug>` |
+| **Blog** | Artykuły | `/blog/<slug>` |
+| **Changelog** | Historia release'ów produktu | `/co-nowego` |
+| **Dla kogo (use case)** | Strony per segment (szkółka, pensjonat, hodowla…) | `/dla/<slug>` |
+| **Versus** | Hovera vs konkurencja | `/vs/<slug>` |
+
+## 🖼️ Banery i obrazki
+
+Pages CMS ma wbudowany media manager.
+
+- **Bannery hero** (`/og/*.png`) — w lewym menu wchodzisz w **„Media → OG / Banery"**, klik **Upload**, wrzucasz np. `transport-banner-pl.png`. Potem w polu **Hero image (banner)** w danej stronie Produkt wybierasz wgrany plik.
+- **Inne assety** — sekcja **„Media → Public assets"** trafia bezpośrednio do `public/`.
+
+Rekomendowane wymiary bannera: **1600 × 900 px** (proporcja 16:9), PNG/WebP do 400 KB.
 
 ## ❓ Co, gdy coś nie działa
 
 | Problem | Rozwiązanie |
 |---|---|
-| „Invalid token" przy logowaniu | Token wygasł albo brak uprawnień. Wygeneruj nowy z Contents R/W. |
-| „Repository not found" | Token nie ma dostępu do tego repo. Sprawdź `Repository access` w PAT. |
-| Klikam Save, ale strona się nie aktualizuje | GitHub Actions nie ma sekretów do Plesku — uruchom skrypt instalujący ręcznie. |
-| Zapomniałem tokena | Pójdź na <https://github.com/settings/personal-access-tokens> i wygeneruj nowy. |
+| „Repository not found / not authorized" | Wróć do <https://github.com/settings/applications> → Pages CMS → upewnij się, że `hovera.app-website` jest na liście autoryzowanych repo. |
+| Zapis nie pojawia się na stronie | Sprawdź <https://github.com/PrzemekPrzemo/hovera.app-website/actions> — jeśli czerwony, kliknij i zobacz log. |
+| „Schema validation failed" | Treść nie pasuje do schematu w `.pages.yml` — najprostsze: cofnij ostatnią edycję i daj znać developerowi. |
+| Strona stary banner | Cache CDN — wymuś hard-refresh (Cmd/Ctrl+Shift+R). |
 
 ## 🔐 Bezpieczeństwo
 
-- Token zapisany jest **lokalnie w przeglądarce** (localStorage). Nie wysyła się na żaden zewnętrzny serwer poza GitHubem.
-- Wygeneruj token z **najmniejszym potrzebnym scope** — jak wyżej, tylko Contents/Metadata/PRs dla jednego repo.
-- Jeśli zgubisz urządzenie lub udostępniasz przeglądarkę — odwołaj token na <https://github.com/settings/personal-access-tokens>.
+- Pages CMS używa **GitHub OAuth** — Twoje uprawnienia są dokładnie takie same, jak na GitHubie. Nie ma dodatkowych haseł do zapamiętania.
+- Pages CMS przekazuje tokeny w sessionStorage przeglądarki — wylogowując się z GitHuba odcinasz dostęp.
+- Konfiguracja kolekcji jest w pliku **`.pages.yml`** w korzeniu repo. Jeśli będziesz chciał dodać nowe pola/kolekcje — edytujesz ten plik i commitujesz.
+
+## 🧑‍💻 Czego CMS NIE edytuje
+
+Te rzeczy są w kodzie (Astro/TypeScript), nie w plikach markdown — żeby je zmienić, potrzeba edycji repo:
+
+- `CarrierOnboarding.astro` — 4 plany dla przewoźników, ceny w 5 walutach, ROI, dokumenty (do edycji przez developera lub Claude'a).
+- `TransportDisclaimer.astro` — copy prawne.
+- `ProductScreenshot.astro` — mockupy aplikacji w SVG/HTML.
+- `Nav.astro`, `Footer.astro`, `ProductHero.astro` — szablony layoutu.
+- Cennik główny `/cennik` — w `src/pages/cennik.astro` + `src/i18n/ui.ts`.
+
+Daj znać Claude'owi (przez `/ultrareview` albo nowy task), jeśli chcesz zmiany w którymś z tych obszarów.
 
 ## 🧠 Tip pro
 
-Jeśli chcesz, możesz mieć **dwa tokeny**:
-
-1. Krótkoterminowy (30 dni) do CMS w przeglądarce na laptopie
-2. Długoterminowy (1 rok) do CMS na telefonie / iPadzie
-
-Token na telefonie wygodnie wpisać raz, potem klikasz „Sign in" automatycznie.
+- W Pages CMS jest pole **„View as draft"** — możesz zapisać zmiany jako PR zamiast bezpośrednio do `main`. Wtedy zmiana nie idzie od razu live, tylko czeka na akceptację. Włącza się to per-kolekcja, jeśli chcesz — daj znać developerowi i ustawimy.
+- Telefon / tablet — `app.pagescms.org` jest responsive. Pisz artykuły blogowe w pociągu.
