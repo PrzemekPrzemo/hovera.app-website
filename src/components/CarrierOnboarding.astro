@@ -31,9 +31,14 @@ const text = {
       { name: 'Fleet', desc: 'Sieci flot, bez limitu zleceń', features: ['Bez limitu kierowców', 'Bez limitu pojazdów', 'Wszystko ze Standard', 'Multi-region (PL + EU)', 'Public API + webhooks', 'White-label opcjonalnie', 'Dedicated account manager'] },
     ],
     ctaTitle: 'Wyślij zgłoszenie',
-    ctaBody: 'Załącz wymagane dokumenty (skany PDF/JPG) i napisz w jakim regionie operujesz. Weryfikacja zajmuje 2-5 dni roboczych. Po pozytywnej weryfikacji ustalamy plan dopasowany do skali Twojej floty.',
+    ctaBody: 'Załącz wymagane dokumenty (skany PDF/JPG) i napisz w jakim regionie operujesz. Weryfikacja zajmuje 2-5 dni roboczych. Po pozytywnej weryfikacji ustalamy plan dopasowany do skali Twojej floty. Pierwszy miesiąc gratis — bez ryzyka.',
     ctaButton: 'Zgłoś firmę transportową',
     freeNote: '🎁 Stajnie i właściciele koni korzystają z modułu Transport całkowicie BEZPŁATNIE — w ramach każdego pakietu Hovery od Start wzwyż. Tylko firmy transportowe wybierają jeden z 3 planów abonamentowych.',
+    roiTitle: '💰 Policz, ile zyskujesz',
+    roiBody: 'Robisz ~10 ofert miesięcznie, każda zajmuje 30 min ręcznie (sprawdzenie trasy, kalkulacja, mail, korekta, wystawienie faktury). To 20 h pracy w miesiącu. Po wdrożeniu Hovera Transport spadnie do 5 h — system sam liczy wycenę, generuje ofertę, wystawia fakturę KSeF/Peppol.',
+    roiCalc: 'Oszczędność: 15 h × 50 zł/h = 750 zł / miesiąc. Plan Standard ~349 zł.',
+    roiPunch: 'Plan zwraca się dwukrotnie w pierwszym miesiącu. Plus pierwszy miesiąc gratis — testujesz bez ryzyka.',
+    trialBadge: '🎁 Pierwszy miesiąc gratis (po weryfikacji)',
   },
   en: {
     eyebrow: 'For transport companies',
@@ -58,9 +63,14 @@ const text = {
       { name: 'Fleet', desc: 'Fleet networks, unlimited jobs', features: ['Unlimited drivers', 'Unlimited vehicles', 'Everything in Standard', 'Multi-region (PL + EU)', 'Public API + webhooks', 'Optional white-label', 'Dedicated account manager'] },
     ],
     ctaTitle: 'Send your application',
-    ctaBody: 'Attach the required documents (PDF/JPG scans) and tell us the region you operate in. Verification takes 2-5 business days. After approval we pick a plan that matches your fleet size.',
+    ctaBody: 'Attach the required documents (PDF/JPG scans) and tell us the region you operate in. Verification takes 2-5 business days. After approval we pick a plan that matches your fleet size. First month free — no risk.',
     ctaButton: 'Apply as carrier',
     freeNote: '🎁 Stables and horse owners use the Transport module completely FREE — included in every Hovera plan from Start up. Only transport companies pick one of the 3 carrier subscription tiers.',
+    roiTitle: '💰 The math',
+    roiBody: 'You handle ~10 jobs a month. Each one takes ~30 min manually (check the route, price it, email the client, correct the quote, issue the invoice). That is 20 h per month. With Hovera Transport it drops to ~5 h — the system prices the route, generates the quote, issues the e-invoice.',
+    roiCalc: 'Saving: 15 h × €15/h = €225/month. Standard plan ~€89.',
+    roiPunch: 'The plan pays for itself 2.5×. Plus the first month is free — you test with zero risk.',
+    trialBadge: '🎁 First month free (after verification)',
   },
   de: {
     eyebrow: 'Für Transportfirmen',
@@ -85,9 +95,14 @@ const text = {
       { name: 'Fleet', desc: 'Flottennetzwerk, unbegrenzte Aufträge', features: ['Unbegrenzte Fahrer', 'Unbegrenzte Fahrzeuge', 'Alles aus Standard', 'Multi-Region (PL + EU)', 'Public API + Webhooks', 'White-Label optional', 'Dedizierter Account-Manager'] },
     ],
     ctaTitle: 'Bewerbung einreichen',
-    ctaBody: 'Lade die erforderlichen Dokumente (PDF/JPG-Scans) hoch und teile uns deine Einsatzregion mit. Die Verifizierung dauert 2-5 Werktage. Nach erfolgreicher Prüfung wählen wir den Plan, der zu deiner Flottengröße passt.',
+    ctaBody: 'Lade die erforderlichen Dokumente (PDF/JPG-Scans) hoch und teile uns deine Einsatzregion mit. Die Verifizierung dauert 2-5 Werktage. Nach erfolgreicher Prüfung wählen wir den Plan, der zu deiner Flottengröße passt. Erster Monat kostenlos — risikofrei testen.',
     ctaButton: 'Als Spediteur bewerben',
     freeNote: '🎁 Reitställe und Pferdebesitzer nutzen das Transport-Modul komplett KOSTENLOS — in jedem Hovera-Plan ab Start enthalten. Nur Transportfirmen wählen einen der 3 Abo-Pläne.',
+    roiTitle: '💰 Was du sparst',
+    roiBody: 'Du bearbeitest ~10 Aufträge pro Monat. Jeder dauert manuell ~30 Min. (Route prüfen, Preis kalkulieren, E-Mail an Kunden, Korrektur, Rechnung schreiben). Das sind 20 h pro Monat. Mit Hovera Transport sinkt das auf ~5 h — das System kalkuliert die Route, erstellt das Angebot, stellt die E-Rechnung aus.',
+    roiCalc: 'Ersparnis: 15 h × €15/h = €225/Monat. Standard-Plan ~€89.',
+    roiPunch: 'Der Plan rechnet sich 2,5-fach. Plus erster Monat gratis — kostenlos testen.',
+    trialBadge: '🎁 Erster Monat gratis (nach Verifizierung)',
   },
   fr: {
     eyebrow: 'Pour les transporteurs',
@@ -112,9 +127,14 @@ const text = {
       { name: 'Fleet', desc: 'Réseau de flottes, missions illimitées', features: ['Chauffeurs illimités', 'Véhicules illimités', 'Tout de Standard', 'Multi-région (PL + UE)', 'API publique + webhooks', 'White-label en option', 'Account manager dédié'] },
     ],
     ctaTitle: 'Envoyer votre candidature',
-    ctaBody: 'Joignez les documents requis (scans PDF/JPG) et indiquez la région où vous opérez. La vérification prend 2 à 5 jours ouvrés. Après validation, nous choisissons un plan adapté à la taille de votre flotte.',
+    ctaBody: 'Joignez les documents requis (scans PDF/JPG) et indiquez la région où vous opérez. La vérification prend 2 à 5 jours ouvrés. Après validation, nous choisissons un plan adapté à la taille de votre flotte. Premier mois gratuit — sans risque.',
     ctaButton: 'Postuler comme transporteur',
     freeNote: '🎁 Les écuries et propriétaires de chevaux utilisent le module Transport entièrement GRATUITEMENT — inclus dans chaque plan Hovera dès Start. Seuls les transporteurs choisissent l\'un des 3 plans d\'abonnement.',
+    roiTitle: '💰 Combien vous gagnez',
+    roiBody: 'Vous traitez ~10 missions par mois. Chacune prend ~30 min manuellement (vérifier la route, calculer le prix, mail au client, correction, émettre la facture). C\'est 20 h par mois. Avec Hovera Transport ça tombe à ~5 h — le système calcule la route, génère le devis, émet la facture électronique.',
+    roiCalc: 'Économie : 15 h × 15 €/h = 225 €/mois. Plan Standard ~89 €.',
+    roiPunch: 'Le plan se rembourse 2,5×. Plus le premier mois est gratuit — testez sans risque.',
+    trialBadge: '🎁 Premier mois gratuit (après vérification)',
   },
 };
 
@@ -127,7 +147,17 @@ const t = text[locale];
       <span class="eyebrow">{t.eyebrow}</span>
       <h2 class="display-3 mt-3 text-balance">{t.title}</h2>
       <p class="muted mt-4 max-w-2xl mx-auto">{t.subtitle}</p>
+      <span class="co-trial-badge mt-5">{t.trialBadge}</span>
     </header>
+
+    <div class="co-roi" data-reveal>
+      <div class="co-roi-head">
+        <span class="co-roi-title">{t.roiTitle}</span>
+      </div>
+      <p class="co-roi-body">{t.roiBody}</p>
+      <p class="co-roi-calc">{t.roiCalc}</p>
+      <p class="co-roi-punch">{t.roiPunch}</p>
+    </div>
 
     <div class="co-reqs-box">
       <h3 class="co-col-title">📋 {t.reqsTitle}</h3>
@@ -189,6 +219,56 @@ const t = text[locale];
     margin: 0 auto;
   }
   .co-header { text-align: center; }
+  .co-trial-badge {
+    display: inline-block;
+    margin-top: 1.25rem;
+    padding: 0.45rem 1rem;
+    background: rgba(111,182,122,0.18);
+    border: 1px solid #6FB67A;
+    color: #2c5530;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .co-roi {
+    margin-top: 2.5rem;
+    padding: 1.75rem 2rem;
+    background: linear-gradient(135deg, #FFF9E8 0%, #FFF1CC 100%);
+    border: 1px solid #E8C97B;
+    border-radius: var(--radius-xl);
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .co-roi-head { display: flex; align-items: center; gap: 0.5rem; }
+  .co-roi-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-bark);
+  }
+  .co-roi-body {
+    margin-top: 0.7rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--color-fg);
+  }
+  .co-roi-calc {
+    margin-top: 0.9rem;
+    padding: 0.7rem 1rem;
+    background: var(--color-bark);
+    color: var(--color-cream);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+  .co-roi-punch {
+    margin-top: 0.7rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--color-bark);
+    font-weight: 500;
+  }
   .co-reqs-box {
     background: var(--color-cream);
     border: 1px solid var(--color-border);
