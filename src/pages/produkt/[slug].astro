@@ -84,8 +84,8 @@ const lp = (p: string) => localizePath(p, locale);
       <span class="eyebrow">W cenie planu</span>
       <p class="mt-3">{d.pricingNote}</p>
       <div class="mt-5 flex flex-wrap gap-3">
-        <a href={lp('/cennik')} class="btn btn-primary">Zobacz cennik</a>
-        <a href={lp('/kontakt')} class="btn btn-secondary">Zapytaj o demo</a>
+        <a href={entry.data.slug === 'transport' ? '#cennik-transport' : lp('/cennik')} class="btn btn-primary">Zobacz cennik</a>
+        <a href={entry.data.slug === 'transport' ? '#zglos-firme' : lp('/kontakt')} class="btn btn-secondary">{entry.data.slug === 'transport' ? 'Zarejestruj się' : 'Zapytaj o demo'}</a>
       </div>
     </div>
   </section>
