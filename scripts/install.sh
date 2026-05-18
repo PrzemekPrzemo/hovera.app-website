@@ -208,12 +208,15 @@ echo "  ╔═══════════════════════
 echo "  ║              GOTOWE ✓                  ║"
 echo "  ╚════════════════════════════════════════╝"
 echo
-ok "Otwórz: https://${DOMAIN}"
-ok "CMS:    https://${DOMAIN}/admin (po skonfigurowaniu OAuth — patrz README)"
+ok "Otwórz:         https://${DOMAIN}"
+ok "CMS treści:     https://app.pagescms.org  (zaloguj GitHubem)"
+if [[ -d "$ADMIN_DST" ]]; then
+  ok "Social Manager: https://${DOMAIN}/admin  (po skonfigurowaniu Plesk Node + OAuth — patrz README)"
+fi
 echo
 echo "  Co dalej:"
 echo "    • Sprawdź stronę w przeglądarce"
 echo "    • Wyślij testowo formularz kontaktowy z /kontakt"
-echo "    • Zaloguj się do Plesku → Mail → upewnij się że ${MAIL_FROM} istnieje"
+echo "    • Zaloguj się do Plesku → Mail → upewnij się że ${MAIL_FROM:-kontakt@${DOMAIN}} istnieje"
 echo "    • Aby zaktualizować stronę, wystarczy ponownie wkleić ten sam command"
 echo
